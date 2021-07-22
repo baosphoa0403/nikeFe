@@ -1,11 +1,11 @@
-import React from 'react'
-import Navbar from './Navbar/Navbar'
+import React from "react";
+import NavBar from "./Navbar/NavBar";
 
 export default function MainLayout() {
-    return (
-        <div>
-            <Navbar/>
-            <h1>hello world</h1>
-        </div>
-    )
+  return (
+    <div>
+      <NavBar />
+      <h1>hello world</h1>
+    </div>
+  );
 }
