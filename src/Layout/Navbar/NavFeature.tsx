@@ -1,7 +1,20 @@
-import { alpha, IconButton, InputBase, makeStyles } from "@material-ui/core";
+import {
+  IconButton,
+  InputBase,
+  Link,
+  List,
+  Drawer,
+  makeStyles,
+  ListItem,
+  ListItemText,
+} from "@material-ui/core";
 import React, { Fragment } from "react";
 import SearchIcon from "@material-ui/icons/Search";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+import { useTheme } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import MenuIcon from "@material-ui/icons/Menu";
+import NavMenu from "./NavMenu";
 
 const useStyles = makeStyles((theme) => ({
   navFeature: {
@@ -47,10 +60,33 @@ const useStyles = makeStyles((theme) => ({
     top: 0,
     fontSize: 13,
   },
+  iconMenu: {
+    "&:hover": {
+      backgroundColor: "transparent",
+    },
+    color: "#000",
+    marginLeft: 15,
+  },
+  drawerMobileMenu: {
+    width: 320,
+    [theme.breakpoints.down("xs")]: {
+      width: 300,
+    },
+  },
 }));
 
 export default function NavFeature() {
+  const [mobile, setMobile] = React.useState(false);
+
   const classes = useStyles();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const handleMobile = () => {
+    setMobile(!mobile);
+    console.log(mobile);
+  };
+
   return (
     <div className={classes.navFeature}>
       <div className={classes.search}>
@@ -65,8 +101,45 @@ export default function NavFeature() {
       </div>
       <IconButton className={classes.iconCart}>
         <ShoppingCartIcon />
+        <span className={classes.sumQuantity}>5</span>
       </IconButton>
-      <span className={classes.sumQuantity}>5</span>
+      {isMobile ? (
+        <>
+          <IconButton className={classes.iconMenu} onClick={handleMobile}>
+            <MenuIcon />
+          </IconButton>
+          <Drawer
+            anchor="right"
+            variant="temporary"
+            open={mobile}
+            onClose={handleMobile}
+            classes={{
+              paper: classes.drawerMobileMenu,
+            }}
+          >
+            <List component="ul">
+              <ListItem button>
+                <ListItemText primary="Men" />
+              </ListItem>
+              <ListItem button>
+                <ListItemText primary="Women" />
+              </ListItem>
+              <ListItem button>
+                <ListItemText primary="Kids" />
+              </ListItem>
+              <ListItem button>
+                <ListItemText primary="Customise" />
+              </ListItem>
+              <ListItem button>
+                <ListItemText primary="Sale" />
+              </ListItem>
+              <ListItem button>
+                <ListItemText primary="SNKRS" />
+              </ListItem>
+            </List>
+          </Drawer>
+        </>
+      ) : null}
     </div>
   );
 }

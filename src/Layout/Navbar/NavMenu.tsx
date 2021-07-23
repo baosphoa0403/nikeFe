@@ -1,9 +1,12 @@
 import { Container, Link, makeStyles } from "@material-ui/core";
-import React, { Fragment } from "react";
+import React from "react";
 
 const useStyles = makeStyles((theme) => ({
   menuList: {
     margin: "0 auto",
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
+    },
   },
   menuItem: {
     padding: "19px 12px",
