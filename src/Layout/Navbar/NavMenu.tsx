@@ -4,6 +4,7 @@ import React from "react";
 const useStyles = makeStyles((theme) => ({
   menuList: {
     margin: "0 auto",
+    textAlign: "center",
     [theme.breakpoints.down("sm")]: {
       display: "none",
     },

@@ -84,7 +84,6 @@ export default function NavFeature() {
 
   const handleMobile = () => {
     setMobile(!mobile);
-    console.log(mobile);
   };
 
   return (
