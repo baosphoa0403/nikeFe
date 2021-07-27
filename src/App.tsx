@@ -1,12 +1,20 @@
 import React from "react";
-import "./App.css";
+import { Switch, Route, Link, BrowserRouter } from "react-router-dom";
 import MainLayout from "./Layout/MainLayout";
+import DetailPage from "./Pages/Detail/DetailPage";
 
 function App() {
   return (
-    <div className="App">
-      <MainLayout />
-    </div>
+    <BrowserRouter>
+      <Switch>
+        <Route path="/detailProduct/:id">
+          <DetailPage />
+        </Route>
+        <Route path="/">
+          <MainLayout />
+        </Route>
+      </Switch>
+    </BrowserRouter>
   );
 }
 
