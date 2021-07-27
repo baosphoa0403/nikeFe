@@ -43,12 +43,38 @@ export default function ListProducts() {
   const classes = useStyles();
 
   return (
-    <Grid container spacing={2} className={classes.listProductMainContainer}>
+    <Grid container spacing={3} className={classes.listProductMainContainer}>
       <Grid item xs={6} md={4}>
         <span className={classes.productLink}>
           <img
             className={classes.productImage}
-            src="https://static.nike.com/a/images/t_PDP_864_v1/f_auto,b_rgb:f5f5f5,q_80/8c3ec471-7aa6-4dbb-9e8f-f0ac2e72337d/zoomx-vaporfly-next-2-racing-shoe-MWJvN7.png"
+            src="https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/b5f32941-5edb-4d3e-beab-2383ce1744db/air-force-1-shadow-shoe-klCJXd.jpg"
+          />
+          <div className={classes.message}></div>
+          <div className={classes.productDetailColorway}>
+            <div>Nike ZoomX Vaporfly NEXT</div>
+          </div>
+          <div className={classes.price}>$255</div>
+        </span>
+      </Grid>
+      <Grid item xs={6} md={4}>
+        <span className={classes.productLink}>
+          <img
+            className={classes.productImage}
+            src="https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/b5f32941-5edb-4d3e-beab-2383ce1744db/air-force-1-shadow-shoe-klCJXd.jpg"
+          />
+          <div className={classes.message}></div>
+          <div className={classes.productDetailColorway}>
+            <div>Nike ZoomX Vaporfly NEXT</div>
+          </div>
+          <div className={classes.price}>$255</div>
+        </span>
+      </Grid>
+      <Grid item xs={6} md={4}>
+        <span className={classes.productLink}>
+          <img
+            className={classes.productImage}
+            src="https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/b5f32941-5edb-4d3e-beab-2383ce1744db/air-force-1-shadow-shoe-klCJXd.jpg"
           />
           <div className={classes.message}></div>
           <div className={classes.productDetailColorway}>
