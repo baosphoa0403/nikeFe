@@ -1,8 +1,8 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-
 import Images from "./Images";
+import MainInfo from "./MainInfo";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -21,10 +21,9 @@ function DetailProduct() {
         <Images />
       </Grid>
 
-      {/* <Grid item sm={12} md={4}>
-                    <ProductMain detailProduct={detailProduct} getIndexImg={getIndexImg} indexPress={index} />
-                    <ProductMoreDetail />
-                  </Grid> */}
+      <Grid item sm={12} md={4}>
+        <MainInfo />
+      </Grid>
     </Grid>
   );
 }

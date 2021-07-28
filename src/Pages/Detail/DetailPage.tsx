@@ -1,11 +1,12 @@
+import { Container } from "@material-ui/core";
 import React from "react";
 import DetailProduct from "../../Layout/DeTailProduct/DetailProduct";
 
 function DetailPage() {
   return (
-    <div>
+    <Container maxWidth="lg">
       <DetailProduct />
-    </div>
+    </Container>
   );
 }
 
