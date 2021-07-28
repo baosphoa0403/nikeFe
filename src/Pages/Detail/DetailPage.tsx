@@ -1,7 +1,12 @@
 import React from "react";
+import DetailProduct from "../../Layout/DeTailProduct/DetailProduct";
 
 function DetailPage() {
-  return <div>detail page</div>;
+  return (
+    <div>
+      <DetailProduct />
+    </div>
+  );
 }
 
 export default DetailPage;
