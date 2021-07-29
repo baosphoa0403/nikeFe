@@ -1,13 +1,16 @@
 import React from "react";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
-import "./App.css";
+import { Switch, Route, Link, BrowserRouter } from "react-router-dom";
 import MainLayout from "./Layout/MainLayout";
+import DetailPage from "./Pages/Detail/DetailPage";
 import CartPage from "./Pages/Cart/CartPage";
 
 function App() {
   return (
     <BrowserRouter>
       <Switch>
+        <Route path="/detailProduct/:id">
+          <DetailPage />
+        </Route>
         <Route path="/cart">
           <CartPage />
         </Route>
