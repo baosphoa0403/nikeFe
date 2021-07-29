@@ -1,10 +1,9 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Hidden from "@material-ui/core/Hidden";
-import { useState } from "react";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 import CartBag from "./CartBag";
+import CartSummary from "./CartSummary";
 
 const useStyles = makeStyles((theme) => ({
   Container: {
@@ -53,9 +52,9 @@ function Cart() {
 
               <CartBag />
             </Grid>
-            {/* <Grid item md={4} xs={12}>
-                            <CartSummary />
-                        </Grid> */}
+            <Grid item md={4} xs={12}>
+              <CartSummary />
+            </Grid>
           </Grid>
         </div>
       </Container>
