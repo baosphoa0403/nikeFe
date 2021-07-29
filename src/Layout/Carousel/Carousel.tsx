@@ -7,7 +7,6 @@ import Carousel01 from "../../Images/carousel-01.jpg";
 import Carousel02 from "../../Images/carousel-02.jpg";
 import Carousel03 from "../../Images/carousel-03.jpg";
 import Carousel04 from "../../Images/carousel-04.jpg";
-import { Container } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   carousel: {
