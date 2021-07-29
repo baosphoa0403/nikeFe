@@ -1,12 +1,18 @@
-import React from "react";
+import React, { Fragment } from "react";
 import Carousel from "./Carousel/Carousel";
-import NavBar from "./Navbar/NavBar";
+import Footer from "./Footer/Footer";
+import ShowProductsAndFilter from "./ListProducts/ShowProductsAndFilter";
+import NavBar from "./Navbar/Navbar";
+
+// import NavBar from "./Navbar/NavBar";
 
 export default function MainLayout() {
   return (
-    <div>
+    <Fragment>
       <NavBar />
       <Carousel />
-    </div>
+      <ShowProductsAndFilter />
+      <Footer />
+    </Fragment>
   );
 }

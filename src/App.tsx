@@ -2,6 +2,7 @@ import React from "react";
 import { Switch, Route, Link, BrowserRouter } from "react-router-dom";
 import MainLayout from "./Layout/MainLayout";
 import DetailPage from "./Pages/Detail/DetailPage";
+import CartPage from "./Pages/Cart/CartPage";
 
 function App() {
   return (
@@ -9,6 +10,9 @@ function App() {
       <Switch>
         <Route path="/detailProduct/:id">
           <DetailPage />
+        </Route>
+        <Route path="/cart">
+          <CartPage />
         </Route>
         <Route path="/">
           <MainLayout />
