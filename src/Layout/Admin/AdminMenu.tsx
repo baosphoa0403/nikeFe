@@ -56,8 +56,6 @@ const useStyles = makeStyles((theme) => ({
     backgroundImage:
       "linear-gradient(to left, #227df9 0%, #7462f9 25%, #df3ef8 50%, #7462f9 75%, #227df9 100%)",
     backgroundSize: "250% auto",
-    transform: "matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)",
-    transformOrigin: "50% 50% 0px",
     // transition: "all 0.5s ease !important",
     // "&:hover": {
     //   backgroundPosition: "right center",
@@ -161,11 +159,7 @@ function AdminMenu() {
           </IconButton>
         </div>
         <Divider />
-
         <AdminMenuItem />
-
-        <Divider />
-        {/* <List>{secondaryAdminMenuItems}</List> */}
         <StyledButton>Log out</StyledButton>
       </Drawer>
     </>
