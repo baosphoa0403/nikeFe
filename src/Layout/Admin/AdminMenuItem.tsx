@@ -22,7 +22,7 @@ function AdminMenuItem() {
           </ListItem>
         </Link>
         <Link
-          to="/admin/product"
+          to="/admin/products"
           style={{ textDecoration: "none", color: "black" }}
         >
           <ListItem button>
@@ -33,7 +33,7 @@ function AdminMenuItem() {
           </ListItem>
         </Link>
         <Link
-          to="/admin/manageCart"
+          to="/admin/orders"
           style={{ textDecoration: "none", color: "black" }}
         >
           <ListItem button>
@@ -44,7 +44,7 @@ function AdminMenuItem() {
           </ListItem>
         </Link>
         <Link
-          to="/admin/user"
+          to="/admin/users"
           style={{ textDecoration: "none", color: "black" }}
         >
           <ListItem button>
