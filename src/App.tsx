@@ -3,6 +3,8 @@ import { Switch, Route, Link, BrowserRouter } from "react-router-dom";
 import MainLayout from "./Layout/MainLayout";
 import DetailPage from "./Pages/Detail/DetailPage";
 import CartPage from "./Pages/Cart/CartPage";
+import UserOrderPage from "./Pages/User/UserOrderPage";
+import UserProfilePage from "./Pages/User/UserProfilePage";
 
 function App() {
   return (
@@ -13,6 +15,12 @@ function App() {
         </Route>
         <Route path="/cart">
           <CartPage />
+        </Route>
+        <Route path="/user/order">
+          <UserOrderPage />
+        </Route>
+        <Route path="/user/profile">
+          <UserProfilePage />
         </Route>
         <Route path="/">
           <MainLayout />
