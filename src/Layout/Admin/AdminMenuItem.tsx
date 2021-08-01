@@ -51,7 +51,7 @@ function AdminMenuItem() {
             <ListItemIcon>
               <PeopleIcon />
             </ListItemIcon>
-            <ListItemText primary="Customers" />
+            <ListItemText primary="Users" />
           </ListItem>
         </Link>
       </List>

@@ -7,8 +7,10 @@ import {
 import React, { Fragment } from "react";
 import AdminMenu from "../../Layout/Admin/AdminMenu";
 import Orders from "../../Layout/Admin/Orders/Orders";
+import Products from "../../Layout/Admin/Products/Products";
 import CreateUser from "../../Layout/Admin/Users/CreateUser";
 import ListUsers from "../../Layout/Admin/Users/ListUsers";
+import Users from "../../Layout/Admin/Users/Users";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,9 +37,9 @@ function AdminPage() {
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
-          <CreateUser />
-          <ListUsers />
+          {/* <Users /> */}
           {/* <Orders /> */}
+          <Products />
         </Container>
       </main>
     </div>
