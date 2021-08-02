@@ -1,10 +1,11 @@
 import React from "react";
-import { Switch, Route, Link, BrowserRouter } from "react-router-dom";
+import { Switch, Route, BrowserRouter } from "react-router-dom";
 import MainLayout from "./Layout/MainLayout";
 import DetailPage from "./Pages/Detail/DetailPage";
 import CartPage from "./Pages/Cart/CartPage";
 import UserOrderPage from "./Pages/User/UserOrderPage";
 import UserProfilePage from "./Pages/User/UserProfilePage";
+import AdminPage from "./Pages/Admin/AdminPage";
 
 function App() {
   return (
@@ -21,6 +22,9 @@ function App() {
         </Route>
         <Route path="/user/profile">
           <UserProfilePage />
+        </Route>
+        <Route path="/admin">
+          <AdminPage />
         </Route>
         <Route path="/">
           <MainLayout />
