@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
@@ -75,7 +76,7 @@ const BlackCheckbox = withStyles({
 function FilterProducts(props: any) {
   const classes = useStyles();
 
-  var Size = ["36", "37", "38", "39", "40", "41", "42"];
+  const Size = ["36", "37", "38", "39", "40", "41", "42"];
 
   const listSize = Size.map((item) => (
     <Grid item xs={4}>
@@ -90,7 +91,7 @@ function FilterProducts(props: any) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
 
-  var Color = ["red", "yellow", "black", "pink", "green", "white"];
+  const Color = ["red", "yellow", "black", "pink", "green", "white"];
 
   const listColor = Color.map((item) => (
     <Grid item xs={4} className={classes.ColorContainer}>

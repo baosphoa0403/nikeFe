@@ -1,4 +1,5 @@
 import React, { Fragment } from "react";
+import Counter from "../Component/Counter";
 import Carousel from "./Carousel/Carousel";
 import Footer from "./Footer/Footer";
 import ShowProductsAndFilter from "./ListProducts/ShowProductsAndFilter";
@@ -12,6 +13,7 @@ export default function MainLayout() {
       <NavBar />
       <Carousel />
       <ShowProductsAndFilter />
+      <Counter />
       <Footer />
     </Fragment>
   );
