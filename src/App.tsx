@@ -1,34 +1,44 @@
-import React from "react";
-import { Switch, Route, BrowserRouter } from "react-router-dom";
-import MainLayout from "./Layout/MainLayout";
-import DetailPage from "./Pages/Detail/DetailPage";
-import CartPage from "./Pages/Cart/CartPage";
-import UserOrderPage from "./Pages/User/UserOrderPage";
-import UserProfilePage from "./Pages/User/UserProfilePage";
-import AdminPage from "./Pages/Admin/AdminPage";
+import React from 'react';
+import { Switch, BrowserRouter } from 'react-router-dom';
+import { Page } from './Model/IPage';
+import HomeTemplate from './template/HomeTemplate';
+import { routesAdmin, routesHome } from './Route/route';
+import AdminTemplate from './template/AdminTemplate';
 
 function App() {
+  const showHomeLayout = (routesHome: Page[]) => {
+    if (routesHome && routesHome.length > 0) {
+      return routesHome.map((item: Page, index: number) => {
+        return (
+          <HomeTemplate
+            key={index}
+            exact={item.exact}
+            path={item.path}
+            component={item.component}
+          />
+        );
+      });
+    }
+  };
+  const showAdminLayout = (routesAdmin: Page[]) => {
+    if (routesAdmin && routesAdmin.length > 0) {
+      return routesAdmin.map((item: Page, index: number) => {
+        return (
+          <AdminTemplate
+            key={index}
+            exact={item.exact}
+            path={item.path}
+            component={item.component}
+          />
+        );
+      });
+    }
+  };
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="/detailProduct/:id">
-          <DetailPage />
-        </Route>
-        <Route path="/cart">
-          <CartPage />
-        </Route>
-        <Route path="/user/order">
-          <UserOrderPage />
-        </Route>
-        <Route path="/user/profile">
-          <UserProfilePage />
-        </Route>
-        <Route path="/admin">
-          <AdminPage />
-        </Route>
-        <Route path="/">
-          <MainLayout />
-        </Route>
+        {showHomeLayout(routesHome)}
+        {showAdminLayout(routesAdmin)}
       </Switch>
     </BrowserRouter>
   );
