@@ -39,6 +39,7 @@ function App() {
       <Switch>
         {showHomeLayout(routesHome)}
         {showAdminLayout(routesAdmin)}
+        <h1>hello</h1>
       </Switch>
     </BrowserRouter>
   );
