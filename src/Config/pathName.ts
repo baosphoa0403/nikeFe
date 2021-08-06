@@ -5,5 +5,9 @@ export const PATH_NAME = {
     PRODUCT: '/product',
     PRODUCT_LIST: '/product/list',
     PRODUCT_ADD: '/product/add',
-    USERS: '/users',
+    USER_PROFILE: '/user/profile',
+    USER_ORDER: "/user/order",
+    CART: "/cart",
+    PRODUCT_DETAIL: "/detailProduct/:id",
+    ADMIN: "/admin"
 };
