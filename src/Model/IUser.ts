@@ -15,5 +15,10 @@ export type IUser = {
     picture: string;
     sub: string;
     updated_at: string;
-  };
+};
+
+export interface Login {
+  email: string;
+  password: string
+}
   
