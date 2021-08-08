@@ -58,7 +58,7 @@ export default function NavSub() {
   const token = useAppSelector(
     (state: RootState) => state.credentialsReducer.token
   );
-  const userInfo = useAppSelector(
+  const userInfo: any = useAppSelector(
     (state: RootState) => state.credentialsReducer.userInfo
   );
   console.log(userInfo);
@@ -75,7 +75,7 @@ export default function NavSub() {
       <div className={classes.toolbar}>
         {token && isLogin ? (
           <>
-            <span className={classes.greeting}>Hello, Lam</span>
+            <span className={classes.greeting}>Hello, {userInfo.username}</span>
             <span
               className={classes.navListFeature}
               style={{ borderLeft: "1px solid #000" }}

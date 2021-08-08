@@ -1,11 +1,18 @@
 import React from "react";
-import { AppBar, Dialog, IconButton, makeStyles } from "@material-ui/core";
+import {
+  AppBar,
+  Button,
+  Dialog,
+  IconButton,
+  makeStyles,
+} from "@material-ui/core";
 import { useForm } from "react-hook-form";
 import CloseIcon from "@material-ui/icons/Close";
 import Slide from "@material-ui/core/Slide";
 import { TransitionProps } from "@material-ui/core/transitions";
 import userService from "../../Service/UserService";
-import { useAppDispatch, useAppSelector } from "../../Hooks/Hook";
+import { useAppDispatch } from "../../Hooks/Hook";
+import Alert from "@material-ui/lab/Alert";
 import {
   setIsLogin,
   setToken,
@@ -195,12 +202,15 @@ export default function SignIn() {
       dispatch(setToken(user.data.access_token));
       dispatch(setUserInfo(user.data.info));
       dispatch(setIsLogin(true));
-    } catch (err) {
-      console.log("sign in", err);
-    }
 
-    reset();
-    handleClose();
+      alert("Sign in successfully");
+
+      reset();
+      handleClose();
+    } catch (err) {
+      const error = { ...err };
+      alert(error.response.data.message);
+    }
   };
 
   return (
