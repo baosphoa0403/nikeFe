@@ -5,12 +5,8 @@ import CloseIcon from "@material-ui/icons/Close";
 import Slide from "@material-ui/core/Slide";
 import { TransitionProps } from "@material-ui/core/transitions";
 import userService from "../../Service/UserService";
-import { useAppDispatch, useAppSelector } from "../../Hooks/Hook";
-import {
-  setToken,
-  setUserInfo,
-} from "../../Redux/credentials/credentialsReducer";
-import { RootState } from "../../Redux/store";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const useStyles = makeStyles((theme) => ({
   navListFeature: {
@@ -195,13 +191,21 @@ export default function SignUp() {
         roleId: "60f32404d29b52428cff51f4",
       });
 
-      alert("Sign up successfully");
-
       reset();
       handleClose();
+
+      // alert("Sign up successfully");
+      toast.success("Sign up successfully", {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 2500,
+      });
     } catch (err) {
       const error = { ...err };
-      alert(error.response.data.message);
+      // alert(error.response.data.message);
+      toast.error(`${error.response.data.message}`, {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 2500,
+      });
     }
   };
 
@@ -338,6 +342,7 @@ export default function SignUp() {
           </form>
         </div>
       </Dialog>
+      <ToastContainer />
     </>
   );
 }

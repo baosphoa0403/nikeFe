@@ -12,6 +12,8 @@ import {
   setUserInfo,
 } from "../../Redux/credentials/credentialsReducer";
 import { USER_ROLE } from "../../Config/userRole";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const useStyles = makeStyles((theme) => ({
   navListFeature: {
@@ -196,13 +198,21 @@ export default function SignIn() {
       dispatch(setUserInfo(user.data.info));
       dispatch(setIsLogin(true));
 
-      alert("Sign in successfully");
-
       reset();
       handleClose();
+
+      // alert("Sign in successfully");
+      toast.success("Sign in successfully", {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 2500,
+      });
     } catch (err) {
       const error = { ...err };
-      alert(error.response.data.message);
+      // alert(error.response.data.message);
+      toast.error(`${error.response.data.message}`, {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 2500,
+      });
     }
   };
 
@@ -326,6 +336,7 @@ export default function SignIn() {
           </form>
         </div>
       </Dialog>
+      <ToastContainer />
     </>
   );
 }
