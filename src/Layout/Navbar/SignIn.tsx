@@ -1,24 +1,17 @@
 import React from "react";
-import {
-  AppBar,
-  Button,
-  Dialog,
-  IconButton,
-  makeStyles,
-} from "@material-ui/core";
+import { Dialog, IconButton, makeStyles } from "@material-ui/core";
 import { useForm } from "react-hook-form";
 import CloseIcon from "@material-ui/icons/Close";
 import Slide from "@material-ui/core/Slide";
 import { TransitionProps } from "@material-ui/core/transitions";
 import userService from "../../Service/UserService";
 import { useAppDispatch } from "../../Hooks/Hook";
-import Alert from "@material-ui/lab/Alert";
 import {
   setIsLogin,
   setToken,
   setUserInfo,
 } from "../../Redux/credentials/credentialsReducer";
-import { RootState } from "../../Redux/store";
+import { USER_ROLE } from "../../Config/userRole";
 
 const useStyles = makeStyles((theme) => ({
   navListFeature: {
@@ -193,9 +186,9 @@ export default function SignIn() {
 
       localStorage.setItem("accessToken", user.data.access_token);
 
-      if (user.data.info.role === "Admin") {
+      if (user.data.info.role === USER_ROLE.ADMIN) {
         localStorage.setItem("admin", user.data.info);
-      } else if (user.data.info.role === "User") {
+      } else if (user.data.info.role === USER_ROLE.USER) {
         localStorage.setItem("user", JSON.stringify(user.data.info));
       }
 
