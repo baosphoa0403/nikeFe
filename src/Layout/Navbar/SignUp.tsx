@@ -155,15 +155,6 @@ const Transition = React.forwardRef(function Transition(
 
 export default function SignUp() {
   const classes = useStyles();
-  // const dispatch = useAppDispatch();
-  // const token = useAppSelector(
-  //   (state: RootState) => state.credentialsReducer.token
-  // );
-  // const userInfo = useAppSelector(
-  //   (state: RootState) => state.credentialsReducer.userInfo
-  // );
-
-  // console.log(userInfo);
 
   const [open, setOpen] = React.useState(false);
 

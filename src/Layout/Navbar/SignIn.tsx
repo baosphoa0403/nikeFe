@@ -7,6 +7,7 @@ import { TransitionProps } from "@material-ui/core/transitions";
 import userService from "../../Service/UserService";
 import { useAppDispatch, useAppSelector } from "../../Hooks/Hook";
 import {
+  setIsLogin,
   setToken,
   setUserInfo,
 } from "../../Redux/credentials/credentialsReducer";
@@ -156,21 +157,15 @@ const Transition = React.forwardRef(function Transition(
 export default function SignIn() {
   const classes = useStyles();
   const dispatch = useAppDispatch();
-  const token = useAppSelector(
-    (state: RootState) => state.credentialsReducer.token
-  );
-  const userInfo = useAppSelector(
-    (state: RootState) => state.credentialsReducer.userInfo
-  );
-
-  // console.log(userInfo);
 
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
+    reset();
     setOpen(true);
   };
   const handleClose = () => {
+    reset();
     setOpen(false);
   };
 
@@ -186,19 +181,23 @@ export default function SignIn() {
   } = useForm<FormSignInValues>();
 
   const onSubmitSignIn = async (data: any) => {
-    const user = await userService.login(data);
+    try {
+      const user = await userService.login(data);
 
-    localStorage.setItem("accessToken", user.data.access_token);
+      localStorage.setItem("accessToken", user.data.access_token);
 
-    if (user.data.info.role === "Admin") {
-      localStorage.setItem("admin", user.data.info);
-    } else if (user.data.info.role === "User") {
-      localStorage.setItem("user", JSON.stringify(user.data.info));
+      if (user.data.info.role === "Admin") {
+        localStorage.setItem("admin", user.data.info);
+      } else if (user.data.info.role === "User") {
+        localStorage.setItem("user", JSON.stringify(user.data.info));
+      }
+
+      dispatch(setToken(user.data.access_token));
+      dispatch(setUserInfo(user.data.info));
+      dispatch(setIsLogin(true));
+    } catch (err) {
+      console.log("sign in", err);
     }
-
-    //save accessToken, userInfo into store
-    dispatch(setToken(user.data.access_token));
-    dispatch(setUserInfo(user.data.info));
 
     reset();
     handleClose();
