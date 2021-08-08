@@ -194,14 +194,12 @@ export default function SignUp() {
       reset();
       handleClose();
 
-      // alert("Sign up successfully");
       toast.success("Sign up successfully", {
         position: toast.POSITION.TOP_CENTER,
         autoClose: 2500,
       });
     } catch (err) {
       const error = { ...err };
-      // alert(error.response.data.message);
       toast.error(`${error.response.data.message}`, {
         position: toast.POSITION.TOP_CENTER,
         autoClose: 2500,

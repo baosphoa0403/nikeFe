@@ -201,14 +201,12 @@ export default function SignIn() {
       reset();
       handleClose();
 
-      // alert("Sign in successfully");
       toast.success("Sign in successfully", {
         position: toast.POSITION.TOP_CENTER,
         autoClose: 2500,
       });
     } catch (err) {
       const error = { ...err };
-      // alert(error.response.data.message);
       toast.error(`${error.response.data.message}`, {
         position: toast.POSITION.TOP_CENTER,
         autoClose: 2500,
