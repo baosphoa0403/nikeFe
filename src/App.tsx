@@ -1,22 +1,22 @@
-import React, { useEffect } from "react";
-import { Switch, BrowserRouter } from "react-router-dom";
-import { Page } from "./Model/IPage";
-import HomeTemplate from "./template/HomeTemplate";
-import { routesAdmin, routesHome } from "./Route/route";
-import AdminTemplate from "./template/AdminTemplate";
-import { useAppDispatch } from "./Hooks/Hook";
+import React, { useEffect } from 'react';
+import { Switch, BrowserRouter } from 'react-router-dom';
+import { Page } from './Model/IPage';
+import HomeTemplate from './template/HomeTemplate';
+import { routesAdmin, routesHome } from './Route/route';
+import AdminTemplate from './template/AdminTemplate';
+import { useAppDispatch } from './Hooks/Hook';
 import {
   setIsLogin,
   setToken,
   setUserInfo,
-} from "./Redux/credentials/credentialsReducer";
+} from './Redux/credentials/credentialsReducer';
 
 function App() {
   const dispatch = useAppDispatch();
 
-  const token = localStorage.getItem("accessToken");
-  const userInfo = localStorage.getItem("user");
-  const adminInfo = localStorage.getItem("admin");
+  const token = localStorage.getItem('accessToken');
+  const userInfo = localStorage.getItem('user');
+  const adminInfo = localStorage.getItem('admin');
 
   useEffect(() => {
     dispatch(setIsLogin(false));
