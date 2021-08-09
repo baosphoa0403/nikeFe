@@ -1,124 +1,123 @@
-import React from "react";
-import { Dialog, IconButton, makeStyles } from "@material-ui/core";
-import { useForm } from "react-hook-form";
-import CloseIcon from "@material-ui/icons/Close";
-import Slide from "@material-ui/core/Slide";
-import { TransitionProps } from "@material-ui/core/transitions";
-import userService from "../../Service/UserService";
-import { useAppDispatch, useAppSelector } from "../../Hooks/Hook";
-import {
-  setToken,
-  setUserInfo,
-} from "../../Redux/credentials/credentialsReducer";
-import { RootState } from "../../Redux/store";
+import React from 'react';
+import { Dialog, IconButton, makeStyles } from '@material-ui/core';
+import { useForm } from 'react-hook-form';
+import CloseIcon from '@material-ui/icons/Close';
+import Slide from '@material-ui/core/Slide';
+import { TransitionProps } from '@material-ui/core/transitions';
+import userService from '../../Service/UserService';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { notifiSuccess } from '../../utils/MyToys';
+import { LoginSocial } from '../../Model/IUser';
+import { STATUS } from '../../Config/statusCode';
 
 const useStyles = makeStyles((theme) => ({
   navListFeature: {
-    padding: "0 12px",
-    textDecoration: "none",
-    color: "black",
+    padding: '0 12px',
+    textDecoration: 'none',
+    color: 'black',
     fontSize: 13,
-    "&:hover": {
-      color: "grey",
+    '&:hover': {
+      color: 'grey',
     },
-    cursor: "pointer",
+    cursor: 'pointer',
   },
   backdrop: {
     minHeight: 500,
-    margin: "auto",
+    margin: 'auto',
     width: 512,
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down('xs')]: {
       width: 320,
     },
   },
   SignUpContainer: {
-    margin: "0 28px",
+    margin: '0 28px',
     padding: 28,
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down('xs')]: {
       margin: 0,
     },
   },
   closeSignUp: {
-    position: "absolute",
+    position: 'absolute',
     right: 10,
     top: 10,
-    color: "black",
+    color: 'black',
   },
   inputContainer: {
-    margin: "15px 0",
+    margin: '15px 0',
   },
   input: {
-    width: "100%",
-    border: "1px solid #e5e5e5",
+    width: '100%',
+    border: '1px solid #e5e5e5',
     borderRadius: 3,
-    color: "#8d8d8d",
+    color: '#8d8d8d',
     height: 40,
     lineHeight: 17,
-    padding: "0 16px",
+    padding: '0 16px',
     outline: 0,
   },
   inputValid: {
-    color: "#fe0000",
+    color: '#fe0000',
     fontSize: 12,
   },
   buttonSignUp: {
-    width: "100%",
+    width: '100%',
     borderRadius: 3,
-    border: "none",
-    color: "#fff",
+    border: 'none',
+    color: '#fff',
     fontSize: 15,
-    backgroundColor: "black",
+    backgroundColor: 'black',
     height: 40,
     fontWeight: 500,
-    margin: "5px 0",
-    cursor: "pointer",
+    margin: '5px 0',
+    cursor: 'pointer',
   },
   nike: {
     width: 50,
     hegiht: 17,
   },
   formHeader: {
-    padding: "30px 0",
-    margin: "0 auto",
-    fontSize: "20px",
-    maxWidth: "25ch",
-    lineHeight: "26px",
-    textAlign: "center",
+    padding: '30px 0',
+    margin: '0 auto',
+    fontSize: '20px',
+    maxWidth: '25ch',
+    lineHeight: '26px',
+    textAlign: 'center',
     fontWeight: 700,
   },
   formSupport: {
-    margin: "18px 0",
-    color: "#8D8D8D",
+    margin: '18px 0',
+    color: '#8D8D8D',
     fontSize: 12,
-    display: "flex",
+    display: 'flex',
   },
   formSupportGrow: {
     flexGrow: 1,
-    verticalAlign: "baseline",
+    verticalAlign: 'baseline',
   },
   forgotPassword: {
-    color: "#8D8D8D",
-    textDecoration: "none",
+    color: '#8D8D8D',
+    textDecoration: 'none',
   },
   signInWithNormal: {
-    display: "block",
+    display: 'block',
   },
   facebookLink: {
-    width: "100%",
+    width: '100%',
     borderRadius: 3,
-    border: "none",
-    color: "#fff",
+    border: 'none',
+    color: '#fff',
     fontSize: 15,
-    backgroundColor: "#4267B2",
+    backgroundColor: '#4267B2',
     height: 40,
     fontWeight: 500,
-    margin: "5px 0",
-    cursor: "pointer",
+    margin: '5px 0',
+    cursor: 'pointer',
   },
   facebookContainer: {
-    display: "flex",
-    alignItems: "center",
-    margin: "0px auto",
+    display: 'flex',
+    alignItems: 'center',
+    margin: '0px auto',
     width: 190,
   },
   Imange: {
@@ -127,21 +126,21 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 10,
   },
   googleLink: {
-    width: "100%",
+    width: '100%',
     borderRadius: 3,
-    border: "none",
-    color: "#fff",
+    border: 'none',
+    color: '#fff',
     fontSize: 15,
-    backgroundColor: "#DE5246",
+    backgroundColor: '#DE5246',
     height: 40,
     fontWeight: 500,
-    margin: "5px 0",
-    cursor: "pointer",
+    margin: '5px 0',
+    cursor: 'pointer',
   },
   googleContainer: {
-    display: "flex",
-    alignItems: "center",
-    margin: "0px auto",
+    display: 'flex',
+    alignItems: 'center',
+    margin: '0px auto',
     width: 170,
   },
 }));
@@ -150,10 +149,15 @@ const Transition = React.forwardRef(function Transition(
   props: TransitionProps & { children?: React.ReactElement<any, any> },
   ref: React.Ref<unknown>
 ) {
-  return <Slide direction="up" ref={ref} {...props} />;
+  return <Slide direction='up' ref={ref} {...props} />;
 });
+interface Props {
+  data: LoginSocial;
+  getDataLoginGoogle: (data: any) => void;
+}
+export default function SignUp(props: Props) {
+  console.log(props.data);
 
-export default function SignUp() {
   const classes = useStyles();
 
   const [open, setOpen] = React.useState(false);
@@ -162,9 +166,17 @@ export default function SignUp() {
     reset();
     setOpen(true);
   };
+  React.useEffect(() => {
+    if (props.data?.statusCode === STATUS.REDIRECT) {
+      console.log('run when props.data change');
+      notifiSuccess('please full filled first login');
+      handleClickOpen();
+    }
+  }, [props.data]);
   const handleClose = () => {
     reset();
     setOpen(false);
+    props.getDataLoginGoogle(null);
   };
 
   type FormSignUpValues = {
@@ -191,17 +203,25 @@ export default function SignUp() {
       const user = await userService.signUp({
         ...data,
         yearOfBirth: parseInt(data.yearOfBirth),
-        statusId: "610bf10cdccf125e487e1b4b",
-        roleId: "60f32404d29b52428cff51f4",
+        statusId: '610bf10cdccf125e487e1b4b',
+        roleId: '60f32404d29b52428cff51f4',
       });
-
-      alert("Sign up successfully");
 
       reset();
       handleClose();
+
+      // alert("Sign up successfully");
+      toast.success('Sign up successfully', {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 2500,
+      });
     } catch (err) {
       const error = { ...err };
-      alert(error.response.data.message);
+      // alert(error.response.data.message);
+      toast.error(`${error.response.data.message}`, {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 2500,
+      });
     }
   };
 
@@ -229,19 +249,20 @@ export default function SignUp() {
           <div className={classes.formHeader}>YOUR ACCOUNT FOR EVERYTHING</div>
 
           {/*Form*/}
-          <form id="formSignUp" onSubmit={handleSubmit(onSubmitSignUp)}>
+          <form id='formSignUp' onSubmit={handleSubmit(onSubmitSignUp)}>
             {/*Input*/}
             <div className={classes.inputContainer}>
               <input
-                type="text"
-                placeholder="Email"
+                value={!props.data ? '' : props.data.data?.email}
+                type='text'
+                placeholder='Email'
                 className={classes.input}
-                {...register("email", {
-                  required: "Email is required",
+                {...register('email', {
+                  required: 'Email is required',
                   pattern: {
                     value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                     message:
-                      "Please enter a vaid email address. Ex: example@gmail.com",
+                      'Please enter a vaid email address. Ex: example@gmail.com',
                   },
                 })}
               />
@@ -251,14 +272,14 @@ export default function SignUp() {
             </div>
             <div className={classes.inputContainer}>
               <input
-                type="password"
-                placeholder="Password"
+                type='password'
+                placeholder='Password'
                 className={classes.input}
-                {...register("password", {
-                  required: "Password is required",
+                {...register('password', {
+                  required: 'Password is required',
                   minLength: {
                     value: 8,
-                    message: "Password must be at least 8 characters long",
+                    message: 'Password must be at least 8 characters long',
                   },
                 })}
               />
@@ -268,11 +289,12 @@ export default function SignUp() {
             </div>
             <div className={classes.inputContainer}>
               <input
-                type="text"
-                placeholder="Full name"
+                value={!props.data ? '' : props.data.data?.name}
+                type='text'
+                placeholder='Full name'
                 className={classes.input}
-                {...register("name", {
-                  required: "Fullname is required",
+                {...register('name', {
+                  required: 'Fullname is required',
                 })}
               />
               {errors.name && (
@@ -281,11 +303,11 @@ export default function SignUp() {
             </div>
             <div className={classes.inputContainer}>
               <input
-                type="text"
-                placeholder="Username"
+                type='text'
+                placeholder='Username'
                 className={classes.input}
-                {...register("username", {
-                  required: "Username is required",
+                {...register('username', {
+                  required: 'Username is required',
                 })}
               />
               {errors.username && (
@@ -294,18 +316,18 @@ export default function SignUp() {
             </div>
             <div className={classes.inputContainer}>
               <input
-                type="text"
-                placeholder="Year Of Birth"
+                type='text'
+                placeholder='Year Of Birth'
                 className={classes.input}
-                {...register("yearOfBirth", {
-                  required: "Year of birth is required",
+                {...register('yearOfBirth', {
+                  required: 'Year of birth is required',
                   min: {
                     value: 1940,
-                    message: "year of birth must be greater than 1940",
+                    message: 'year of birth must be greater than 1940',
                   },
                   max: {
                     value: 2003,
-                    message: "year of birth must be less than 2003",
+                    message: 'year of birth must be less than 2003',
                   },
                 })}
               />
@@ -317,11 +339,11 @@ export default function SignUp() {
             </div>
             <div className={classes.inputContainer}>
               <input
-                type="text"
-                placeholder="Address"
+                type='text'
+                placeholder='Address'
                 className={classes.input}
-                {...register("address", {
-                  required: "Address is required",
+                {...register('address', {
+                  required: 'Address is required',
                 })}
               />
               {errors.address && (
@@ -332,12 +354,13 @@ export default function SignUp() {
             {/*Sign In*/}
             <input
               className={classes.buttonSignUp}
-              type="submit"
-              value="SIGN UP"
+              type='submit'
+              value='SIGN UP'
             />
           </form>
         </div>
       </Dialog>
+      <ToastContainer />
     </>
   );
 }

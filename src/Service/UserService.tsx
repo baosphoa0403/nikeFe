@@ -11,9 +11,9 @@ class UserService {
     const user = localStorage.getItem('user') || '';
     return user;
   };
-  getAdmin = () => {
-    const admin = localStorage.getItem('admin') || '';
-    return admin;
+  getPerson = () => {
+    const person = localStorage.getItem('person') || '';
+    return person;
   };
   login = (user: Login) => {
     return API('auth/login', 'POST', user, '');

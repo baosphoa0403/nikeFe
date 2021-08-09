@@ -1,27 +1,21 @@
 import React from 'react';
-import {
-  AppBar,
-  Button,
-  Dialog,
-  IconButton,
-  makeStyles,
-} from '@material-ui/core';
+import { Dialog, IconButton, makeStyles } from '@material-ui/core';
 import { useForm } from 'react-hook-form';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import { TransitionProps } from '@material-ui/core/transitions';
-import userService from '../../Service/UserService';
-import { useAppDispatch } from '../../Hooks/Hook';
-import Alert from '@material-ui/lab/Alert';
+import userService from '../../../Service/UserService';
+import { useAppDispatch } from '../../../Hooks/Hook';
 import {
   setIsLogin,
   setToken,
   setUserInfo,
-} from '../../Redux/credentials/credentialsReducer';
-import { RootState } from '../../Redux/store';
+} from './module/reducer/credentialsReducer';
+import 'react-toastify/dist/ReactToastify.css';
 import GoogleLogin from 'react-google-login';
-import { STATUS_CODES } from 'http';
-import { STATUS } from '../../Config/statusCode';
+import { STATUS } from '../../../Config/statusCode';
+import { notifiError, notifiSuccess } from '../../../utils/MyToys';
+import { fetchApiLogin } from './module/action/Action';
 
 const useStyles = makeStyles((theme) => ({
   navListFeature: {
@@ -163,8 +157,10 @@ const Transition = React.forwardRef(function Transition(
 ) {
   return <Slide direction='up' ref={ref} {...props} />;
 });
-
-export default function SignIn() {
+interface Props {
+  getDataLoginGoogle: (data: any) => void;
+}
+export default function SignIn(props: Props) {
   const classes = useStyles();
   const dispatch = useAppDispatch();
 
@@ -191,39 +187,26 @@ export default function SignIn() {
   } = useForm<FormSignInValues>();
 
   const responseGoogle = async (response: any) => {
-    // console.log(response.tokenId);
     const user = await userService.loginGoogle(response.tokenId);
-
     if (user.data.statusCode === STATUS.REDIRECT) {
-      alert('hello chó hiếu');
+      props.getDataLoginGoogle(user.data);
+      handleClose();
+    } else {
+      dispatch(setToken(user.data.access_token));
+      dispatch(setIsLogin(true));
+      dispatch(setUserInfo(user.data.info));
+      localStorage.setItem('accessToken', user.data.access_token);
+      localStorage.setItem('person', JSON.stringify(user.data.info));
+      notifiSuccess('Sign in successfully');
     }
-    console.log(user);
+  };
+  const responseFacebook = (response: any) => {
+    console.log(response);
   };
 
-  const onSubmitSignIn = async (data: any) => {
-    try {
-      const user = await userService.login(data);
-
-      localStorage.setItem('accessToken', user.data.access_token);
-
-      if (user.data.info.role === 'Admin') {
-        localStorage.setItem('admin', user.data.info);
-      } else if (user.data.info.role === 'User') {
-        localStorage.setItem('user', JSON.stringify(user.data.info));
-      }
-
-      dispatch(setToken(user.data.access_token));
-      dispatch(setUserInfo(user.data.info));
-      dispatch(setIsLogin(true));
-
-      alert('Sign in successfully');
-
-      reset();
-      handleClose();
-    } catch (err) {
-      const error = { ...err };
-      alert(error.response.data.message);
-    }
+  const onSubmitSignIn = (data: any) => {
+    dispatch(fetchApiLogin(data));
+    handleClose();
   };
 
   return (
