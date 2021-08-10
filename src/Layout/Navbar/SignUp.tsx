@@ -185,8 +185,7 @@ export default function SignUp(props: Props) {
 
   React.useEffect(() => {
     if (props.data?.statusCode === STATUS.REDIRECT) {
-      console.log("run when props.data change");
-      notifiSuccess("please full filled first login");
+      notifiSuccess("please fill out all fields to sign up");
       handleClickOpen();
       setValue("email", props.data.data.email);
       setValue("name", props.data.data?.name);
@@ -209,10 +208,7 @@ export default function SignUp(props: Props) {
       reset();
       handleClose();
 
-      toast.success("Sign up successfully", {
-        position: toast.POSITION.TOP_CENTER,
-        autoClose: 2500,
-      });
+      notifiSuccess("save data into database successfully");
     } catch (err) {
       const error = { ...err };
       toast.error(`${error.response.data.message}`, {
