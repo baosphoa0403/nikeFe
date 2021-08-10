@@ -7,6 +7,9 @@ import { TransitionProps } from "@material-ui/core/transitions";
 import userService from "../../Service/UserService";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { notifiSuccess } from "../../utils/MyToys";
+import { LoginSocial } from "../../Model/IUser";
+import { STATUS } from "../../Config/statusCode";
 
 const useStyles = makeStyles((theme) => ({
   navListFeature: {
@@ -148,8 +151,13 @@ const Transition = React.forwardRef(function Transition(
 ) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
+interface Props {
+  data: LoginSocial;
+  getDataLoginGoogle: (data: any) => void;
+}
+export default function SignUp(props: Props) {
+  console.log(props.data);
 
-export default function SignUp() {
   const classes = useStyles();
 
   const [open, setOpen] = React.useState(false);
@@ -158,9 +166,17 @@ export default function SignUp() {
     reset();
     setOpen(true);
   };
+  React.useEffect(() => {
+    if (props.data?.statusCode === STATUS.REDIRECT) {
+      console.log("run when props.data change");
+      notifiSuccess("please full filled first login");
+      handleClickOpen();
+    }
+  }, [props.data]);
   const handleClose = () => {
     reset();
     setOpen(false);
+    props.getDataLoginGoogle(null);
   };
 
   type FormSignUpValues = {
@@ -194,6 +210,7 @@ export default function SignUp() {
       reset();
       handleClose();
 
+      // alert("Sign up successfully");
       toast.success("Sign up successfully", {
         position: toast.POSITION.TOP_CENTER,
         autoClose: 2500,
@@ -235,6 +252,7 @@ export default function SignUp() {
             {/*Input*/}
             <div className={classes.inputContainer}>
               <input
+                value={!props.data ? "" : props.data.data?.email}
                 type="text"
                 placeholder="Email"
                 className={classes.input}
@@ -270,6 +288,7 @@ export default function SignUp() {
             </div>
             <div className={classes.inputContainer}>
               <input
+                value={!props.data ? "" : props.data.data?.name}
                 type="text"
                 placeholder="Full name"
                 className={classes.input}

@@ -1,13 +1,6 @@
 import React, { useState, useEffect } from "react";
-import {
-  AppBar,
-  IconButton,
-  makeStyles,
-  Menu,
-  MenuItem,
-} from "@material-ui/core";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import SignIn from "./SignIn";
+import { AppBar, makeStyles } from "@material-ui/core";
+import SignIn from "./SignIn/SignIn";
 import SignUp from "./SignUp";
 import { useAppDispatch, useAppSelector } from "../../Hooks/Hook";
 import { RootState } from "../../Redux/store";
@@ -15,9 +8,10 @@ import {
   setIsLogin,
   setToken,
   setUserInfo,
-} from "../../Redux/credentials/credentialsReducer";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+} from "./SignIn/module/reducer/credentialsReducer";
+import userService from "../../Service/UserService";
+import { notifiSuccess } from "../../utils/MyToys";
+import { LoginSocial } from "../../Model/IUser";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,12 +45,17 @@ const useStyles = makeStyles((theme) => ({
   greeting: {
     fontSize: 13,
     padding: "0 12px",
+    "&:hover": {
+      color: "grey",
+    },
+    cursor: "pointer",
   },
 }));
 
 export default function NavSub() {
   const classes = useStyles();
   const dispatch = useAppDispatch();
+  const [data, setData] = React.useState<LoginSocial>({} as LoginSocial);
   const isLogin = useAppSelector(
     (state: RootState) => state.credentialsReducer.isLogin
   );
@@ -66,17 +65,21 @@ export default function NavSub() {
   const userInfo: any = useAppSelector(
     (state: RootState) => state.credentialsReducer.userInfo
   );
-  console.log(userInfo);
+  const getDataLoginGoogle = (data: LoginSocial) => {
+    console.log(data);
+    setData(data);
+  };
 
   const handleLogout = () => {
     localStorage.clear();
+    notifiSuccess("say bye");
     dispatch(setIsLogin(false));
     dispatch(setToken(""));
     dispatch(setUserInfo({}));
-    toast.dark("GOOD BYE 😭", {
-      position: toast.POSITION.TOP_CENTER,
-      autoClose: 2500,
-    });
+    // toast.dark("GOOD BYE 😭", {
+    //   position: toast.POSITION.TOP_CENTER,
+    //   autoClose: 2500,
+    // });
   };
 
   // xử lý khi click vào icon user
@@ -87,13 +90,12 @@ export default function NavSub() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
   return (
     <AppBar position="static" className={classes.header}>
       <div className={classes.toolbar}>
-        {token && isLogin ? (
+        {userInfo && isLogin ? (
           <>
-            <IconButton onClick={handleClick}>
+            {/* <IconButton onClick={handleClick}>
               <AccountCircleIcon style={{ cursor: "pointer" }} />
             </IconButton>
 
@@ -106,7 +108,7 @@ export default function NavSub() {
             >
               <MenuItem onClick={handleClose}>Edit profile</MenuItem>
               <MenuItem onClick={handleClose}>My account</MenuItem>
-            </Menu>
+            </Menu> */}
             <span className={classes.greeting}>Hello, {userInfo.username}</span>
             <span
               className={classes.navListFeature}
@@ -118,12 +120,11 @@ export default function NavSub() {
           </>
         ) : (
           <>
-            <SignIn />
-            <SignUp />
+            <SignIn getDataLoginGoogle={getDataLoginGoogle} />
+            <SignUp data={data} getDataLoginGoogle={getDataLoginGoogle} />
           </>
         )}
       </div>
-      <ToastContainer />
     </AppBar>
   );
 }
