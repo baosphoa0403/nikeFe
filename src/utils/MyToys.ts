@@ -1,9 +1,9 @@
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
 export const notifiSuccess = (str: string) => {
-  toast.success('🦄' + str.toUpperCase(), {
-    position: 'top-right',
-    autoClose: 5000,
+  toast.success("🦄" + str.toUpperCase(), {
+    position: "top-right",
+    autoClose: 2500,
     hideProgressBar: false,
     closeOnClick: true,
     pauseOnHover: true,
@@ -13,9 +13,9 @@ export const notifiSuccess = (str: string) => {
 };
 
 export const notifiError = (str: string) => {
-  toast.error('🦄' + str.toUpperCase(), {
-    position: 'top-right',
-    autoClose: 5000,
+  toast.error("🦄" + str.toUpperCase(), {
+    position: "top-right",
+    autoClose: 2500,
     hideProgressBar: false,
     closeOnClick: true,
     pauseOnHover: true,

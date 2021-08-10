@@ -208,7 +208,7 @@ export default function SignUp(props: Props) {
       reset();
       handleClose();
 
-      notifiSuccess("save data into database successfully");
+      notifiSuccess("saved user's data into database");
     } catch (err) {
       const error = { ...err };
       toast.error(`${error.response.data.message}`, {
