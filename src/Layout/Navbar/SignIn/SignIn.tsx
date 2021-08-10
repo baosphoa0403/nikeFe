@@ -1,129 +1,129 @@
-import React from 'react';
-import { Dialog, IconButton, makeStyles } from '@material-ui/core';
-import { useForm } from 'react-hook-form';
-import CloseIcon from '@material-ui/icons/Close';
-import Slide from '@material-ui/core/Slide';
-import { TransitionProps } from '@material-ui/core/transitions';
-import userService from '../../../Service/UserService';
-import { useAppDispatch } from '../../../Hooks/Hook';
+import React from "react";
+import { Dialog, IconButton, makeStyles } from "@material-ui/core";
+import { useForm } from "react-hook-form";
+import CloseIcon from "@material-ui/icons/Close";
+import Slide from "@material-ui/core/Slide";
+import { TransitionProps } from "@material-ui/core/transitions";
+import userService from "../../../Service/UserService";
+import { useAppDispatch } from "../../../Hooks/Hook";
 import {
   setIsLogin,
   setToken,
   setUserInfo,
-} from './module/reducer/credentialsReducer';
-import 'react-toastify/dist/ReactToastify.css';
-import GoogleLogin from 'react-google-login';
-import { STATUS } from '../../../Config/statusCode';
-import { notifiError, notifiSuccess } from '../../../utils/MyToys';
-import { fetchApiLogin } from './module/action/Action';
+} from "./module/reducer/credentialsReducer";
+import "react-toastify/dist/ReactToastify.css";
+import GoogleLogin from "react-google-login";
+import { STATUS } from "../../../Config/statusCode";
+import { notifiError, notifiSuccess } from "../../../utils/MyToys";
+import { fetchApiLogin } from "./module/action/Action";
 
 const useStyles = makeStyles((theme) => ({
   navListFeature: {
-    padding: '0 12px',
-    textDecoration: 'none',
-    color: 'black',
+    padding: "0 12px",
+    textDecoration: "none",
+    color: "black",
     fontSize: 13,
-    '&:hover': {
-      color: 'grey',
+    "&:hover": {
+      color: "grey",
     },
-    cursor: 'pointer',
+    cursor: "pointer",
   },
   backdrop: {
     minHeight: 500,
-    margin: 'auto',
+    margin: "auto",
     width: 512,
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down("xs")]: {
       width: 320,
     },
   },
   SignInContainer: {
-    margin: '0 28px',
+    margin: "0 28px",
     padding: 28,
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down("xs")]: {
       margin: 0,
     },
   },
   closeSignIn: {
-    position: 'absolute',
+    position: "absolute",
     right: 10,
     top: 10,
-    color: 'black',
+    color: "black",
   },
   inputContainer: {
-    margin: '15px 0',
+    margin: "15px 0",
   },
   input: {
-    width: '100%',
-    border: '1px solid #e5e5e5',
+    width: "100%",
+    border: "1px solid #e5e5e5",
     borderRadius: 3,
-    color: '#8d8d8d',
+    color: "#8d8d8d",
     height: 40,
     lineHeight: 17,
-    padding: '0 16px',
+    padding: "0 16px",
     outline: 0,
   },
   inputValid: {
-    color: '#fe0000',
+    color: "#fe0000",
     fontSize: 12,
   },
   buttonSignIn: {
-    width: '100%',
+    width: "100%",
     borderRadius: 3,
-    border: 'none',
-    color: '#fff',
+    border: "none",
+    color: "#fff",
     fontSize: 15,
-    backgroundColor: 'black',
+    backgroundColor: "black",
     height: 40,
     fontWeight: 500,
-    margin: '5px 0',
-    cursor: 'pointer',
+    margin: "5px 0",
+    cursor: "pointer",
   },
   nike: {
     width: 50,
     hegiht: 17,
   },
   formHeader: {
-    padding: '30px 0',
-    margin: '0 auto',
-    fontSize: '20px',
-    maxWidth: '25ch',
-    lineHeight: '26px',
-    textAlign: 'center',
+    padding: "30px 0",
+    margin: "0 auto",
+    fontSize: "20px",
+    maxWidth: "25ch",
+    lineHeight: "26px",
+    textAlign: "center",
     fontWeight: 700,
   },
   formSupport: {
-    margin: '18px 0',
-    color: '#8D8D8D',
+    margin: "18px 0",
+    color: "#8D8D8D",
     fontSize: 12,
-    display: 'flex',
+    display: "flex",
   },
   formSupportGrow: {
     flexGrow: 1,
-    verticalAlign: 'baseline',
+    verticalAlign: "baseline",
   },
   forgotPassword: {
-    color: '#8D8D8D',
-    textDecoration: 'none',
+    color: "#8D8D8D",
+    textDecoration: "none",
   },
   signInWithNormal: {
-    display: 'block',
+    display: "block",
   },
   facebookLink: {
-    width: '100%',
+    width: "100%",
     borderRadius: 3,
-    border: 'none',
-    color: '#fff',
+    border: "none",
+    color: "#fff",
     fontSize: 15,
-    backgroundColor: '#4267B2',
+    backgroundColor: "#4267B2",
     height: 40,
     fontWeight: 500,
-    margin: '5px 0',
-    cursor: 'pointer',
+    margin: "5px 0",
+    cursor: "pointer",
   },
   facebookContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    margin: '0px auto',
+    display: "flex",
+    alignItems: "center",
+    margin: "0px auto",
     width: 190,
   },
   Imange: {
@@ -132,21 +132,21 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 10,
   },
   googleLink: {
-    width: '100%',
+    width: "100%",
     borderRadius: 3,
-    border: 'none',
-    color: '#fff',
+    border: "none",
+    color: "#fff",
     fontSize: 15,
-    backgroundColor: '#DE5246',
+    backgroundColor: "#DE5246",
     height: 40,
     fontWeight: 500,
-    margin: '5px 0',
-    cursor: 'pointer',
+    margin: "5px 0",
+    cursor: "pointer",
   },
   googleContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    margin: '0px auto',
+    display: "flex",
+    alignItems: "center",
+    margin: "0px auto",
     width: 170,
   },
 }));
@@ -155,7 +155,7 @@ const Transition = React.forwardRef(function Transition(
   props: TransitionProps & { children?: React.ReactElement<any, any> },
   ref: React.Ref<unknown>
 ) {
-  return <Slide direction='up' ref={ref} {...props} />;
+  return <Slide direction="up" ref={ref} {...props} />;
 });
 interface Props {
   getDataLoginGoogle: (data: any) => void;
@@ -187,21 +187,20 @@ export default function SignIn(props: Props) {
   } = useForm<FormSignInValues>();
 
   const responseGoogle = async (response: any) => {
+    //response: thông tin gg trả về: email, fullname, profile, token, ggid...
     const user = await userService.loginGoogle(response.tokenId);
     if (user.data.statusCode === STATUS.REDIRECT) {
       props.getDataLoginGoogle(user.data);
       handleClose();
     } else {
+      // status code = 200 -> user đã có trong database
       dispatch(setToken(user.data.access_token));
       dispatch(setIsLogin(true));
       dispatch(setUserInfo(user.data.info));
-      localStorage.setItem('accessToken', user.data.access_token);
-      localStorage.setItem('person', JSON.stringify(user.data.info));
-      notifiSuccess('Sign in successfully');
+      localStorage.setItem("accessToken", user.data.access_token);
+      localStorage.setItem("person", JSON.stringify(user.data.info));
+      notifiSuccess("Sign in successfully");
     }
-  };
-  const responseFacebook = (response: any) => {
-    console.log(response);
   };
 
   const onSubmitSignIn = (data: any) => {
@@ -213,7 +212,7 @@ export default function SignIn(props: Props) {
     <>
       <span
         className={classes.navListFeature}
-        style={{ borderRight: '1px solid #000' }}
+        style={{ borderRight: "1px solid #000" }}
         onClick={handleClickOpen}
       >
         Sign In
@@ -237,19 +236,19 @@ export default function SignIn(props: Props) {
           <div className={classes.formHeader}>YOUR ACCOUNT FOR EVERYTHING</div>
 
           {/*Form*/}
-          <form id='formSignIn' onSubmit={handleSubmit(onSubmitSignIn)}>
+          <form id="formSignIn" onSubmit={handleSubmit(onSubmitSignIn)}>
             {/*Input*/}
             <div className={classes.inputContainer}>
               <input
-                type='text'
-                placeholder='Email'
+                type="text"
+                placeholder="Email"
                 className={classes.input}
-                {...register('email', {
-                  required: 'Email is required',
+                {...register("email", {
+                  required: "Email is required",
                   pattern: {
                     value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                     message:
-                      'Please enter a vaid email address. Ex: example@gmail.com',
+                      "Please enter a vaid email address. Ex: example@gmail.com",
                   },
                 })}
               />
@@ -259,14 +258,14 @@ export default function SignIn(props: Props) {
             </div>
             <div className={classes.inputContainer}>
               <input
-                type='password'
-                placeholder='Password'
+                type="password"
+                placeholder="Password"
                 className={classes.input}
-                {...register('password', {
-                  required: 'Password is required',
+                {...register("password", {
+                  required: "Password is required",
                   minLength: {
                     value: 8,
-                    message: 'Password must be at least 8 characters long',
+                    message: "Password must be at least 8 characters long",
                   },
                 })}
               />
@@ -278,9 +277,9 @@ export default function SignIn(props: Props) {
             <div className={classes.formSupport}>
               <span
                 className={classes.formSupportGrow}
-                style={{ textAlign: 'right' }}
+                style={{ textAlign: "right" }}
               >
-                <a href='#' className={classes.forgotPassword}>
+                <a href="#" className={classes.forgotPassword}>
                   Forgot password?
                 </a>
               </span>
@@ -289,15 +288,15 @@ export default function SignIn(props: Props) {
             {/*Sign In*/}
             <input
               className={classes.buttonSignIn}
-              type='submit'
-              value='SIGN IN'
+              type="submit"
+              value="SIGN IN"
             />
 
             <span
               style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
               }}
             >
               OR
@@ -307,11 +306,11 @@ export default function SignIn(props: Props) {
           <span className={classes.signInWithNormal}>
             <button className={classes.facebookLink}>
               <span className={classes.facebookContainer}>
-                Sign in with Facebook{' '}
+                Sign in with Facebook{" "}
                 <img
-                  src='https://www.facebook.com/images/fb_icon_325x325.png'
+                  src="https://www.facebook.com/images/fb_icon_325x325.png"
                   className={classes.Imange}
-                  alt=''
+                  alt=""
                 />
               </span>
             </button>
@@ -331,11 +330,11 @@ export default function SignIn(props: Props) {
               </span>
             </button> */}
             <GoogleLogin
-              clientId='794935655197-0h8k3h2a30vh1l732968c4lf49farfrg.apps.googleusercontent.com'
-              buttonText='Login with google'
+              clientId="794935655197-0h8k3h2a30vh1l732968c4lf49farfrg.apps.googleusercontent.com"
+              buttonText="Login with google"
               onSuccess={responseGoogle}
               onFailure={responseGoogle}
-              cookiePolicy={'single_host_origin'}
+              cookiePolicy={"single_host_origin"}
             />
           </span>
         </div>

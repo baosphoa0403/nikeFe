@@ -66,7 +66,7 @@ export default function NavSub() {
     (state: RootState) => state.credentialsReducer.userInfo
   );
   const getDataLoginGoogle = (data: LoginSocial) => {
-    console.log(data);
+    // data = {email: "9.4ngoclam@gmail.com", name: "Ngoc Lam Nguyen"},statusCode 308
     setData(data);
   };
 
