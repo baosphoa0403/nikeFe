@@ -72,14 +72,11 @@ export default function NavSub() {
 
   const handleLogout = () => {
     localStorage.clear();
-    notifiSuccess("say bye");
+
     dispatch(setIsLogin(false));
     dispatch(setToken(""));
     dispatch(setUserInfo({}));
-    // toast.dark("GOOD BYE 😭", {
-    //   position: toast.POSITION.TOP_CENTER,
-    //   autoClose: 2500,
-    // });
+    notifiSuccess("GOOD BYE");
   };
 
   // xử lý khi click vào icon user
