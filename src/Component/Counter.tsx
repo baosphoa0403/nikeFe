@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from '../Hooks/Hook';
 import { getAll } from '../Redux/moduleDemo/action/Action';
 import { RootState } from '../Redux/store';
 import userService from '../Service/UserService';
+import { notifiSuccess } from '../utils/MyToys';
 
 export default function Counter() {
   const count = useAppSelector((state: RootState) => state.counter.value);
@@ -17,14 +18,14 @@ export default function Counter() {
   React.useEffect(() => {
     const callAPI = async () => {
       const resultAction = await dispatch(getAll());
-      console.log(resultAction); // trả về payload  + type
+      console.log('resultAction: ', resultAction); // trả về payload  + type
       // dispatch(resultAction);
     };
     callAPI();
   }, []);
   const listMovieData = useAppSelector((state) => state.listMovieReducer.value);
   const loading = useAppSelector((state) => state.listMovieReducer.loading);
-  console.log(listMovieData);
+  console.log('listMovieData: ', listMovieData);
   console.log(loading);
 
   React.useEffect(() => {
@@ -33,7 +34,7 @@ export default function Counter() {
         email: 'hieu@gmail.com',
         password: '123',
       });
-      console.log(user);
+      console.log('user: ', user);
     };
     callAPILogin();
   }, []);
@@ -43,7 +44,9 @@ export default function Counter() {
       <Button
         variant='contained'
         color='primary'
-        onClick={() => dispatch(increment())}
+        onClick={() => {
+          notifiSuccess('hello');
+        }}
       >
         Incremental +
       </Button>

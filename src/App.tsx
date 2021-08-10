@@ -1,11 +1,31 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Switch, BrowserRouter } from 'react-router-dom';
 import { Page } from './Model/IPage';
 import HomeTemplate from './template/HomeTemplate';
 import { routesAdmin, routesHome } from './Route/route';
 import AdminTemplate from './template/AdminTemplate';
+import { useAppDispatch } from './Hooks/Hook';
+import {
+  setIsLogin,
+  setToken,
+  setUserInfo,
+} from './Layout/Navbar/SignIn/module/reducer/credentialsReducer';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
+  const dispatch = useAppDispatch();
+
+  const token = localStorage.getItem('accessToken');
+  const person = localStorage.getItem('person');
+  useEffect(() => {
+    dispatch(setIsLogin(false));
+    if (token && person) {
+      dispatch(setToken(token));
+      dispatch(setIsLogin(true));
+      dispatch(setUserInfo(JSON.parse(person)));
+    }
+  }, [token, person, dispatch]);
+
   const showHomeLayout = (routesHome: Page[]) => {
     if (routesHome && routesHome.length > 0) {
       return routesHome.map((item: Page, index: number) => {
@@ -39,7 +59,17 @@ function App() {
       <Switch>
         {showHomeLayout(routesHome)}
         {showAdminLayout(routesAdmin)}
-        <h1>hello</h1>
+        {/* <ToastContainer
+          position='bottom-right'
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        /> */}
       </Switch>
     </BrowserRouter>
   );

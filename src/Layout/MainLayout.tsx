@@ -12,7 +12,7 @@ export default function MainLayout() {
     <Fragment>
       <Carousel />
       <ShowProductsAndFilter />
-      <Counter />
+      {/* <Counter /> */}
     </Fragment>
   );
 }
