@@ -1,17 +1,29 @@
 import React, { useState, useEffect } from "react";
-import { AppBar, makeStyles } from "@material-ui/core";
-import SignIn from "./SignIn/SignIn";
-import SignUp from "./SignUp";
-import { useAppDispatch, useAppSelector } from "../../Hooks/Hook";
-import { RootState } from "../../Redux/store";
+import {
+  AppBar,
+  Dialog,
+  DialogTitle,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+  makeStyles,
+  Menu,
+  MenuItem,
+} from "@material-ui/core";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import SignIn from "../SignIn/SignIn";
+import SignUp from "../SignUp";
+import { RootState } from "../../../Redux/store";
 import {
   setIsLogin,
   setToken,
   setUserInfo,
-} from "./SignIn/module/reducer/credentialsReducer";
-import userService from "../../Service/UserService";
-import { notifiSuccess } from "../../utils/MyToys";
-import { LoginSocial } from "../../Model/IUser";
+} from "../SignIn/module/reducer/credentialsReducer";
+import { notifiSuccess } from "../../../utils/MyToys";
+import { LoginSocial } from "../../../Model/IUser";
+import { useAppDispatch, useAppSelector } from "../../../Hooks/Hook";
+import { fetchApiUserInfo } from "./Action";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -56,6 +68,7 @@ export default function NavSub() {
   const classes = useStyles();
   const dispatch = useAppDispatch();
   const [data, setData] = React.useState<LoginSocial>({} as LoginSocial);
+
   const isLogin = useAppSelector(
     (state: RootState) => state.credentialsReducer.isLogin
   );
@@ -81,18 +94,34 @@ export default function NavSub() {
 
   // xử lý khi click vào icon user
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const [openDialog, setOpenDialog] = React.useState<boolean>(false);
+  const [userProfile, setUserProfile] = React.useState<any>(null);
+
+  const handleClickIcon = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = () => {
+  const handleCloseIcon = () => {
     setAnchorEl(null);
   };
+  const handleViewMyAccount = async () => {
+    handleCloseIcon();
+    setOpenDialog(true);
+
+    fetchApiUserInfo(token)
+      .then((res) => {
+        setUserProfile(res?.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <AppBar position="static" className={classes.header}>
       <div className={classes.toolbar}>
         {userInfo && isLogin ? (
           <>
-            {/* <IconButton onClick={handleClick}>
+            <IconButton onClick={handleClickIcon}>
               <AccountCircleIcon style={{ cursor: "pointer" }} />
             </IconButton>
 
@@ -101,11 +130,11 @@ export default function NavSub() {
               anchorEl={anchorEl}
               keepMounted
               open={Boolean(anchorEl)}
-              onClose={handleClose}
+              onClose={handleCloseIcon}
             >
-              <MenuItem onClick={handleClose}>Edit profile</MenuItem>
-              <MenuItem onClick={handleClose}>My account</MenuItem>
-            </Menu> */}
+              <MenuItem onClick={handleViewMyAccount}>My account</MenuItem>
+              <MenuItem onClick={handleCloseIcon}>Edit profile</MenuItem>
+            </Menu>
             <span className={classes.greeting}>Hello, {userInfo.username}</span>
             <span
               className={classes.navListFeature}
@@ -122,6 +151,35 @@ export default function NavSub() {
           </>
         )}
       </div>
+      <Dialog
+        onClose={() => setOpenDialog(false)}
+        aria-labelledby="simple-dialog-title"
+        open={openDialog}
+      >
+        <DialogTitle id="simple-dialog-title">Your information</DialogTitle>
+        <List>
+          <ListItem>
+            <ListItemText primary={`id: ${userProfile?._id}`} />
+          </ListItem>
+          <ListItem>
+            <ListItemText primary={`Email: ${userProfile?.email}`} />
+          </ListItem>
+          <ListItem>
+            <ListItemText primary={`Username: ${userProfile?.username}`} />
+          </ListItem>
+          <ListItem>
+            <ListItemText primary={`Full name: ${userProfile?.name}`} />
+          </ListItem>
+          <ListItem>
+            <ListItemText
+              primary={`Year of Birth: ${userProfile?.yearOfBirth}`}
+            />
+          </ListItem>
+          <ListItem>
+            <ListItemText primary={`Address: ${userProfile?.address}`} />
+          </ListItem>
+        </List>
+      </Dialog>
     </AppBar>
   );
 }
