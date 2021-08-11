@@ -19,12 +19,10 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     maxWidth: 300,
-    backgroundColor: "#F8F8FF",
   },
   Filter: {
-    backgroundColor: "#F8F8FF",
     width: 220,
-    position: "fixed",
+    // position: "fixed",
     height: "80vh",
     fontSize: 16,
     paddingLeft: 40,

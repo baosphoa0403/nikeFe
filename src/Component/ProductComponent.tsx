@@ -62,7 +62,6 @@ interface IProps {
 }
 export default function ProductComponent({ product }: IProps) {
   const classes = useStyles();
-  console.log(product);
 
   const [imageMain, setImageMain] = React.useState(
     product.details[0].images[0].urlImage
