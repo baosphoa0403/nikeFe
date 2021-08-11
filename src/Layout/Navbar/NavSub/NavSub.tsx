@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   AppBar,
   Dialog,
@@ -11,6 +11,7 @@ import {
   Menu,
   MenuItem,
 } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import SignIn from "../SignIn/SignIn";
 import SignUp from "../SignUp";
@@ -23,7 +24,9 @@ import {
 import { notifiSuccess } from "../../../utils/MyToys";
 import { LoginSocial } from "../../../Model/IUser";
 import { useAppDispatch, useAppSelector } from "../../../Hooks/Hook";
-import { fetchApiUserInfo } from "./Action";
+import { PATH_NAME } from "../../../Config";
+import { setIsUpdatedUserProfile } from "./module/reducer/userProfileReducer";
+import { fetchApiUserProfile } from "./module/action/action";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -78,6 +81,13 @@ export default function NavSub() {
   const userInfo: any = useAppSelector(
     (state: RootState) => state.credentialsReducer.userInfo
   );
+  const userProfile: any = useAppSelector(
+    (state: RootState) => state.userProfileReducer.userProfile
+  );
+  const isUpdatedUserProfile: boolean = useAppSelector(
+    (state: RootState) => state.userProfileReducer.isUpdatedUserProfile
+  );
+
   const getDataLoginGoogle = (data: LoginSocial) => {
     // data = {email: "9.4ngoclam@gmail.com", name: "Ngoc Lam Nguyen"},statusCode 308
     setData(data);
@@ -92,10 +102,10 @@ export default function NavSub() {
     notifiSuccess("GOOD BYE");
   };
 
-  // xử lý khi click vào icon user
+  //========== xử lý khi click vào icon user ==========
+  let history = useHistory();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [openDialog, setOpenDialog] = React.useState<boolean>(false);
-  const [userProfile, setUserProfile] = React.useState<any>(null);
 
   const handleClickIcon = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -103,17 +113,16 @@ export default function NavSub() {
   const handleCloseIcon = () => {
     setAnchorEl(null);
   };
-  const handleViewMyAccount = async () => {
+  const handleViewMyAccount = () => {
     handleCloseIcon();
     setOpenDialog(true);
+    dispatch(fetchApiUserProfile(token));
+  };
 
-    fetchApiUserInfo(token)
-      .then((res) => {
-        setUserProfile(res?.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  const handleUpdateProfile = () => {
+    handleCloseIcon();
+    dispatch(fetchApiUserProfile(token));
+    history.push(PATH_NAME.USER_PROFILE);
   };
 
   return (
@@ -124,7 +133,6 @@ export default function NavSub() {
             <IconButton onClick={handleClickIcon}>
               <AccountCircleIcon style={{ cursor: "pointer" }} />
             </IconButton>
-
             <Menu
               id="simple-menu"
               anchorEl={anchorEl}
@@ -133,7 +141,7 @@ export default function NavSub() {
               onClose={handleCloseIcon}
             >
               <MenuItem onClick={handleViewMyAccount}>My account</MenuItem>
-              <MenuItem onClick={handleCloseIcon}>Edit profile</MenuItem>
+              <MenuItem onClick={handleUpdateProfile}>Edit profile</MenuItem>
             </Menu>
             <span className={classes.greeting}>Hello, {userInfo.username}</span>
             <span
@@ -146,7 +154,10 @@ export default function NavSub() {
           </>
         ) : (
           <>
-            <SignIn getDataLoginGoogle={getDataLoginGoogle} />
+            <SignIn
+              isUpdatedUserProfile
+              getDataLoginGoogle={getDataLoginGoogle}
+            />
             <SignUp data={data} getDataLoginGoogle={getDataLoginGoogle} />
           </>
         )}
@@ -159,24 +170,24 @@ export default function NavSub() {
         <DialogTitle id="simple-dialog-title">Your information</DialogTitle>
         <List>
           <ListItem>
-            <ListItemText primary={`id: ${userProfile?._id}`} />
+            <ListItemText primary={`id: ${userProfile._id}`} />
           </ListItem>
           <ListItem>
-            <ListItemText primary={`Email: ${userProfile?.email}`} />
+            <ListItemText primary={`Email: ${userProfile.email}`} />
           </ListItem>
           <ListItem>
-            <ListItemText primary={`Username: ${userProfile?.username}`} />
+            <ListItemText primary={`Username: ${userProfile.username}`} />
           </ListItem>
           <ListItem>
-            <ListItemText primary={`Full name: ${userProfile?.name}`} />
+            <ListItemText primary={`Full name: ${userProfile.name}`} />
           </ListItem>
           <ListItem>
             <ListItemText
-              primary={`Year of Birth: ${userProfile?.yearOfBirth}`}
+              primary={`Year of Birth: ${userProfile.yearOfBirth}`}
             />
           </ListItem>
           <ListItem>
-            <ListItemText primary={`Address: ${userProfile?.address}`} />
+            <ListItemText primary={`Address: ${userProfile.address}`} />
           </ListItem>
         </List>
       </Dialog>

@@ -1,8 +1,10 @@
 import { AppBar, makeStyles, Toolbar } from "@material-ui/core";
 import React from "react";
 import EcoIcon from "@material-ui/icons/Eco";
+import { useHistory } from "react-router-dom";
 import NavMenu from "./NavMenu";
 import NavFeature from "./NavFeature";
+import { PATH_NAME } from "../../Config";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,11 +19,16 @@ const useStyles = makeStyles((theme) => ({
 
 export default function NavMain() {
   const classes = useStyles();
+  let history = useHistory();
+  const handleBackToHome = () => {
+    history.push(PATH_NAME.ROOT);
+  };
+
   return (
     <div className={classes.root}>
       <AppBar position="static" className={classes.header}>
         <Toolbar>
-          <EcoIcon />
+          <EcoIcon onClick={handleBackToHome} />
           <NavMenu />
           <NavFeature />
         </Toolbar>
