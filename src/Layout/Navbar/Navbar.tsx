@@ -1,7 +1,7 @@
-import React, { Fragment } from 'react';
-import { ToastContainer } from 'react-toastify';
-import NavMain from './NavMain';
-import NavSub from './NavSub';
+import React, { Fragment } from "react";
+import { ToastContainer } from "react-toastify";
+import NavMain from "./NavMain";
+import NavSub from "./NavSub/NavSub";
 
 export default function NavBar() {
   return (
@@ -9,8 +9,8 @@ export default function NavBar() {
       <NavSub />
       <NavMain />
       <ToastContainer
-        position='bottom-right'
-        autoClose={5000}
+        position="top-right"
+        autoClose={2500}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
