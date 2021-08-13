@@ -129,11 +129,11 @@ const useStyles = makeStyles((theme) => ({
     outline: "none",
   },
 }));
-interface IProps {
-  productsDetail: [];
-}
+// interface IProps {
+//   productsDetail: [];
+// }
 
-function MainInfo(props: IProps) {
+function MainInfo() {
   const classes = useStyles();
   const [size, setSize] = React.useState<ISize[]>([]);
   const [selectedSize, setSelectedSize] = React.useState<string>("");

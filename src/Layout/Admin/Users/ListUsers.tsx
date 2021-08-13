@@ -10,9 +10,8 @@ import Paper from "@material-ui/core/Paper";
 import InputBase from "@material-ui/core/InputBase";
 import SearchIcon from "@material-ui/icons/Search";
 import userService from "../../../Service/UserService";
-import { useAppSelector } from "../../../Hooks/Hook";
+import { useAppDispatch, useAppSelector } from "../../../Hooks/Hook";
 import { RootState } from "../../../Redux/store";
-import { notifiError } from "../../../utils/MyToys";
 import Row from "./Row";
 
 const useStyles = makeStyles((theme) => ({
@@ -73,9 +72,14 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ListUsers() {
   const classes = useStyles();
+  const dispatch = useAppDispatch();
   const [users, setUsers] = React.useState<any>([]);
+
   const token = useAppSelector(
     (state: RootState) => state.credentialsReducer.token
+  );
+  const isChange = useAppSelector(
+    (state: RootState) => state.manageUserReducer.isCRUD
   );
 
   useEffect(() => {
@@ -87,7 +91,7 @@ export default function ListUsers() {
       .catch((err) => {
         console.log({ ...err });
       });
-  }, [token]);
+  }, [token, isChange]);
 
   console.log("users: ", users);
   const handleFindUser = (id: string) => {
