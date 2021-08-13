@@ -46,15 +46,6 @@ const useStyles = makeStyles((theme) => ({
 
 function CreateUser() {
   const classes = useStyles();
-  const age = [];
-  for (var i = 0; i < 100; i++) {
-    age.push(i + 1);
-  }
-  const listAge = age.map((item) => (
-    <option key={item} value={item}>
-      {item}
-    </option>
-  ));
 
   type FormCreateUserValues = {
     username: string;

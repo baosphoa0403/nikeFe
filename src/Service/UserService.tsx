@@ -43,6 +43,11 @@ class UserService {
   createUserProfile = (user: CreateUserProfile) => {
     return API("user/createUserProfile", "POST", user, "");
   };
+
+  getAllUsers = (token:string) => {
+    return API("user", "GET", "", token);
+  }
+
 }
 const userService = new UserService();
 export default userService;
