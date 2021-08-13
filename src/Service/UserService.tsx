@@ -35,6 +35,10 @@ class UserService {
     return API("user/updateProfileUser", "PATCH", updateUser, token);
   };
 
+  updateUserByID = (updateUser: any, id: string, token: string) => {
+    return API(`user/update/${id}`, "PATCH", updateUser, token);
+  };
+
   updateUserPassword = (updatePassword: any, token: string) => {
     return API("user/updatePassword", "PATCH", updatePassword, token);
   };
@@ -44,10 +48,13 @@ class UserService {
     return API("user/createUserProfile", "POST", user, "");
   };
 
-  getAllUsers = (token:string) => {
+  getAllUsers = (token: string) => {
     return API("user", "GET", "", token);
-  }
+  };
 
+  deleteUser = (id: string, token: string) => {
+    return API(`user/${id}`, "DELETE", "", token);
+  };
 }
 const userService = new UserService();
 export default userService;

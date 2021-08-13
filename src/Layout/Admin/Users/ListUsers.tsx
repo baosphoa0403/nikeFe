@@ -87,9 +87,13 @@ export default function ListUsers() {
       .catch((err) => {
         console.log({ ...err });
       });
-  }, []);
+  }, [token]);
 
   console.log("users: ", users);
+  const handleFindUser = (id: string) => {
+    const foundUser = users.find((x: any) => x._id === id);
+    return foundUser;
+  };
 
   return (
     <div className={classes.Title}>
@@ -126,7 +130,11 @@ export default function ListUsers() {
           </TableHead>
           <TableBody>
             {users.map((user: any, index: any) => (
-              <Row key={index} user={user} />
+              <Row
+                key={index}
+                user={user}
+                findUser={(id: string) => handleFindUser(id)}
+              />
             ))}
           </TableBody>
         </Table>
