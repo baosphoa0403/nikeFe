@@ -31,12 +31,13 @@ export default function ShowProductsAndFilter() {
       sizeQuery += `&sizeId=${size}`;
     });
     const query = `name=${name}${genderQuery}${colorQuery}${sizeQuery}`;
-console.log(query);
+    console.log(query);
 
     productService.getProductFilter(query).then((res) => {
       setProducts(res.data);
     });
   };
+
   React.useEffect(() => {
     filter("", [], [], []);
   }, []);
