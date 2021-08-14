@@ -10,7 +10,7 @@ import NavBar from './Navbar/Navbar';
 export default function MainLayout() {
   return (
     <Fragment>
-      <Carousel />
+      {/* <Carousel /> */}
       <ShowProductsAndFilter />
       {/* <Counter /> */}
     </Fragment>
