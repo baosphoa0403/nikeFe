@@ -1,7 +1,9 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+// import { Shoes } from '../../../Model/IProduct';
+import action from './action';
 
 export interface ProductDetail {
-  productDetail: object;
+  productDetail: any;
 }
 
 const initialState = {
@@ -9,11 +11,11 @@ const initialState = {
 };
 
 export const productDetailSlice = createSlice({
-  name: "productDetail",
+  name: 'productDetail',
   initialState,
   reducers: {
-    setProductDetail: (state, action: PayloadAction<object>) => {
-      state.productDetail = { ...action.payload };
+    setProductDetail: (state, action: PayloadAction<any>) => {
+      state.productDetail = action.payload;
     },
   },
 });
