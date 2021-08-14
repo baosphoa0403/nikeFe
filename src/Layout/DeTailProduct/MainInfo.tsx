@@ -65,6 +65,15 @@ const useStyles = makeStyles((theme) => ({
     cursor: "pointer",
     borderRadius: "2px",
   },
+  SizeLabelNotAvailable: {
+    color: "#d7d7d7",
+    padding: "10px 0 10px 0",
+    fontSize: 16,
+    textAlign: "center",
+    cursor: "not-allowed",
+    borderRadius: "2px",
+    // pointerEvents: "none",
+  },
   AddtoBag: {
     width: "100%",
     color: "white",
@@ -108,7 +117,8 @@ const useStyles = makeStyles((theme) => ({
     width: "100px",
     height: "100px",
     borderRadius: "4px",
-    opacity: 0.8,
+    opacity: 1,
+    cursor: "pointer",
   },
   CheckSize: {
     boxShadow: "rgb(212, 63, 33) 0px 0px 0px 1px",
@@ -120,6 +130,7 @@ const useStyles = makeStyles((theme) => ({
   },
   AddtoBagNotAllow: {
     cursor: "not-allowed",
+    // cursor: "no-drop",
     width: "100%",
     color: "white",
     backgroundColor: "black",
@@ -129,16 +140,27 @@ const useStyles = makeStyles((theme) => ({
     outline: "none",
   },
 }));
-// interface IProps {
-//   productsDetail: [];
-// }
+interface IProps {
+  productDetail: any;
+  onSubmitImages: Function;
+}
 
-function MainInfo() {
+function MainInfo({ productDetail, onSubmitImages }: IProps) {
+  // console.log("productDetail: ", productDetail);
+
   const classes = useStyles();
+
   const [size, setSize] = React.useState<ISize[]>([]);
   const [selectedSize, setSelectedSize] = React.useState<string>("");
+  const [infoProduct, setInfoProduct] = React.useState<any>({
+    name: productDetail.product.name,
+    details: productDetail.details[0],
+  });
+
+  // console.log(infoProduct.details.images);
 
   useEffect(() => {
+    onSubmitImages(infoProduct.details.images);
     productService
       .getAllSize()
       .then((res) => {
@@ -149,16 +171,36 @@ function MainInfo() {
       });
   }, []);
 
-  const listImages = [
-    "https://static.nike.com/a/images/t_PDP_144_v1/f_auto/c59cb6b6-3386-464e-859b-bfb3f456886b/air-force-1-shadow-shoe-klCJXd.png",
-    "https://static.nike.com/a/images/t_PDP_144_v1/f_auto/a0ca97be-ce25-456a-8ba7-73216a041c70/air-force-1-shadow-shoe-klCJXd.png",
-  ];
+  const handleChangeInfo = (item: any) => {
+    setInfoProduct({ ...infoProduct, details: item });
+    onSubmitImages(item.images);
+  };
 
   const handleChooseSize = (size: string) => {
+    console.log("click");
     setSelectedSize(size);
   };
 
-  const listSize = size.map((item) => (
+  const checkSize = (item: any) => {
+    let flag = false;
+    infoProduct.details.quantities.forEach((el: any) => {
+      if (el.size === item._id) {
+        // co size trong kho
+        flag = true;
+      }
+    });
+
+    if (flag) {
+      if (selectedSize === item.nameSize) {
+        return classes.SizeLabelChecked;
+      } else return classes.SizeLabel;
+    } else {
+      // khong co size trong kho
+      return classes.SizeLabelNotAvailable;
+    }
+  };
+
+  const listSize = size.map((item, index) => (
     <Grid item xs={4} key={item._id}>
       <ListItem
         disableGutters
@@ -168,11 +210,7 @@ function MainInfo() {
       >
         <ListItemText
           primary={`${item.nameSize}`}
-          className={
-            selectedSize === item.nameSize
-              ? classes.SizeLabelChecked
-              : classes.SizeLabel
-          }
+          className={checkSize(item)}
         />
       </ListItem>
     </Grid>
@@ -182,21 +220,25 @@ function MainInfo() {
     <Grid container className={classes.ProductContainer} spacing={2}>
       {/* show info */}
       <Grid item xs={8}>
-        <div className={classes.ShoesType}>Men's shoes</div>
-        <div className={classes.ShoesName}>Nike Air Force 1</div>
+        <div className={classes.ShoesType}>
+          Gender: {infoProduct.details.info.gender.nameGender}
+        </div>
+        <div className={classes.ShoesName}>{infoProduct.name}</div>
       </Grid>
       <Grid item xs={4}>
         <div className={classes.Price}>$254</div>
       </Grid>
 
       {/* show images */}
-      {listImages.map((item, index) => {
+      {productDetail.details.map((item: any, index: any) => {
         return (
-          <Grid item xs={4}>
+          <Grid item xs={4} key={index}>
             <img
-              key={index}
-              src={item}
+              src={item.images[0].urlImage}
               className={classes.ProductColorwayImageHide}
+              onClick={() => {
+                handleChangeInfo(item);
+              }}
             />
           </Grid>
         );
