@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import productService from "../../Service/ProductService";
 import { ISize } from "../../Model/ISize";
-import { ListItem, ListItemText } from "@material-ui/core";
+import { Button, ListItem, ListItemText } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   ProductContainer: {
@@ -51,10 +51,10 @@ const useStyles = makeStyles((theme) => ({
     padding: "10px 0 10px 0",
     textAlign: "center",
     cursor: "pointer",
-    borderRadius: "20px",
+    borderRadius: "2px",
+    transition: "none",
     "&:hover": {
       boxShadow: "0 0 0 2px black",
-      borderRadius: 2,
     },
   },
   SizeLabelChecked: {
@@ -70,8 +70,8 @@ const useStyles = makeStyles((theme) => ({
     padding: "10px 0 10px 0",
     fontSize: 16,
     textAlign: "center",
-    cursor: "not-allowed",
     borderRadius: "2px",
+    // cursor: "not-allowed",
     // pointerEvents: "none",
   },
   AddtoBag: {
@@ -157,8 +157,6 @@ function MainInfo({ productDetail, onSubmitImages }: IProps) {
     details: productDetail.details[0],
   });
 
-  // console.log(infoProduct.details.images);
-
   useEffect(() => {
     onSubmitImages(infoProduct.details.images);
     productService
@@ -177,8 +175,8 @@ function MainInfo({ productDetail, onSubmitImages }: IProps) {
   };
 
   const handleChooseSize = (size: string) => {
-    console.log("click");
     setSelectedSize(size);
+    console.log("click: ", size);
   };
 
   const checkSize = (item: any) => {
@@ -200,19 +198,34 @@ function MainInfo({ productDetail, onSubmitImages }: IProps) {
     }
   };
 
+  const checkIsDisableSize = (item: any) => {
+    let flag = false;
+    infoProduct.details.quantities.forEach((el: any) => {
+      if (el.size === item._id) {
+        // co size trong kho
+        flag = true;
+      }
+    });
+
+    if (flag) {
+      return false;
+    } else {
+      // khong co size trong kho
+      return true;
+    }
+  };
+
   const listSize = size.map((item, index) => (
     <Grid item xs={4} key={item._id}>
-      <ListItem
-        disableGutters
+      <Button
         onClick={() => {
           handleChooseSize(item.nameSize);
         }}
+        className={checkSize(item)}
+        disabled={checkIsDisableSize(item)}
       >
-        <ListItemText
-          primary={`${item.nameSize}`}
-          className={checkSize(item)}
-        />
-      </ListItem>
+        {item.nameSize}
+      </Button>
     </Grid>
   ));
 
