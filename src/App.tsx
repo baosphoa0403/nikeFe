@@ -1,22 +1,22 @@
-import React, { useEffect } from "react";
-import { Switch, BrowserRouter } from "react-router-dom";
-import { Page } from "./Model/IPage";
-import HomeTemplate from "./template/HomeTemplate";
-import { routesAdmin, routesHome } from "./Route/route";
-import AdminTemplate from "./template/AdminTemplate";
-import { useAppDispatch } from "./Hooks/Hook";
+import React, { useEffect } from 'react';
+import { Switch, BrowserRouter } from 'react-router-dom';
+import { Page } from './Model/IPage';
+import HomeTemplate from './template/HomeTemplate';
+import { routesAdmin, routesHome } from './Route/route';
+import AdminTemplate from './template/AdminTemplate';
+import { useAppDispatch } from './Hooks/Hook';
 import {
   setIsLogin,
   setToken,
   setUserInfo,
-} from "./Layout/Navbar/SignIn/module/reducer/credentialsReducer";
-import { fetchApiUserProfile } from "./Layout/Navbar/NavSub/module/action/action";
+} from './Layout/Navbar/SignIn/module/reducer/credentialsReducer';
+import { fetchApiUserProfile } from './Layout/Navbar/NavSub/module/action/action';
 
 function App() {
   const dispatch = useAppDispatch();
 
-  const token = localStorage.getItem("accessToken");
-  const person = localStorage.getItem("person");
+  const token = localStorage.getItem('accessToken');
+  const person = localStorage.getItem('person');
 
   useEffect(() => {
     dispatch(setIsLogin(false));
@@ -60,17 +60,6 @@ function App() {
       <Switch>
         {showHomeLayout(routesHome)}
         {showAdminLayout(routesAdmin)}
-        {/* <ToastContainer
-          position='bottom-right'
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-        /> */}
       </Switch>
     </BrowserRouter>
   );
