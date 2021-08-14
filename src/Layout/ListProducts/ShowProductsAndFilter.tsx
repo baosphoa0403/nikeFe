@@ -37,6 +37,7 @@ export default function ShowProductsAndFilter() {
       setProducts(res.data);
     });
   };
+
   React.useEffect(() => {
     filter("", [], [], []);
   }, []);
