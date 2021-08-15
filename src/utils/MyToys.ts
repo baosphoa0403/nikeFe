@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
 
-export const notifiSuccess = (str: string) => {
+export const notifiSuccess = (str: string) => {  
   toast.success("🦄 " + str, {
     position: "top-right",
     autoClose: 2500,

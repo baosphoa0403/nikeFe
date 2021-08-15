@@ -10,4 +10,7 @@ export const PATH_NAME = {
   CART: "/cart",
   PRODUCT_DETAIL: "/detailProduct/:id",
   ADMIN: "/admin",
+  ADMIN_USER: "/admin/users",
+  ADMIN_PRODUCT: "/admin/products",
+  ADMIN_STATUS: "/admin/status"
 };
