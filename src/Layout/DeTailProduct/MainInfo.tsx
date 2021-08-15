@@ -5,6 +5,10 @@ import Grid from '@material-ui/core/Grid';
 import productService from '../../Service/ProductService';
 import { ISize } from '../../Model/ISize';
 import { Button, ListItem, ListItemText } from '@material-ui/core';
+import { notifiError, notifiSuccess } from '../../utils/MyToys';
+import { useAppDispatch } from '../../Hooks/Hook';
+import { addToCart } from '../Cart/module/cartReducer';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   ProductContainer: {
@@ -120,6 +124,14 @@ const useStyles = makeStyles((theme) => ({
     opacity: 1,
     cursor: 'pointer',
   },
+  ProductColorwayImageHideChoosen: {
+    width: '100px',
+    height: '100px',
+    borderRadius: '4px',
+    opacity: 1,
+    cursor: 'pointer',
+    border: '1px solid black',
+  },
   CheckSize: {
     boxShadow: 'rgb(212, 63, 33) 0px 0px 0px 1px',
     padding: '1px',
@@ -150,10 +162,15 @@ function MainInfo({ productDetail, onSubmitImages }: IProps) {
 
   const [size, setSize] = React.useState<ISize[]>([]);
   const [selectedSize, setSelectedSize] = React.useState<string>('');
+  const [idSize, setIDSize] = React.useState<string>('');
+  const [image, setImage] = React.useState<any>();
+  const [productDetailChoosen, setProductDetailChoosen] = React.useState<any>();
   const [infoProduct, setInfoProduct] = React.useState<any>({
     name: '',
     details: {},
   });
+  const dispatch = useAppDispatch();
+  const history = useHistory();
 
   React.useEffect(() => {
     setInfoProduct({
@@ -161,6 +178,8 @@ function MainInfo({ productDetail, onSubmitImages }: IProps) {
       details: productDetail[0] && productDetail[0],
     });
     onSubmitImages(productDetail[0] && productDetail[0]?.images);
+    setImage(productDetail[0] && productDetail[0]?.images[0].urlImage);
+    setProductDetailChoosen(productDetail[0] && productDetail[0]);
   }, [productDetail]);
 
   useEffect(() => {
@@ -175,27 +194,61 @@ function MainInfo({ productDetail, onSubmitImages }: IProps) {
   }, []);
 
   const handleChangeInfo = (item: any) => {
+    console.log(item);
+    setProductDetailChoosen(item);
     setInfoProduct({ ...infoProduct, details: item });
     onSubmitImages(item.images);
   };
 
-  const handleChooseSize = (size: string) => {
+  const handleChooseSize = (size: string, id: string) => {
     setSelectedSize(size);
-    console.log('click: ', size);
+    setIDSize(id);
   };
   // console.log('productDetail: ', productDetail);
+  const handleCheckout = () => {
+    if (!selectedSize) {
+      notifiError('please choosen size');
+      return;
+    }
+    // alert('oker r đó');
+    // console.log(productDetailChoosen);
+
+    const quantitySize = productDetailChoosen.quantities.find(
+      (item: any) => item.size === idSize
+    );
+    // console.log(quantitySize);
+    console.log(productDetailChoosen);
+
+    const product = {
+      quantitySize: quantitySize,
+      image: productDetailChoosen.images[0].urlImage,
+      name: productDetailChoosen.info.product.name,
+      quantities: productDetailChoosen.quantities,
+      quantity: 1,
+      productID: productDetailChoosen.info._id,
+    };
+    // console.log(product);
+    dispatch(addToCart(product));
+    notifiSuccess('Add Product Successful');
+    history.push('/cart');
+  };
+  // console.log(productDetail);
   const bindingArr = () => {
     if (productDetail.length > 0) {
       return productDetail.map((item: any, index: number) => {
-        console.log(item);
         return (
           <Grid item xs={4} key={index}>
             <img
               alt=''
               src={item.images[0].urlImage}
-              className={classes.ProductColorwayImageHide}
+              className={
+                item.images[0].urlImage !== image
+                  ? classes.ProductColorwayImageHide
+                  : classes.ProductColorwayImageHideChoosen
+              }
               onClick={() => {
                 handleChangeInfo(item);
+                setImage(item.images[0].urlImage);
               }}
             />
           </Grid>
@@ -246,7 +299,7 @@ function MainInfo({ productDetail, onSubmitImages }: IProps) {
     <Grid item xs={4} key={item._id}>
       <Button
         onClick={() => {
-          handleChooseSize(item.nameSize);
+          handleChooseSize(item.nameSize, item._id);
         }}
         className={checkSize(item)}
         disabled={checkIsDisableSize(item)}
@@ -290,7 +343,14 @@ function MainInfo({ productDetail, onSubmitImages }: IProps) {
 
       {/* add to bag */}
       <Grid item xs={12}>
-        <button className={classes.AddtoBag}>Add to Bag</button>
+        <button
+          className={classes.AddtoBag}
+          onClick={() => {
+            handleCheckout();
+          }}
+        >
+          Add to Bag
+        </button>
       </Grid>
     </Grid>
   );

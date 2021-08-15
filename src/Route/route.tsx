@@ -4,7 +4,6 @@ import Status from '../Layout/Admin/Status/Status';
 import Users from '../Layout/Admin/Users/Users';
 import MainLayout from '../Layout/MainLayout';
 import { Page } from '../Model/IPage';
-import AdminPage from '../Pages/Admin/AdminPage';
 import CartPage from '../Pages/Cart/CartPage';
 import DetailPage from '../Pages/Detail/DetailPage';
 import UserOrderPage from '../Pages/User/UserOrderPage';
