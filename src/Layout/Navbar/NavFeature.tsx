@@ -14,7 +14,6 @@ import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import MenuIcon from "@material-ui/icons/Menu";
-import NavMenu from "./NavMenu";
 
 const useStyles = makeStyles((theme) => ({
   navFeature: {
