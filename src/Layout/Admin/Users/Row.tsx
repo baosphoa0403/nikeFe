@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Button,
   Dialog,
@@ -10,30 +10,30 @@ import {
   makeStyles,
   TableCell,
   TableRow,
-} from "@material-ui/core";
-import CreateIcon from "@material-ui/icons/Create";
-import DeleteIcon from "@material-ui/icons/Delete";
-import { useForm } from "react-hook-form";
-import userService from "../../../Service/UserService";
-import { RootState } from "../../../Redux/store";
-import { useAppDispatch, useAppSelector } from "../../../Hooks/Hook";
-import { notifiError, notifiSuccess } from "../../../utils/MyToys";
-import { setIsCRUD } from "./module/manageUserReducer";
+} from '@material-ui/core';
+import CreateIcon from '@material-ui/icons/Create';
+import DeleteIcon from '@material-ui/icons/Delete';
+import { useForm } from 'react-hook-form';
+import userService from '../../../Service/UserService';
+import { RootState } from '../../../Redux/store';
+import { useAppDispatch, useAppSelector } from '../../../Hooks/Hook';
+import { notifiError, notifiSuccess } from '../../../utils/MyToys';
+import { setIsCRUD } from './module/manageUserReducer';
 
 const useRowStyles = makeStyles({
   root: {
-    "& > *": {
-      borderBottom: "unset",
+    '& > *': {
+      borderBottom: 'unset',
     },
   },
   imgFavorite: {
     height: 100,
   },
   modifyUser: {
-    cursor: "pointer",
+    cursor: 'pointer',
     fontSize: 16,
-    "&:hover": {
-      color: "red",
+    '&:hover': {
+      color: 'red',
     },
   },
   Title: {
@@ -43,23 +43,23 @@ const useRowStyles = makeStyles({
     marginBottom: 18,
   },
   inputValid: {
-    color: "#fe0000",
+    color: '#fe0000',
   },
   ButtonSubmit: {
-    outline: "none",
-    lineHeight: "24px",
+    outline: 'none',
+    lineHeight: '24px',
     fontSize: 16,
-    cursor: "pointer",
-    padding: "7px 28px",
-    backgroundColor: "white",
+    cursor: 'pointer',
+    padding: '7px 28px',
+    backgroundColor: 'white',
     borderRadius: 30,
-    border: "1px solid #757575",
+    border: '1px solid #757575',
     marginTop: 15,
   },
   Detail: {
-    width: "100%",
-    marginTop: "10px",
-    padding: "12px",
+    width: '100%',
+    marginTop: '10px',
+    padding: '12px',
     fontSize: 14,
   },
   Form: {
@@ -76,7 +76,7 @@ export default function Row({ user, findUser }: IProps) {
   const classes = useRowStyles();
   const dispatch = useAppDispatch();
   const [openDialog, setOpenDialog] = React.useState(false);
-  const [id, setId] = React.useState("");
+  const [id, setId] = React.useState('');
 
   const token = useAppSelector(
     (state: RootState) => state.credentialsReducer.token
@@ -87,12 +87,12 @@ export default function Row({ user, findUser }: IProps) {
     setId(id);
     const userProfile: any = findUser(id);
 
-    setValue("email", userProfile.email);
-    setValue("name", userProfile.name);
-    setValue("yearOfBirth", userProfile.yearOfBirth);
-    setValue("address", userProfile.address);
-    setValue("statusId", userProfile.status._id);
-    setValue("roleId", userProfile.role._id);
+    setValue('email', userProfile.email);
+    setValue('name', userProfile.name);
+    setValue('yearOfBirth', userProfile.yearOfBirth);
+    setValue('address', userProfile.address);
+    setValue('statusId', userProfile.status._id);
+    setValue('roleId', userProfile.role._id);
 
     setOpenDialog(true);
   };
@@ -103,12 +103,12 @@ export default function Row({ user, findUser }: IProps) {
   };
 
   const capitalizeFirstLetter = (str: any) => {
-    var splitStr = str.toLowerCase().split(" ");
+    var splitStr = str.toLowerCase().split(' ');
     for (var i = 0; i < splitStr.length; i++) {
       splitStr[i] =
         splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
     }
-    return splitStr.join(" ");
+    return splitStr.join(' ');
   };
 
   type FormCreateUserValues = {
@@ -139,7 +139,7 @@ export default function Row({ user, findUser }: IProps) {
 
       reset();
       dispatch(setIsCRUD(true));
-      notifiSuccess("Update user profile successfully");
+      notifiSuccess('Update user profile successfully');
       handleCloseDialog();
     } catch (err) {
       const error = { ...err };
@@ -162,7 +162,7 @@ export default function Row({ user, findUser }: IProps) {
       await userService.deleteUser(id, token);
       setOpenConfirm(false);
       dispatch(setIsCRUD(true));
-      notifiSuccess("Delete user successfully");
+      notifiSuccess('Delete user successfully');
     } catch (err) {
       console.log({ ...err });
     }
@@ -171,18 +171,18 @@ export default function Row({ user, findUser }: IProps) {
   return (
     <React.Fragment>
       <TableRow className={classes.root}>
-        <TableCell component="th" scope="row">
+        <TableCell component='th' scope='row'>
           {user.username}
         </TableCell>
-        <TableCell align="left">{user.email}</TableCell>
-        <TableCell align="left">{user.name}</TableCell>
-        <TableCell align="left">{user.yearOfBirth}</TableCell>
-        <TableCell align="left">{user.address}</TableCell>
-        <TableCell align="left">{user.status.nameStatus}</TableCell>
-        <TableCell align="left">{user.role.nameRole}</TableCell>
+        <TableCell align='left'>{user.email}</TableCell>
+        <TableCell align='left'>{user.name}</TableCell>
+        <TableCell align='left'>{user.yearOfBirth}</TableCell>
+        <TableCell align='left'>{user.address}</TableCell>
+        <TableCell align='left'>{user.status.nameStatus}</TableCell>
+        <TableCell align='left'>{user.role.nameRole}</TableCell>
         <TableCell>
           <IconButton
-            color="primary"
+            color='primary'
             onClick={() => {
               handleOpenDialog(user._id);
             }}
@@ -190,7 +190,7 @@ export default function Row({ user, findUser }: IProps) {
             <CreateIcon />
           </IconButton>
           <IconButton
-            color="secondary"
+            color='secondary'
             onClick={() => {
               handleOpenConfirm(user._id);
             }}
@@ -204,28 +204,28 @@ export default function Row({ user, findUser }: IProps) {
       <Dialog
         open={openDialog}
         onClose={handleCloseDialog}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
+        aria-labelledby='alert-dialog-title'
+        aria-describedby='alert-dialog-description'
       >
-        <DialogTitle id="alert-dialog-title">Update User</DialogTitle>
+        <DialogTitle id='alert-dialog-title'>Update User</DialogTitle>
         <form
           className={classes.Form}
-          id="AdminFormEditUser"
+          id='AdminFormEditUser'
           onSubmit={handleSubmit(onSubmitEdit)}
         >
           <DialogContent>
             <div className={classes.inputContainer}>
               <div>Email:</div>
               <input
-                type="text"
+                type='text'
                 className={classes.Detail}
-                placeholder="Email"
-                {...register("email", {
-                  required: "Email is required",
+                placeholder='Email'
+                {...register('email', {
+                  required: 'Email is required',
                   pattern: {
                     value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                     message:
-                      "Please enter a vaid email address. Ex: example@gmail.com",
+                      'Please enter a vaid email address. Ex: example@gmail.com',
                   },
                 })}
               />
@@ -236,14 +236,14 @@ export default function Row({ user, findUser }: IProps) {
             <div className={classes.inputContainer}>
               <div>Password:</div>
               <input
-                type="password"
+                type='password'
                 className={classes.Detail}
-                placeholder="Password"
-                {...register("password", {
-                  required: "Password is required",
+                placeholder='Password'
+                {...register('password', {
+                  required: 'Password is required',
                   minLength: {
                     value: 8,
-                    message: "Password must be at least 8 characters long",
+                    message: 'Password must be at least 8 characters long',
                   },
                 })}
               />
@@ -254,11 +254,11 @@ export default function Row({ user, findUser }: IProps) {
             <div className={classes.inputContainer}>
               <div>Full name:</div>
               <input
-                type="text"
+                type='text'
                 className={classes.Detail}
-                placeholder="Full name"
-                {...register("name", {
-                  required: "Fullname is required",
+                placeholder='Full name'
+                {...register('name', {
+                  required: 'Fullname is required',
                 })}
               />
               {errors.name && (
@@ -268,18 +268,18 @@ export default function Row({ user, findUser }: IProps) {
             <div className={classes.inputContainer}>
               <div>Year of Birth:</div>
               <input
-                type="text"
-                placeholder="Year Of Birth"
+                type='text'
+                placeholder='Year Of Birth'
                 className={classes.Detail}
-                {...register("yearOfBirth", {
-                  required: "Year of birth is required",
+                {...register('yearOfBirth', {
+                  required: 'Year of birth is required',
                   min: {
                     value: 1940,
-                    message: "year of birth must be greater than 1940",
+                    message: 'year of birth must be greater than 1940',
                   },
                   max: {
                     value: 2003,
-                    message: "year of birth must be less than 2003",
+                    message: 'year of birth must be less than 2003',
                   },
                 })}
               />
@@ -292,11 +292,11 @@ export default function Row({ user, findUser }: IProps) {
             <div className={classes.inputContainer}>
               <div>Address:</div>
               <input
-                type="text"
-                placeholder="Address"
+                type='text'
+                placeholder='Address'
                 className={classes.Detail}
-                {...register("address", {
-                  required: "Address is required",
+                {...register('address', {
+                  required: 'Address is required',
                 })}
               />
               {errors.address && (
@@ -306,13 +306,13 @@ export default function Row({ user, findUser }: IProps) {
             <div className={classes.inputContainer}>
               <div>Status:</div>
               <select
-                {...register("statusId", {
-                  required: "Status is required",
+                {...register('statusId', {
+                  required: 'Status is required',
                 })}
                 className={classes.Detail}
               >
-                <option value="610bf10cdccf125e487e1b4b">Active</option>
-                <option value="610bf113dccf125e487e1b4d">Inactive</option>
+                <option value='610bf10cdccf125e487e1b4b'>Active</option>
+                <option value='610bf113dccf125e487e1b4d'>Inactive</option>
               </select>
               {errors.statusId && (
                 <p className={classes.inputValid}>{errors.statusId.message}</p>
@@ -321,13 +321,13 @@ export default function Row({ user, findUser }: IProps) {
             <div className={classes.inputContainer}>
               <div>Role:</div>
               <select
-                {...register("roleId", {
-                  required: "Role is required",
+                {...register('roleId', {
+                  required: 'Role is required',
                 })}
                 className={classes.Detail}
               >
-                <option value="60f32404d29b52428cff51f4">User</option>
-                <option value="60f3239ad29b52428cff51f2">Admin</option>
+                <option value='60f32404d29b52428cff51f4'>User</option>
+                <option value='60f3239ad29b52428cff51f2'>Admin</option>
               </select>
               {errors.roleId && (
                 <p className={classes.inputValid}>{errors.roleId.message}</p>
@@ -335,10 +335,10 @@ export default function Row({ user, findUser }: IProps) {
             </div>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleCloseDialog} color="primary">
+            <Button onClick={handleCloseDialog} color='primary'>
               Cancel
             </Button>
-            <Button color="primary" type="submit">
+            <Button color='primary' type='submit'>
               Update
             </Button>
           </DialogActions>
@@ -349,18 +349,18 @@ export default function Row({ user, findUser }: IProps) {
       <Dialog
         open={openConfirm}
         onClose={handleCloseConfirm}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
+        aria-labelledby='alert-dialog-title'
+        aria-describedby='alert-dialog-description'
       >
-        <DialogTitle id="alert-dialog-title">
-          {"Are you sure you want to DELETE ?"}
+        <DialogTitle id='alert-dialog-title'>
+          {'Are you sure you want to DELETE ?'}
         </DialogTitle>
         <DialogActions>
-          <Button onClick={handleCloseConfirm} color="primary">
+          <Button onClick={handleCloseConfirm} color='primary'>
             No
           </Button>
           <Button
-            color="primary"
+            color='primary'
             autoFocus
             onClick={() => {
               handleDeleteUser(id);

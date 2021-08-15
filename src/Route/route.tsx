@@ -1,4 +1,7 @@
 import { PATH_NAME } from '../Config';
+import Products from '../Layout/Admin/Products/Products';
+import Status from '../Layout/Admin/Status/Status';
+import Users from '../Layout/Admin/Users/Users';
 import MainLayout from '../Layout/MainLayout';
 import { Page } from '../Model/IPage';
 import AdminPage from '../Pages/Admin/AdminPage';
@@ -16,5 +19,7 @@ export const routesHome: Page[] = [
 ];
 
 export const routesAdmin: Page[] = [
-  { path: PATH_NAME.ADMIN, exact: true, component: AdminPage },
+  { path: PATH_NAME.ADMIN_USER, exact: false, component: Users },
+  { path: PATH_NAME.ADMIN_PRODUCT, exact: false, component: Products },
+  { path: PATH_NAME.ADMIN_STATUS, exact: false, component: Status },
 ];

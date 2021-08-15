@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   AppBar,
   Dialog,
@@ -10,23 +10,24 @@ import {
   makeStyles,
   Menu,
   MenuItem,
-} from "@material-ui/core";
-import { useHistory } from "react-router-dom";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import SignIn from "../SignIn/SignIn";
-import SignUp from "../SignUp";
-import { RootState } from "../../../Redux/store";
+} from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import SignIn from '../SignIn/SignIn';
+import SignUp from '../SignUp';
+import { RootState } from '../../../Redux/store';
 import {
   setIsLogin,
   setToken,
   setUserInfo,
-} from "../SignIn/module/reducer/credentialsReducer";
-import { notifiSuccess } from "../../../utils/MyToys";
-import { LoginSocial } from "../../../Model/IUser";
-import { useAppDispatch, useAppSelector } from "../../../Hooks/Hook";
-import { PATH_NAME } from "../../../Config";
-import { setIsUpdatedUserProfile } from "./module/reducer/userProfileReducer";
-import { fetchApiUserProfile } from "./module/action/action";
+} from '../SignIn/module/reducer/credentialsReducer';
+import { notifiSuccess } from '../../../utils/MyToys';
+import { LoginSocial } from '../../../Model/IUser';
+import { useAppDispatch, useAppSelector } from '../../../Hooks/Hook';
+import { PATH_NAME, USER_ROLE } from '../../../Config';
+import { setIsUpdatedUserProfile } from './module/reducer/userProfileReducer';
+import { fetchApiUserProfile } from './module/action/action';
+import userService from '../../../Service/UserService';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,34 +37,34 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   header: {
-    backgroundColor: "transparent",
-    color: "#000",
-    boxShadow: "0px 0px 0px 0px",
+    backgroundColor: 'transparent',
+    color: '#000',
+    boxShadow: '0px 0px 0px 0px',
   },
   toolbar: {
     minHeight: 36,
-    display: "flex",
-    justifyContent: "flex-end",
-    alignItems: "center",
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
     paddingRight: 20,
   },
   navListFeature: {
-    padding: "0 12px",
-    textDecoration: "none",
-    color: "black",
+    padding: '0 12px',
+    textDecoration: 'none',
+    color: 'black',
     fontSize: 13,
-    "&:hover": {
-      color: "grey",
+    '&:hover': {
+      color: 'grey',
     },
-    cursor: "pointer",
+    cursor: 'pointer',
   },
   greeting: {
     fontSize: 13,
-    padding: "0 12px",
-    "&:hover": {
-      color: "grey",
+    padding: '0 12px',
+    '&:hover': {
+      color: 'grey',
     },
-    cursor: "pointer",
+    cursor: 'pointer',
   },
 }));
 
@@ -97,16 +98,16 @@ export default function NavSub() {
     localStorage.clear();
 
     dispatch(setIsLogin(false));
-    dispatch(setToken(""));
+    dispatch(setToken(''));
     dispatch(setUserInfo({}));
-    notifiSuccess("GOOD BYE");
+    notifiSuccess('GOOD BYE');
   };
 
   //========== xử lý khi click vào icon user ==========
   let history = useHistory();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [openDialog, setOpenDialog] = React.useState<boolean>(false);
-
+  const [user, setUser] = React.useState<any>({});
   const handleClickIcon = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -126,15 +127,15 @@ export default function NavSub() {
   };
 
   return (
-    <AppBar position="static" className={classes.header}>
+    <AppBar position='static' className={classes.header}>
       <div className={classes.toolbar}>
         {userInfo && isLogin ? (
           <>
             <IconButton onClick={handleClickIcon}>
-              <AccountCircleIcon style={{ cursor: "pointer" }} />
+              <AccountCircleIcon style={{ cursor: 'pointer' }} />
             </IconButton>
             <Menu
-              id="simple-menu"
+              id='simple-menu'
               anchorEl={anchorEl}
               keepMounted
               open={Boolean(anchorEl)}
@@ -142,11 +143,20 @@ export default function NavSub() {
             >
               <MenuItem onClick={handleViewMyAccount}>My account</MenuItem>
               <MenuItem onClick={handleUpdateProfile}>Edit profile</MenuItem>
+              {userInfo.role === USER_ROLE.ADMIN && (
+                <MenuItem
+                  onClick={() => {
+                    history.push(PATH_NAME.ADMIN_USER);
+                  }}
+                >
+                  View Dashboard
+                </MenuItem>
+              )}
             </Menu>
             <span className={classes.greeting}>Hello, {userInfo.username}</span>
             <span
               className={classes.navListFeature}
-              style={{ borderLeft: "1px solid #000" }}
+              style={{ borderLeft: '1px solid #000' }}
               onClick={handleLogout}
             >
               Log out
@@ -164,10 +174,10 @@ export default function NavSub() {
       </div>
       <Dialog
         onClose={() => setOpenDialog(false)}
-        aria-labelledby="simple-dialog-title"
+        aria-labelledby='simple-dialog-title'
         open={openDialog}
       >
-        <DialogTitle id="simple-dialog-title">Your information</DialogTitle>
+        <DialogTitle id='simple-dialog-title'>Your information</DialogTitle>
         <List>
           <ListItem>
             <ListItemText primary={`id: ${userProfile._id}`} />
