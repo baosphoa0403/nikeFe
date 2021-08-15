@@ -14,6 +14,10 @@ import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import AdminMenuItem from './AdminMenuItem';
 import { StyledButton } from '../../Component/Button';
+import { useHistory } from 'react-router-dom';
+import userService from '../../Service/UserService';
+import { notifiSuccess } from '../../utils/MyToys';
+import { ToastContainer } from 'react-toastify';
 
 const drawerWidth = 240;
 
@@ -90,11 +94,18 @@ const useStyles = makeStyles((theme) => ({
 function AdminMenu() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
+  const history = useHistory();
   const handleDrawerOpen = () => {
     setOpen(true);
   };
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+  const handleLogout = () => {
+    notifiSuccess('good bye admin');
+    setTimeout(() => {
+      history.push('/');
+    }, 3000);
   };
 
   return (
@@ -141,7 +152,18 @@ function AdminMenu() {
         </div>
         <Divider />
         <AdminMenuItem />
-        <StyledButton>Log out</StyledButton>
+        <ToastContainer
+          position='bottom-right'
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
+        <StyledButton onClick={handleLogout}>Log out</StyledButton>
       </Drawer>
     </>
   );

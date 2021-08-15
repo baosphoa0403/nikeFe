@@ -1,73 +1,73 @@
 /* eslint-disable react/jsx-key */
-import React, { useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import Checkbox from "@material-ui/core/Checkbox";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import Collapse from "@material-ui/core/Collapse";
-import ExpandLess from "@material-ui/icons/ExpandLess";
-import ExpandMore from "@material-ui/icons/ExpandMore";
-import productService from "../../Service/ProductService";
-import { ISize } from "../../Model/ISize";
-import { IColor } from "../../Model/IColor";
-import { IGender } from "../../Model/IGender";
+import React, { useEffect } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import Checkbox from '@material-ui/core/Checkbox';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Collapse from '@material-ui/core/Collapse';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import productService from '../../Service/ProductService';
+import { ISize } from '../../Model/ISize';
+import { IColor } from '../../Model/IColor';
+import { IGender } from '../../Model/IGender';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: "100%",
+    width: '100%',
     maxWidth: 300,
   },
   Filter: {
     width: 220,
     // position: "fixed",
-    height: "80vh",
+    height: '80vh',
     fontSize: 16,
     paddingLeft: 40,
     paddingRight: 40,
-    overflowY: "auto",
-    "&::-webkit-scrollbar-track": {
-      webkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.3)",
-      backgroundColor: "#F5F5F5",
+    overflowY: 'auto',
+    '&::-webkit-scrollbar-track': {
+      webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,0.3)',
+      backgroundColor: '#F5F5F5',
     },
-    "&::-webkit-scrollbar": {
-      backgroundColor: "#F5F5F5",
+    '&::-webkit-scrollbar': {
+      backgroundColor: '#F5F5F5',
       width: 7,
     },
-    "&::-webkit-scrollbar-thumb": {
+    '&::-webkit-scrollbar-thumb': {
       borderRadius: 100,
-      webkitBoxShadow: "inset 0 0 6px rgba(0,0,0,.3)",
-      backgroundColor: "#555",
+      webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,.3)',
+      backgroundColor: '#555',
     },
   },
   Color: {
     width: 30,
     height: 30,
     padding: 0,
-    border: "1px solid black",
-    borderRadius: "100%",
-    cursor: "pointer",
-    "&:hover": {},
+    border: '1px solid black',
+    borderRadius: '100%',
+    cursor: 'pointer',
+    '&:hover': {},
   },
   size: {
-    minWidth: "30px",
-    padding: "5px 10px",
-    textAlign: "center",
-    border: "1px #CCCCCC solid",
+    minWidth: '30px',
+    padding: '5px 10px',
+    textAlign: 'center',
+    border: '1px #CCCCCC solid',
     borderRadius: 5,
-    cursor: "pointer",
-    "&:hover": {
-      border: "2px solid",
+    cursor: 'pointer',
+    '&:hover': {
+      border: '2px solid',
     },
   },
   hidden: {
-    display: "none",
+    display: 'none',
   },
   flexWrapStyle: {
-    display: "flex",
-    flexWrap: "wrap",
+    display: 'flex',
+    flexWrap: 'wrap',
   },
 }));
 interface IProps {
@@ -114,14 +114,14 @@ function FilterProducts({ filter }: IProps) {
     callback(newSelected);
   };
   useEffect(() => {
-    filter("", selectedGender, selectedColor, selectedSize);
+    filter('', selectedGender, selectedColor, selectedSize);
   }, [selectedGender, selectedColor, selectedSize]);
   return (
     <Grid item sm={3}>
       <div className={classes.Filter}>
         <List
-          component="nav"
-          aria-labelledby="nested-list-subheader"
+          component='nav'
+          aria-labelledby='nested-list-subheader'
           className={classes.root}
         >
           {/* Gender */}
@@ -134,8 +134,8 @@ function FilterProducts({ filter }: IProps) {
             <ListItemText primary={`Gender(${selectedGender.length})`} />
             {openGender ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
-          <Collapse in={openGender} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding>
+          <Collapse in={openGender} timeout='auto' unmountOnExit>
+            <List component='div' disablePadding>
               {Gender.map((value) => {
                 const labelId = `checkbox-list-label-${value._id}`;
 
@@ -154,11 +154,11 @@ function FilterProducts({ filter }: IProps) {
                     }}
                   >
                     <Checkbox
-                      edge="start"
+                      edge='start'
                       checked={selectedGender.indexOf(value._id) !== -1}
                       tabIndex={-1}
                       disableRipple
-                      inputProps={{ "aria-labelledby": labelId }}
+                      inputProps={{ 'aria-labelledby': labelId }}
                     />
                     <ListItemText
                       id={labelId}
@@ -179,10 +179,10 @@ function FilterProducts({ filter }: IProps) {
             <ListItemText primary={`Color(${selectedColor.length})`} />
             {openColor ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
-          <Collapse in={openColor} timeout="auto" unmountOnExit>
+          <Collapse in={openColor} timeout='auto' unmountOnExit>
             <List
               className={classes.flexWrapStyle}
-              component="div"
+              component='div'
               disablePadding
             >
               {Color.map((value) => {
@@ -208,10 +208,10 @@ function FilterProducts({ filter }: IProps) {
                             style={{
                               backgroundColor: `${value.nameColor}`,
                               fontSize: 20,
-                              textAlign: "center",
+                              textAlign: 'center',
                               fontWeight: 900,
                               color: `${
-                                value.nameColor === "white" ? "black" : "white"
+                                value.nameColor === 'white' ? 'black' : 'white'
                               }`,
                             }}
                           >
@@ -242,10 +242,10 @@ function FilterProducts({ filter }: IProps) {
             <ListItemText primary={`Size(${selectedSize.length})`} />
             {openSize ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
-          <Collapse in={openSize} timeout="auto" unmountOnExit>
+          <Collapse in={openSize} timeout='auto' unmountOnExit>
             <List
               className={classes.flexWrapStyle}
-              component="div"
+              component='div'
               disablePadding
             >
               {Size.map((value) => {
@@ -266,7 +266,7 @@ function FilterProducts({ filter }: IProps) {
                         primary={`${value.nameSize}`}
                         style={
                           selectedSize.indexOf(value._id) !== -1
-                            ? { border: "2px solid" }
+                            ? { border: '2px solid' }
                             : {}
                         }
                       />

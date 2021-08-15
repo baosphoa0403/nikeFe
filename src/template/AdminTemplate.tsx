@@ -9,6 +9,9 @@ import {
 import { Box, Container, makeStyles, CssBaseline } from '@material-ui/core';
 import AdminMenu from '../Layout/Admin/AdminMenu';
 import { ToastContainer } from 'react-toastify';
+import { USER_ROLE } from '../Config';
+import userService from '../Service/UserService';
+import { notifiError } from '../utils/MyToys';
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -37,17 +40,6 @@ const AdminLayout = (props: Props) => {
           {props.children}
           <Box pt={4}>{/* <AdminFooter /> */}</Box>
         </Container>
-        <ToastContainer
-          position='bottom-right'
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-        />
       </main>
     </div>
   );
@@ -63,20 +55,16 @@ const AdminTemplate: React.SFC<RouteProps> = ({
     <Route
       {...rest}
       render={(propsComponent: RouteComponentProps<{}>) => {
-        return (
-          <AdminLayout>
-            <Component {...propsComponent} />
-          </AdminLayout>
-        );
-        // if (localStorage.getItem('admin')) {
-        // return (
-        //   <AdminLayout>
-        //     <Component {...propsComponent} />
-        //   </AdminLayout>
-        // );
-        // } else {
-        // return <Redirect to='/admin' />;
-        // }
+        const user: string = userService.getPerson();
+        if (JSON.parse(user).role === USER_ROLE.ADMIN) {
+          return (
+            <AdminLayout>
+              <Component {...propsComponent} />
+            </AdminLayout>
+          );
+        } else {
+          return <Redirect to='/' />;
+        }
       }}
     />
   );
