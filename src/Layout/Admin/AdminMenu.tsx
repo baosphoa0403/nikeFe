@@ -18,6 +18,12 @@ import { useHistory } from 'react-router-dom';
 import userService from '../../Service/UserService';
 import { notifiSuccess } from '../../utils/MyToys';
 import { ToastContainer } from 'react-toastify';
+import { setUserProfile } from '../Navbar/NavSub/module/reducer/userProfileReducer';
+import { useAppDispatch } from '../../Hooks/Hook';
+import {
+  setIsLogin,
+  setToken,
+} from '../Navbar/SignIn/module/reducer/credentialsReducer';
 
 const drawerWidth = 240;
 
@@ -101,8 +107,13 @@ function AdminMenu() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+  const dispatch = useAppDispatch();
   const handleLogout = () => {
     notifiSuccess('good bye admin');
+    userService.logOut();
+    dispatch(setUserProfile({}));
+    dispatch(setIsLogin(false));
+    dispatch(setToken(''));
     setTimeout(() => {
       history.push('/');
     }, 3000);
