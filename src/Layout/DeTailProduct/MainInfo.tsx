@@ -1,22 +1,22 @@
 /* eslint-disable react/jsx-key */
-import React, { useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import productService from "../../Service/ProductService";
-import { ISize } from "../../Model/ISize";
-import { ListItem, ListItemText } from "@material-ui/core";
+import React, { useEffect } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import productService from '../../Service/ProductService';
+import { ISize } from '../../Model/ISize';
+import { Button, ListItem, ListItemText } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   ProductContainer: {
-    padding: "0 44px",
+    padding: '0 44px',
     fontSize: 16,
     lineHeight: 1.7,
-    [theme.breakpoints.down("md")]: {
-      padding: "0 8px",
+    [theme.breakpoints.down('md')]: {
+      padding: '0 8px',
     },
   },
   ProductImage: {
-    width: "100%",
+    width: '100%',
   },
   ShoesType: {
     fontSize: 16,
@@ -27,116 +27,141 @@ const useStyles = makeStyles((theme) => ({
   },
   Price: {
     fontSize: 16,
-    textAlign: "right",
+    textAlign: 'right',
   },
   Size: {
-    margin: "20px 0 12px",
+    margin: '20px 0 12px',
   },
   SelectSize: {
     fontSize: 16,
-    textAlign: "left",
+    textAlign: 'left',
   },
   AlertSelectSize: {
     fontSize: 16,
-    color: "rgb(212, 63, 33)",
+    color: 'rgb(212, 63, 33)',
   },
   SizeRadio: {
-    position: "absolute",
+    position: 'absolute',
     opacity: 0,
     width: 0,
     height: 0,
   },
   SizeLabel: {
     fontSize: 16,
-    padding: "10px 0 10px 0",
-    textAlign: "center",
-    cursor: "pointer",
-    borderRadius: "20px",
-    "&:hover": {
-      boxShadow: "0 0 0 2px black",
-      borderRadius: 2,
+    padding: '10px 0 10px 0',
+    textAlign: 'center',
+    cursor: 'pointer',
+    borderRadius: '2px',
+    transition: 'none',
+    '&:hover': {
+      boxShadow: '0 0 0 2px black',
     },
   },
   SizeLabelChecked: {
-    boxShadow: "0 0 0 2px black",
-    padding: "10px 0 10px 0",
+    boxShadow: '0 0 0 2px black',
+    padding: '10px 0 10px 0',
     fontSize: 16,
-    textAlign: "center",
-    cursor: "pointer",
-    borderRadius: "2px",
+    textAlign: 'center',
+    cursor: 'pointer',
+    borderRadius: '2px',
+  },
+  SizeLabelNotAvailable: {
+    color: '#d7d7d7',
+    padding: '10px 0 10px 0',
+    fontSize: 16,
+    textAlign: 'center',
+    borderRadius: '2px',
+    // cursor: "not-allowed",
+    // pointerEvents: "none",
   },
   AddtoBag: {
-    width: "100%",
-    color: "white",
-    backgroundColor: "black",
-    padding: "18px 24px",
-    borderRadius: "30px",
-    border: "none",
-    outline: "none",
-    cursor: "pointer",
+    width: '100%',
+    color: 'white',
+    backgroundColor: 'black',
+    padding: '18px 24px',
+    borderRadius: '30px',
+    border: 'none',
+    outline: 'none',
+    cursor: 'pointer',
   },
   Favorite: {
-    width: "100%",
-    color: "black",
-    backgroundColor: "transparent",
-    padding: "18px 24px",
-    borderRadius: "30px",
-    border: "1px #ccc solid",
-    outline: "none",
-    cursor: "pointer",
+    width: '100%',
+    color: 'black',
+    backgroundColor: 'transparent',
+    padding: '18px 24px',
+    borderRadius: '30px',
+    border: '1px #ccc solid',
+    outline: 'none',
+    cursor: 'pointer',
   },
   FavoriteBorderIcon: {
     height: 15,
   },
   ProductLink: {
-    color: "black",
-    textDecoration: "none",
-    cursor: "pointer",
+    color: 'black',
+    textDecoration: 'none',
+    cursor: 'pointer',
     fontSize: 16,
   },
   ProductColorway: {
-    display: "none",
+    display: 'none',
   },
   ProductColorwayImage: {
-    width: "100px",
-    height: "100px",
-    border: "1px solid rgb(17, 17, 17)",
-    borderRadius: "4px",
+    width: '100px',
+    height: '100px',
+    border: '1px solid rgb(17, 17, 17)',
+    borderRadius: '4px',
     opacity: 1,
   },
   ProductColorwayImageHide: {
-    width: "100px",
-    height: "100px",
-    borderRadius: "4px",
-    opacity: 0.8,
+    width: '100px',
+    height: '100px',
+    borderRadius: '4px',
+    opacity: 1,
+    cursor: 'pointer',
   },
   CheckSize: {
-    boxShadow: "rgb(212, 63, 33) 0px 0px 0px 1px",
-    padding: "1px",
-    borderRadius: "4px",
+    boxShadow: 'rgb(212, 63, 33) 0px 0px 0px 1px',
+    padding: '1px',
+    borderRadius: '4px',
   },
   AlertSize: {
-    margin: "20px 0px",
+    margin: '20px 0px',
   },
   AddtoBagNotAllow: {
-    cursor: "not-allowed",
-    width: "100%",
-    color: "white",
-    backgroundColor: "black",
-    padding: "18px 24px",
-    borderRadius: "30px",
-    border: "none",
-    outline: "none",
+    cursor: 'not-allowed',
+    // cursor: "no-drop",
+    width: '100%',
+    color: 'white',
+    backgroundColor: 'black',
+    padding: '18px 24px',
+    borderRadius: '30px',
+    border: 'none',
+    outline: 'none',
   },
 }));
-// interface IProps {
-//   productsDetail: [];
-// }
+interface IProps {
+  productDetail: any;
+  onSubmitImages: Function;
+}
 
-function MainInfo() {
+function MainInfo({ productDetail, onSubmitImages }: IProps) {
   const classes = useStyles();
+
   const [size, setSize] = React.useState<ISize[]>([]);
-  const [selectedSize, setSelectedSize] = React.useState<string>("");
+  const [selectedSize, setSelectedSize] = React.useState<string>('');
+  const [infoProduct, setInfoProduct] = React.useState<any>({
+    name: '',
+    details: {},
+  });
+
+  React.useEffect(() => {
+    setInfoProduct({
+      name: productDetail[0] && productDetail[0].info.product.name,
+      details: productDetail[0] && productDetail[0],
+    });
+    onSubmitImages(productDetail[0] && productDetail[0]?.images);
+  }, [productDetail]);
 
   useEffect(() => {
     productService
@@ -149,32 +174,85 @@ function MainInfo() {
       });
   }, []);
 
-  const listImages = [
-    "https://static.nike.com/a/images/t_PDP_144_v1/f_auto/c59cb6b6-3386-464e-859b-bfb3f456886b/air-force-1-shadow-shoe-klCJXd.png",
-    "https://static.nike.com/a/images/t_PDP_144_v1/f_auto/a0ca97be-ce25-456a-8ba7-73216a041c70/air-force-1-shadow-shoe-klCJXd.png",
-  ];
+  const handleChangeInfo = (item: any) => {
+    setInfoProduct({ ...infoProduct, details: item });
+    onSubmitImages(item.images);
+  };
 
   const handleChooseSize = (size: string) => {
     setSelectedSize(size);
+    console.log('click: ', size);
+  };
+  // console.log('productDetail: ', productDetail);
+  const bindingArr = () => {
+    if (productDetail.length > 0) {
+      return productDetail.map((item: any, index: number) => {
+        console.log(item);
+        return (
+          <Grid item xs={4} key={index}>
+            <img
+              alt=''
+              src={item.images[0].urlImage}
+              className={classes.ProductColorwayImageHide}
+              onClick={() => {
+                handleChangeInfo(item);
+              }}
+            />
+          </Grid>
+        );
+      });
+    }
+  };
+  const checkSize = (item: any) => {
+    let flag = false;
+    if (infoProduct && infoProduct.details) {
+      infoProduct.details.quantities.forEach((el: any) => {
+        if (el.size === item._id) {
+          // co size trong kho
+          flag = true;
+        }
+      });
+    }
+
+    if (flag) {
+      if (selectedSize === item.nameSize) {
+        return classes.SizeLabelChecked;
+      } else return classes.SizeLabel;
+    } else {
+      // khong co size trong kho
+      return classes.SizeLabelNotAvailable;
+    }
   };
 
-  const listSize = size.map((item) => (
+  const checkIsDisableSize = (item: any) => {
+    let flag = false;
+    if (infoProduct && infoProduct.details) {
+      infoProduct.details.quantities.forEach((el: any) => {
+        if (el.size === item._id) {
+          // co size trong kho
+          flag = true;
+        }
+      });
+    }
+    if (flag) {
+      return false;
+    } else {
+      // khong co size trong kho
+      return true;
+    }
+  };
+
+  const listSize = size.map((item, index) => (
     <Grid item xs={4} key={item._id}>
-      <ListItem
-        disableGutters
+      <Button
         onClick={() => {
           handleChooseSize(item.nameSize);
         }}
+        className={checkSize(item)}
+        disabled={checkIsDisableSize(item)}
       >
-        <ListItemText
-          primary={`${item.nameSize}`}
-          className={
-            selectedSize === item.nameSize
-              ? classes.SizeLabelChecked
-              : classes.SizeLabel
-          }
-        />
-      </ListItem>
+        {item.nameSize}
+      </Button>
     </Grid>
   ));
 
@@ -182,26 +260,24 @@ function MainInfo() {
     <Grid container className={classes.ProductContainer} spacing={2}>
       {/* show info */}
       <Grid item xs={8}>
-        <div className={classes.ShoesType}>Men's shoes</div>
-        <div className={classes.ShoesName}>Nike Air Force 1</div>
+        <div className={classes.ShoesType}>
+          Gender:{' '}
+          {infoProduct &&
+            infoProduct.details &&
+            infoProduct.details.info &&
+            infoProduct.details.info.gender.nameGender}
+        </div>
+        <div className={classes.ShoesName}>
+          {infoProduct &&
+            infoProduct.details &&
+            infoProduct.details.info &&
+            infoProduct.details.info.product.name}
+        </div>
       </Grid>
       <Grid item xs={4}>
-        <div className={classes.Price}>$254</div>
+        {/* <div className={classes.Price}>$254</div> */}
       </Grid>
-
-      {/* show images */}
-      {listImages.map((item, index) => {
-        return (
-          <Grid item xs={4}>
-            <img
-              key={index}
-              src={item}
-              className={classes.ProductColorwayImageHide}
-            />
-          </Grid>
-        );
-      })}
-
+      {bindingArr()}
       {/* show sizes */}
       <Grid item xs={12}>
         <Grid container className={classes.Size} spacing={2}>
