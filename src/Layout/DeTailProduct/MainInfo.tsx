@@ -214,7 +214,7 @@ function MainInfo({ productDetail, onSubmitImages }: IProps) {
     // console.log(productDetailChoosen);
 
     const quantitySize = productDetailChoosen.quantities.find(
-      (item: any) => item.size === idSize
+      (item: any) => item.size._id === idSize
     );
     // console.log(quantitySize);
     console.log(productDetailChoosen);
@@ -223,6 +223,8 @@ function MainInfo({ productDetail, onSubmitImages }: IProps) {
       quantitySize: quantitySize,
       image: productDetailChoosen.images[0].urlImage,
       name: productDetailChoosen.info.product.name,
+      gender: productDetailChoosen.info.gender.nameGender,
+      color: productDetailChoosen.info.color.nameColor,
       quantities: productDetailChoosen.quantities,
       quantity: 1,
       productID: productDetailChoosen.info._id,
@@ -230,7 +232,7 @@ function MainInfo({ productDetail, onSubmitImages }: IProps) {
     // console.log(product);
     dispatch(addToCart(product));
     notifiSuccess('Add Product Successful');
-    history.push('/cart');
+    // history.push('/cart');
   };
   // console.log(productDetail);
   const bindingArr = () => {
@@ -260,7 +262,7 @@ function MainInfo({ productDetail, onSubmitImages }: IProps) {
     let flag = false;
     if (infoProduct && infoProduct.details) {
       infoProduct.details.quantities.forEach((el: any) => {
-        if (el.size === item._id) {
+        if (el.size._id === item._id) {
           // co size trong kho
           flag = true;
         }
@@ -281,7 +283,7 @@ function MainInfo({ productDetail, onSubmitImages }: IProps) {
     let flag = false;
     if (infoProduct && infoProduct.details) {
       infoProduct.details.quantities.forEach((el: any) => {
-        if (el.size === item._id) {
+        if (el.size._id === item._id) {
           // co size trong kho
           flag = true;
         }
@@ -308,6 +310,7 @@ function MainInfo({ productDetail, onSubmitImages }: IProps) {
       </Button>
     </Grid>
   ));
+  // console.log(productDetail);
 
   return (
     <Grid container className={classes.ProductContainer} spacing={2}>

@@ -36,8 +36,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Cart() {
   const classes = useStyles();
-  const cart = useAppSelector((state: RootState) => state.cartReducer.cart);
-  console.log(cart);
+
   return (
     <div className={classes.Container}>
       <Container maxWidth='xl'>
