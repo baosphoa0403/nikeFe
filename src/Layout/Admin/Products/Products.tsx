@@ -4,10 +4,10 @@ import MaterialTable, { MTableToolbar } from "material-table";
 import { Button, Dialog, Slide } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import { TransitionProps } from "@material-ui/core/transitions";
-import AddProductForm from "./AddProductForm";
-import EditProductForm from "./EditProductForm";
 import productService from "../../../Service/ProductService";
 import DetailProduct from "./DetailProduct";
+import AddProduct from "./AddProduct";
+import EditProduct from "./EditProduct";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & { children?: React.ReactElement },
@@ -62,10 +62,12 @@ export default function Products() {
           data={products}
           actions={[
             {
+              tooltip: "Edit Product",
               icon: "edit",
               onClick: (event, rowData) => handleOpen(rowData),
             },
             {
+              tooltip: "Delete all Details",
               icon: "delete",
               onClick: (event, rowData) => removeItem(rowData),
             },
@@ -109,12 +111,12 @@ export default function Products() {
           TransitionComponent={Transition}
         >
           {addNewType ? (
-            <AddProductForm
+            <AddProduct
               handleCloseAddNew={handleCloseAddNew}
               closeDialog={handleClose}
             />
           ) : (
-            <EditProductForm itemData={itemData} closeDialog={handleClose} />
+            <EditProduct itemData={itemData} closeDialog={handleClose} />
           )}
         </Dialog>
       </Grid>
