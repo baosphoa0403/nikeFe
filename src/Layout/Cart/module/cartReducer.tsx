@@ -2,10 +2,12 @@ import { createSlice, current, PayloadAction } from '@reduxjs/toolkit';
 
 export interface Cart {
   cart: [];
+  flag: false;
 }
 
 const initialState = {
   cart: [] as any,
+  flag: false,
 };
 export const cartSlice = createSlice({
   name: 'cart',
@@ -38,18 +40,43 @@ export const cartSlice = createSlice({
         return item.productID === id && item.quantitySize.size._id === idSize;
       });
       if (flag) {
-        cart[index].quantity += 1;
+        if (cart[index].quantity < cart[index].quantitySize.quantity) {
+          cart[index].quantity += 1;
+        } else {
+          state.flag = true;
+        }
       } else {
-        if (cart[index].quantity > 0) {
+        if (cart[index].quantity > 1) {
           cart[index].quantity -= 1;
+          state.flag = false;
         } else {
           cart.splice(index, 1);
         }
       }
       localStorage.setItem('cart', JSON.stringify(cart));
     },
+    removeProduct: (state, { payload }: PayloadAction<any>) => {
+      const { idProduct, idSize } = payload;
+      const { cart } = state;
+      const index = cart.findIndex((item: any) => {
+        return (
+          item.productID === idProduct && item.quantitySize.size._id === idSize
+        );
+      });
+      cart.splice(index, 1);
+      localStorage.setItem('cart', JSON.stringify(cart));
+    },
+    updateFlag: (state, { payload }: PayloadAction<boolean>) => {
+      state.flag = payload;
+    },
   },
 });
 
-export const { addToCart, setCart, incrementAndDecrease } = cartSlice.actions;
+export const {
+  addToCart,
+  setCart,
+  incrementAndDecrease,
+  removeProduct,
+  updateFlag,
+} = cartSlice.actions;
 export default cartSlice.reducer;

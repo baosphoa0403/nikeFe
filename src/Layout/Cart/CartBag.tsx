@@ -10,7 +10,12 @@ import productService from '../../Service/ProductService';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 import { Button } from '@material-ui/core';
-import { incrementAndDecrease } from './module/cartReducer';
+import {
+  incrementAndDecrease,
+  removeProduct,
+  updateFlag,
+} from './module/cartReducer';
+import { notifiError, notifiSuccess } from '../../utils/MyToys';
 
 const useStyles = makeStyles((theme) => ({
   CartBag: {
@@ -96,22 +101,19 @@ const CustomSelect = withStyles((theme) => ({
 function CartBag() {
   const classes = useStyles();
 
-  const Qty: any = [];
   const dispatch = useAppDispatch();
   // get size when user click
-  const [size, setSize] = React.useState([]);
-  const [sizeInProduct, setSizeInProduct] = React.useState([]);
-  const handleChangeSize = (event: any) => {
-    setSize(event.target.value);
-  };
-
-  const [quantity, setQuantity] = React.useState('');
-  const handleChangequantity = (event: any) => {
-    setSize(event.target.value);
-  };
+  const flag = useAppSelector((state: RootState) => state.cartReducer.flag);
   const cart = useAppSelector((state: RootState) => state.cartReducer.cart);
   console.log(cart);
+  console.log(flag);
 
+  React.useEffect(() => {
+    if (flag) {
+      notifiError('Quantity lớn hơn số lượng trong kho');
+      dispatch(updateFlag(false));
+    }
+  }, [flag, dispatch]);
   const handleAddDelete = (flag: boolean, id: string, idSize: string) => {
     const data: any = {
       flag,
@@ -120,7 +122,14 @@ function CartBag() {
     };
     dispatch(incrementAndDecrease(data));
   };
-
+  const remove = (idProduct: string, idSize: string) => {
+    const data = {
+      idProduct,
+      idSize,
+    };
+    dispatch(removeProduct(data));
+    notifiSuccess('remove successfull');
+  };
   return (
     <div className={classes.CartBag}>
       {cart.length > 0 &&
@@ -143,35 +152,7 @@ function CartBag() {
                   </div>
                   <div className={classes.SelectContainer}>
                     <span className={classes.SelectFormContainer}>
-                      Size
-                      <FormControl className={classes.SelectFormControl}>
-                        <NativeSelect
-                          input={
-                            <CustomSelect
-                              onChange={handleChangeSize}
-                              // onClick={() => {
-                              //   setItemProduct(item);
-                              // }}
-                            />
-                          } // get data size and product
-                        >
-                          {item.quantities.map((size: any) => {
-                            return (
-                              <option
-                                value={size.size._id}
-                                selected={
-                                  size.size.nameSize ===
-                                  item.quantitySize.size.nameSize
-                                    ? true
-                                    : false
-                                }
-                              >
-                                {size.size.nameSize}
-                              </option>
-                            );
-                          })}
-                        </NativeSelect>
-                      </FormControl>
+                      Size: <p>{item.quantitySize.size.nameSize}</p>
                     </span>
                     <span className={classes.SelectFormContainer}>
                       <Button
@@ -188,15 +169,7 @@ function CartBag() {
                         {' '}
                         <AddIcon />
                       </Button>
-                      Quantity
-                      <FormControl className={classes.SelectFormControl}>
-                        <NativeSelect
-                          onChange={handleChangequantity}
-                          input={<CustomSelect />}
-                        >
-                          <option value={item.quantity}>{item.quantity}</option>
-                        </NativeSelect>
-                      </FormControl>
+                      <span>{item.quantity}</span>
                       <Button
                         variant='contained'
                         color='primary'
@@ -214,7 +187,14 @@ function CartBag() {
                   </div>
                 </div>
                 <div className={classes.CartItemAction}>
-                  <span className={classes.CartItemActionButton}>Remove</span>
+                  <span
+                    className={classes.CartItemActionButton}
+                    onClick={() => {
+                      remove(item.productID, item.quantitySize.size._id);
+                    }}
+                  >
+                    Remove
+                  </span>
                 </div>
               </div>
             </div>
