@@ -3,8 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useAppSelector } from '../../Hooks/Hook';
 import { RootState } from '../../Redux/store';
 import userService from '../../Service/UserService';
-import { notifiError } from '../../utils/MyToys';
+import { notifiError, notifiSuccess } from '../../utils/MyToys';
 import Paypal from '../../Component/paypal/paypal';
+import cartService from '../../Service/CartService';
 
 const useStyles = makeStyles((theme) => ({
   Summary: {
@@ -61,6 +62,8 @@ function CartSummary() {
       return (sum += item.quantity * item.quantitySize.price);
     }, 0);
   };
+  console.log(cart);
+
   const checkout = () => {
     const user: any = userService.getPerson();
     if (!user) {
@@ -80,9 +83,64 @@ function CartSummary() {
       notifiError('Payment fail');
     }, 2000);
   };
+  const [listDiscount, setListDiscount] = React.useState<any>([]);
+  const user = useAppSelector(
+    (state: RootState) => state.credentialsReducer.userInfo
+  );
+  const [discountID, setDiscountID] = React.useState();
+  React.useEffect(() => {
+    if (user) {
+      const callAPI = async () => {
+        const token = userService.getAccessToken();
+        const res = await cartService.getDiscountUser(token);
+        console.log(res.data);
+        setListDiscount(res.data);
+        setDiscountID(res.data[0].code._id);
+      };
+      callAPI();
+    }
+  }, [user]);
 
   const transactionCancel = (data: any) => {
     console.log('errror', data);
+    notifiError('Cancel Payment');
+  };
+  const transactionSuccess = (payment: any) => {
+    // console.log('The payment was succeeded!', payment.paid);
+    const listDetailProduct: any = [];
+    for (const item of cart) {
+      listDetailProduct.push({
+        idDetailProduct: item.quantitySize.productDetail,
+        quantity: item.quantity,
+        sizeId: item.quantitySize.size._id,
+      });
+    }
+    console.log(listDetailProduct);
+    const data = {
+      idDiscount: discountID,
+      listDetailProduct,
+      isPayment: payment.paid,
+    };
+    const token = userService.getAccessToken();
+    try {
+      const callAPI = async () => {
+        console.log('zo');
+        const res = await cartService.orderCart(token, data);
+        console.log(res.data);
+        notifiSuccess('Order successful');
+      };
+      callAPI();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const findDiscountByID = () => {
+    if (listDiscount.length > 0) {
+      const discount: any = listDiscount.find((item: any) => {
+        return item.code._id === discountID;
+      });
+      return discount?.code.codeValue;
+    }
   };
   return (
     <div className={classes.Summary}>
@@ -91,31 +149,56 @@ function CartSummary() {
         Subtotal
         <div className={classes.Price}>${getTotal()}</div>
       </div>
-      <div className={classes.PriceDetail}>
-        Estimated Delivery & Handling
-        <div className={classes.Price}>0₫</div>
-      </div>
+      {user && (
+        <div className={classes.PriceDetail}>
+          Discount
+          <div className={classes.Price}>
+            <select
+              onChange={(event: any) => {
+                console.log(event.target.value);
+                setDiscountID(event.target.value);
+              }}
+            >
+              {listDiscount.map((item: any, index: number) => {
+                return <option value={item.code._id}>{item.code.codeValue}%</option>;
+              })}
+            </select>
+          </div>
+        </div>
+      )}
       <div className={classes.TotalPrice}>
         Total
         <div className={classes.Price}>
-          <b>${getTotal()}</b>
+          <b>${getTotal() * (findDiscountByID() / 100)}</b>
         </div>
       </div>
-      <button
-        className={classes.CheckoutButton}
-        onClick={() => {
-          checkout();
-        }}
-      >
-        Checkout
-      </button>
+      {!checkoutSuccess && (
+        <button
+          className={classes.CheckoutButton}
+          onClick={() => {
+            checkout();
+          }}
+        >
+          Checkout
+        </button>
+      )}
       {checkoutSuccess && (
         <Paypal
-        // sum={covertVNDtoUSD()}
-        // transactionSuccess={transactionSuccess}
-        // transactionCancel={transactionCancel}
-        // transactionError={transactionError}
+          sum={getTotal() * (findDiscountByID() / 100)}
+          transactionSuccess={transactionSuccess}
+          transactionCancel={transactionCancel}
+          transactionError={transactionError}
         />
+      )}
+      {checkoutSuccess && (
+        <button
+          className={classes.CheckoutButton}
+          onClick={() => {
+            setCheckOutSuccess(false);
+          }}
+        >
+          Close
+        </button>
       )}
     </div>
   );

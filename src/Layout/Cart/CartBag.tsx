@@ -105,8 +105,6 @@ function CartBag() {
   // get size when user click
   const flag = useAppSelector((state: RootState) => state.cartReducer.flag);
   const cart = useAppSelector((state: RootState) => state.cartReducer.cart);
-  console.log(cart);
-  console.log(flag);
 
   React.useEffect(() => {
     if (flag) {

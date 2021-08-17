@@ -216,8 +216,8 @@ function MainInfo({ productDetail, onSubmitImages }: IProps) {
     const quantitySize = productDetailChoosen.quantities.find(
       (item: any) => item.size._id === idSize
     );
-    // console.log(quantitySize);
-    console.log(productDetailChoosen);
+    // console.log(productDetail);
+    // console.log(productDetailChoosen);
 
     const product = {
       quantitySize: quantitySize,
