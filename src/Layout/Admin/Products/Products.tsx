@@ -8,6 +8,7 @@ import productService from "../../../Service/ProductService";
 import DetailProduct from "./DetailProduct";
 import AddProduct from "./AddProduct";
 import EditProduct from "./EditProduct";
+import { API_IMGBB } from "../../../Config/url";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & { children?: React.ReactElement },
