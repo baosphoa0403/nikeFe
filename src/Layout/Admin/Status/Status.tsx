@@ -183,7 +183,7 @@ export default function Status() {
       <ModalPopUp
         open={open}
         closeModal={closeModal}
-        title={!flag ? "Form create Status" : "Form update Status"}
+        title={!flag ? "Form: Create Status" : "Form: Update Status"}
         contentButton={!flag ? "Create" : "Save"}
         nameStatus={nameStatus}
       />
