@@ -89,7 +89,7 @@ function CartSummary() {
   const token = useAppSelector(
     (state: RootState) => state.credentialsReducer.token
   );
-  const [discountID, setDiscountID] = React.useState();
+  const [discountID, setDiscountID] = React.useState<any>();
   React.useEffect(() => {
     if (token !== '') {
       const callAPI = async () => {
@@ -97,7 +97,11 @@ function CartSummary() {
         const res = await cartService.getDiscountUser(token);
         console.log(res.data);
         setListDiscount(res.data);
-        setDiscountID(res.data[0].code._id);
+        if (res.data[0]) {
+          setDiscountID(res.data[0].code._id);
+        } else {
+          setDiscountID('');
+        }
       };
       callAPI();
     }
@@ -181,7 +185,7 @@ function CartSummary() {
       <div className={classes.TotalPrice}>
         Total
         <div className={classes.Price}>
-          <b>${getTotal() * (findDiscountByID() / 100)}</b>
+          <b>${getTotal() - getTotal() * (findDiscountByID() / 100)}</b>
         </div>
       </div>
       {!checkoutSuccess && (
@@ -196,7 +200,7 @@ function CartSummary() {
       )}
       {checkoutSuccess && (
         <Paypal
-          sum={getTotal() * (findDiscountByID() / 100)}
+          sum={getTotal() - getTotal() * (findDiscountByID() / 100)}
           transactionSuccess={transactionSuccess}
           transactionCancel={transactionCancel}
           transactionError={transactionError}
