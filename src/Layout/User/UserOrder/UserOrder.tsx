@@ -2,6 +2,9 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import OrderStepper from "./OrderStepper";
 import moment from "moment";
+import cartService from "../../../Service/CartService";
+import userService from "../../../Service/UserService";
+import { notifiError } from "../../../utils/MyToys";
 
 const useStyles = makeStyles((theme) => ({
   Container: {
@@ -27,8 +30,8 @@ const useStyles = makeStyles((theme) => ({
     outline: 0,
     border: 0,
     textAlign: "left",
-    margin: "15px 0 0 0",
-    width: 700,
+    margin: "15px",
+    width: 680,
     [theme.breakpoints.down("sm")]: {
       width: "100%",
     },
@@ -102,10 +105,181 @@ const useStyles = makeStyles((theme) => ({
 
 export default function UserOrder() {
   const classes = useStyles();
+  const token = userService.getAccessToken();
+  const [listOrder, setListOrder] = React.useState<any>([]);
+  const step = [0, 1, 2];
 
-  const convertDay = (index: any) => {
-    return moment(index).format("llll");
+  React.useEffect(() => {
+    cartService
+      .orderHistoryMe(token)
+      .then((res) => {
+        setListOrder(res.data);
+      })
+      .catch((err) => {
+        console.log({ ...err });
+      });
+  }, [token]);
+
+  const [dataProcessClick, setdataProcessClick] = React.useState(0);
+  const handleOrderClick = (index) => {
+    if (index == dataProcessClick) {
+      setdataProcessClick(-1);
+    } else {
+      setdataProcessClick(index);
+    }
   };
+
+  const renderDate = (UTCdate: string) => {
+    const newDateFormat = new Date(UTCdate).toLocaleDateString("en-GB");
+    const newTimeFormat = new Date(UTCdate).toLocaleTimeString("en-GB", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
+    return newDateFormat + ", " + newTimeFormat;
+  };
+
+  const renderProcessingOrder = listOrder.map((order, index) => {
+    if (order.info.status.nameStatus === "pending") {
+      return (
+        <button className={classes.Order} key={order.info._id}>
+          <div
+            className={classes.OrderHeader}
+            onClick={() => {
+              handleOrderClick(index);
+            }}
+          >
+            <div className={classes.OrderStatus}>
+              <OrderStepper step={0} />
+            </div>
+            <div className={classes.OrderInfo}>ID: {order.info._id}</div>
+            <div className={classes.OrderInfo}>
+              Date: {renderDate(order.info.dateOrder)}
+            </div>
+            <div className={classes.OrderInfo}>
+              Total price: <b>${order.info.totalPrice}</b>
+            </div>
+            <div className={classes.OrderInfo}>
+              <b>Payment: Paypal</b>
+            </div>
+            <div className={classes.OrderCancel}>Cancel Order</div>
+          </div>
+          {order.products.map((product) => {
+            return (
+              <div>
+                {dataProcessClick === index && (
+                  <div className={classes.OrderProduct}>
+                    <div className={classes.ProductDetail}>
+                      <a href="#a" className={classes.ProductName}>
+                        {product.nameProduct}
+                      </a>
+                      <div className={classes.Price}>${product.price}</div>
+                      <div className={classes.SubDetail}>
+                        <div>Quantity: {product.quantity}</div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </button>
+      );
+    } else if (order.info.status.nameStatus === "delivery") {
+      return (
+        <button className={classes.Order} key={order.info._id}>
+          <div
+            className={classes.OrderHeader}
+            onClick={() => {
+              handleOrderClick(index);
+            }}
+          >
+            <div className={classes.OrderStatus}>
+              <OrderStepper step={1} />
+            </div>
+            <div className={classes.OrderInfo}>ID: {order.info._id}</div>
+            <div className={classes.OrderInfo}>
+              Date: {renderDate(order.info.dateOrder)}
+            </div>
+            <div className={classes.OrderInfo}>
+              Total price: <b>${order.info.totalPrice}</b>
+            </div>
+            <div className={classes.OrderInfo}>
+              <b>Payment: Paypal</b>
+            </div>
+            <div className={classes.OrderCancel}>Cancel Order</div>
+          </div>
+          {order.products.map((product) => {
+            return (
+              <div>
+                {dataProcessClick === index && (
+                  <div className={classes.OrderProduct}>
+                    <div className={classes.ProductDetail}>
+                      <a href="#a" className={classes.ProductName}>
+                        {product.nameProduct}
+                      </a>
+                      <div className={classes.Price}>${product.price}</div>
+                      <div className={classes.SubDetail}>
+                        <div>Quantity: {product.quantity}</div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </button>
+      );
+    }
+  });
+
+  const renderDeliveryOrder = listOrder.map((order, index) => {
+    if (order.info.status.nameStatus === "complete")
+      return (
+        <button className={classes.Order} key={order.info._id}>
+          <div
+            className={classes.OrderHeader}
+            onClick={() => {
+              handleOrderClick(index);
+            }}
+          >
+            <div className={classes.OrderStatus}>
+              <OrderStepper step={2} />
+            </div>
+            <div className={classes.OrderInfo}>ID: {order.info._id}</div>
+            <div className={classes.OrderInfo}>
+              Date: {renderDate(order.info.dateOrder)}
+            </div>
+            <div className={classes.OrderInfo}>
+              Total price: <b>${order.info.totalPrice}</b>
+            </div>
+            <div className={classes.OrderInfo}>
+              <b>Payment: Paypal</b>
+            </div>
+            <div className={classes.OrderCancel}>Cancel Order</div>
+          </div>
+          {order.products.map((product) => {
+            return (
+              <div>
+                {dataProcessClick === index && (
+                  <div className={classes.OrderProduct}>
+                    <div className={classes.ProductDetail}>
+                      <a href="#a" className={classes.ProductName}>
+                        {product.nameProduct}
+                      </a>
+                      <div className={classes.Price}>${product.price}</div>
+                      <div className={classes.SubDetail}>
+                        <div>Quantity: {product.quantity}</div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </button>
+      );
+  });
 
   return (
     <div className={classes.Container}>
@@ -114,90 +288,13 @@ export default function UserOrder() {
       {/* ========== Processing Order ========= */}
       <div>
         <div className={classes.OrderType}>Processing Order</div>
-        <div>
-          <button className={classes.Order}>
-            <div className={classes.OrderHeader}>
-              <div className={classes.OrderStatus}>
-                <OrderStepper />
-              </div>
-              <div className={classes.OrderInfo}>ID: 121212</div>
-              <div className={classes.OrderInfo}>
-                Date: Sun, Aug 1, 2021 5:02 PM
-              </div>
-              {/* {item.isPayed == true ?
-                                      <div className={classes.OrderInfo}><b>Payment: Paypal</b></div>
-                                  :
-                                      <div className={classes.OrderInfo}><b>Payment: Ship COD</b></div>
-                                  }
-                                  {item.status == 1 && item.isPayed != true &&
-                                      <div className={classes.OrderCancel} onClick={()=>handleCancel(item._id)}>Cancel Order</div>
-                                  } */}
-              <div className={classes.OrderInfo}>
-                <b>Payment: Paypal</b>
-              </div>
-              <div className={classes.OrderCancel}>Cancel Order</div>
-            </div>
-            <div className={classes.OrderProduct}>
-              <a href="#a" className={classes.ProductImageContainer}>
-                <img
-                  alt=""
-                  className={classes.ProductImage}
-                  src="https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/e0c08734-caa0-4021-97ec-90b6945dfadb/air-force-1-shadow-shoe-klCJXd.jpg"
-                />
-              </a>
-              <div className={classes.ProductDetail}>
-                <a href="#a" className={classes.ProductName}>
-                  Nike Air Force
-                </a>
-                <div className={classes.Price}>$252</div>
-                <div className={classes.SubDetail}>
-                  <div>Size: 39</div>
-                  <div>Qty: 1</div>
-                  <div>Color: black</div>
-                </div>
-              </div>
-            </div>
-          </button>
-        </div>
+        {renderProcessingOrder}
       </div>
 
       {/* ========== Delivered Order ========= */}
       <div>
         <div className={classes.OrderType}>Delivered Order</div>
-        <div>
-          <button className={classes.Order}>
-            <div className={classes.OrderHeader}>
-              <div className={classes.OrderStatus}>
-                <OrderStepper />
-              </div>
-              <div className={classes.OrderInfo}>ID: 121212</div>
-              <div className={classes.OrderInfo}>
-                Date: Sun, Aug 1, 2021 5:02 PM
-              </div>
-            </div>
-
-            <div className={classes.OrderProduct}>
-              <a href="#a" className={classes.ProductImageContainer}>
-                <img
-                  alt=""
-                  className={classes.ProductImage}
-                  src="https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/e0c08734-caa0-4021-97ec-90b6945dfadb/air-force-1-shadow-shoe-klCJXd.jpg"
-                />
-              </a>
-              <div className={classes.ProductDetail}>
-                <a href="#a" className={classes.ProductName}>
-                  Nike Air Force
-                </a>
-                <div className={classes.Price}>$252</div>
-                <div className={classes.SubDetail}>
-                  <div>Size: 39</div>
-                  <div>Qty: 1</div>
-                  <div>Color: black</div>
-                </div>
-              </div>
-            </div>
-          </button>
-        </div>
+        {renderDeliveryOrder}
       </div>
     </div>
   );
