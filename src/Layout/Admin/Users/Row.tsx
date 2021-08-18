@@ -19,6 +19,7 @@ import { RootState } from "../../../Redux/store";
 import { useAppDispatch, useAppSelector } from "../../../Hooks/Hook";
 import { notifiError, notifiSuccess } from "../../../utils/MyToys";
 import { setIsCRUD } from "./module/manageUserReducer";
+import { ID_USER, ID_STATUS } from "../../../Config/id";
 
 const useRowStyles = makeStyles({
   root: {
@@ -311,8 +312,8 @@ export default function Row({ user, findUser }: IProps) {
                 })}
                 className={classes.Detail}
               >
-                <option value="6117a4c6b701cf002036d6c8">Active</option>
-                <option value="610bf113dccf125e487e1b4d">Inactive</option>
+                <option value={`${ID_STATUS.ACTIVE}`}>Active</option>
+                <option value={`${ID_STATUS.INACTIVE}`}>Inactive</option>
               </select>
               {errors.statusId && (
                 <p className={classes.inputValid}>{errors.statusId.message}</p>
@@ -326,8 +327,8 @@ export default function Row({ user, findUser }: IProps) {
                 })}
                 className={classes.Detail}
               >
-                <option value="60f32404d29b52428cff51f4">User</option>
-                <option value="60f3239ad29b52428cff51f2">Admin</option>
+                <option value={`${ID_USER.USER}`}>User</option>
+                <option value={`${ID_USER.ADMIN}`}>Admin</option>
               </select>
               {errors.roleId && (
                 <p className={classes.inputValid}>{errors.roleId.message}</p>
