@@ -22,7 +22,7 @@ class UserService {
   };
 
   signUp = (user: SignUp) => {
-    return API('user', 'POST', user, '');
+    return API('user/createUserProfile', 'POST', user, '');
   };
 
   loginGoogle = (token: any) => {

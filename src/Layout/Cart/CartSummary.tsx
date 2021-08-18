@@ -1,11 +1,12 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { useAppSelector } from '../../Hooks/Hook';
+import { useAppDispatch, useAppSelector } from '../../Hooks/Hook';
 import { RootState } from '../../Redux/store';
 import userService from '../../Service/UserService';
 import { notifiError, notifiSuccess } from '../../utils/MyToys';
 import Paypal from '../../Component/paypal/paypal';
 import cartService from '../../Service/CartService';
+import { setCart } from './module/cartReducer';
 
 const useStyles = makeStyles((theme) => ({
   Summary: {
@@ -62,6 +63,7 @@ function CartSummary() {
       return (sum += item.quantity * item.quantitySize.price);
     }, 0);
   };
+  const dispatch = useAppDispatch();
   console.log(cart);
 
   const checkout = () => {
@@ -84,12 +86,12 @@ function CartSummary() {
     }, 2000);
   };
   const [listDiscount, setListDiscount] = React.useState<any>([]);
-  const user = useAppSelector(
-    (state: RootState) => state.credentialsReducer.userInfo
+  const token = useAppSelector(
+    (state: RootState) => state.credentialsReducer.token
   );
   const [discountID, setDiscountID] = React.useState();
   React.useEffect(() => {
-    if (user) {
+    if (token !== '') {
       const callAPI = async () => {
         const token = userService.getAccessToken();
         const res = await cartService.getDiscountUser(token);
@@ -99,7 +101,7 @@ function CartSummary() {
       };
       callAPI();
     }
-  }, [user]);
+  }, [token, checkoutSuccess]);
 
   const transactionCancel = (data: any) => {
     console.log('errror', data);
@@ -127,6 +129,9 @@ function CartSummary() {
         console.log('zo');
         const res = await cartService.orderCart(token, data);
         console.log(res.data);
+        dispatch(setCart([]));
+        localStorage.removeItem('cart');
+        setCheckOutSuccess(false);
         notifiSuccess('Order successful');
       };
       callAPI();
@@ -139,7 +144,12 @@ function CartSummary() {
       const discount: any = listDiscount.find((item: any) => {
         return item.code._id === discountID;
       });
+      if (!discount) {
+        return 0;
+      }
       return discount?.code.codeValue;
+    } else {
+      return 0;
     }
   };
   return (
@@ -149,7 +159,7 @@ function CartSummary() {
         Subtotal
         <div className={classes.Price}>${getTotal()}</div>
       </div>
-      {user && (
+      {listDiscount.length > 0 && (
         <div className={classes.PriceDetail}>
           Discount
           <div className={classes.Price}>
@@ -160,7 +170,9 @@ function CartSummary() {
               }}
             >
               {listDiscount.map((item: any, index: number) => {
-                return <option value={item.code._id}>{item.code.codeValue}%</option>;
+                return (
+                  <option value={item.code._id}>{item.code.codeValue}%</option>
+                );
               })}
             </select>
           </div>
