@@ -65,6 +65,17 @@ function AdminMenuItem() {
             <ListItemText primary='Status' />
           </ListItem>
         </Link>
+        <Link
+          to='/admin/codes'
+          style={{ textDecoration: 'none', color: 'black' }}
+        >
+          <ListItem button>
+            <ListItemIcon>
+              <PeopleIcon />
+            </ListItemIcon>
+            <ListItemText primary='Code' />
+          </ListItem>
+        </Link>
       </List>
     </Fragment>
   );
