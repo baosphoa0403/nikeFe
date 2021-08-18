@@ -159,7 +159,7 @@ function CartSummary() {
         Subtotal
         <div className={classes.Price}>${getTotal()}</div>
       </div>
-      {listDiscount.length > 0 && (
+      {listDiscount.length > 0 && cart.length > 0 && (
         <div className={classes.PriceDetail}>
           Discount
           <div className={classes.Price}>
