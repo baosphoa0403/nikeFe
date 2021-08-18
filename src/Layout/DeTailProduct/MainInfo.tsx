@@ -1,22 +1,22 @@
 /* eslint-disable react/jsx-key */
-import React, { useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import productService from '../../Service/ProductService';
-import { ISize } from '../../Model/ISize';
-import { Button, ListItem, ListItemText } from '@material-ui/core';
+import React, { useEffect } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+import productService from "../../Service/ProductService";
+import { ISize } from "../../Model/ISize";
+import { Button, ListItem, ListItemText } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   ProductContainer: {
-    padding: '0 44px',
+    padding: "0 44px",
     fontSize: 16,
     lineHeight: 1.7,
-    [theme.breakpoints.down('md')]: {
-      padding: '0 8px',
+    [theme.breakpoints.down("md")]: {
+      padding: "0 8px",
     },
   },
   ProductImage: {
-    width: '100%',
+    width: "100%",
   },
   ShoesType: {
     fontSize: 16,
@@ -27,117 +27,117 @@ const useStyles = makeStyles((theme) => ({
   },
   Price: {
     fontSize: 16,
-    textAlign: 'right',
+    textAlign: "right",
   },
   Size: {
-    margin: '20px 0 12px',
+    margin: "20px 0 12px",
   },
   SelectSize: {
     fontSize: 16,
-    textAlign: 'left',
+    textAlign: "left",
   },
   AlertSelectSize: {
     fontSize: 16,
-    color: 'rgb(212, 63, 33)',
+    color: "rgb(212, 63, 33)",
   },
   SizeRadio: {
-    position: 'absolute',
+    position: "absolute",
     opacity: 0,
     width: 0,
     height: 0,
   },
   SizeLabel: {
     fontSize: 16,
-    padding: '10px 0 10px 0',
-    textAlign: 'center',
-    cursor: 'pointer',
-    borderRadius: '2px',
-    transition: 'none',
-    '&:hover': {
-      boxShadow: '0 0 0 2px black',
+    padding: "10px 0 10px 0",
+    textAlign: "center",
+    cursor: "pointer",
+    borderRadius: "2px",
+    transition: "none",
+    "&:hover": {
+      boxShadow: "0 0 0 2px black",
     },
   },
   SizeLabelChecked: {
-    boxShadow: '0 0 0 2px black',
-    padding: '10px 0 10px 0',
+    boxShadow: "0 0 0 2px black",
+    padding: "10px 0 10px 0",
     fontSize: 16,
-    textAlign: 'center',
-    cursor: 'pointer',
-    borderRadius: '2px',
+    textAlign: "center",
+    cursor: "pointer",
+    borderRadius: "2px",
   },
   SizeLabelNotAvailable: {
-    color: '#d7d7d7',
-    padding: '10px 0 10px 0',
+    color: "#d7d7d7",
+    padding: "10px 0 10px 0",
     fontSize: 16,
-    textAlign: 'center',
-    borderRadius: '2px',
+    textAlign: "center",
+    borderRadius: "2px",
     // cursor: "not-allowed",
     // pointerEvents: "none",
   },
   AddtoBag: {
-    width: '100%',
-    color: 'white',
-    backgroundColor: 'black',
-    padding: '18px 24px',
-    borderRadius: '30px',
-    border: 'none',
-    outline: 'none',
-    cursor: 'pointer',
+    width: "100%",
+    color: "white",
+    backgroundColor: "black",
+    padding: "18px 24px",
+    borderRadius: "30px",
+    border: "none",
+    outline: "none",
+    cursor: "pointer",
   },
   Favorite: {
-    width: '100%',
-    color: 'black',
-    backgroundColor: 'transparent',
-    padding: '18px 24px',
-    borderRadius: '30px',
-    border: '1px #ccc solid',
-    outline: 'none',
-    cursor: 'pointer',
+    width: "100%",
+    color: "black",
+    backgroundColor: "transparent",
+    padding: "18px 24px",
+    borderRadius: "30px",
+    border: "1px #ccc solid",
+    outline: "none",
+    cursor: "pointer",
   },
   FavoriteBorderIcon: {
     height: 15,
   },
   ProductLink: {
-    color: 'black',
-    textDecoration: 'none',
-    cursor: 'pointer',
+    color: "black",
+    textDecoration: "none",
+    cursor: "pointer",
     fontSize: 16,
   },
   ProductColorway: {
-    display: 'none',
+    display: "none",
   },
   ProductColorwayImage: {
-    width: '100px',
-    height: '100px',
-    border: '1px solid rgb(17, 17, 17)',
-    borderRadius: '4px',
+    width: "100px",
+    height: "100px",
+    border: "1px solid rgb(17, 17, 17)",
+    borderRadius: "4px",
     opacity: 1,
   },
   ProductColorwayImageHide: {
-    width: '100px',
-    height: '100px',
-    borderRadius: '4px',
+    width: "100px",
+    height: "100px",
+    borderRadius: "4px",
     opacity: 1,
-    cursor: 'pointer',
+    cursor: "pointer",
   },
   CheckSize: {
-    boxShadow: 'rgb(212, 63, 33) 0px 0px 0px 1px',
-    padding: '1px',
-    borderRadius: '4px',
+    boxShadow: "rgb(212, 63, 33) 0px 0px 0px 1px",
+    padding: "1px",
+    borderRadius: "4px",
   },
   AlertSize: {
-    margin: '20px 0px',
+    margin: "20px 0px",
   },
   AddtoBagNotAllow: {
-    cursor: 'not-allowed',
+    cursor: "not-allowed",
     // cursor: "no-drop",
-    width: '100%',
-    color: 'white',
-    backgroundColor: 'black',
-    padding: '18px 24px',
-    borderRadius: '30px',
-    border: 'none',
-    outline: 'none',
+    width: "100%",
+    color: "white",
+    backgroundColor: "black",
+    padding: "18px 24px",
+    borderRadius: "30px",
+    border: "none",
+    outline: "none",
   },
 }));
 interface IProps {
@@ -149,9 +149,10 @@ function MainInfo({ productDetail, onSubmitImages }: IProps) {
   const classes = useStyles();
 
   const [size, setSize] = React.useState<ISize[]>([]);
-  const [selectedSize, setSelectedSize] = React.useState<string>('');
+  const [selectedSize, setSelectedSize] = React.useState<string>("");
+  const [price, setPrice] = React.useState<number | null>(null);
   const [infoProduct, setInfoProduct] = React.useState<any>({
-    name: '',
+    name: "",
     details: {},
   });
 
@@ -176,22 +177,29 @@ function MainInfo({ productDetail, onSubmitImages }: IProps) {
 
   const handleChangeInfo = (item: any) => {
     setInfoProduct({ ...infoProduct, details: item });
+    setPrice(null);
     onSubmitImages(item.images);
   };
 
-  const handleChooseSize = (size: string) => {
-    setSelectedSize(size);
-    console.log('click: ', size);
+  const handleChooseSize = (item: any) => {
+    setSelectedSize(item.nameSize);
+
+    // set price
+    infoProduct.details.quantities.forEach((el: any) => {
+      if (el.size._id === item._id) {
+        // co size
+        setPrice(el.price);
+      }
+    });
   };
-  // console.log('productDetail: ', productDetail);
+
   const bindingArr = () => {
     if (productDetail.length > 0) {
       return productDetail.map((item: any, index: number) => {
-        console.log(item);
         return (
           <Grid item xs={4} key={index}>
             <img
-              alt=''
+              alt=""
               src={item.images[0].urlImage}
               className={classes.ProductColorwayImageHide}
               onClick={() => {
@@ -203,11 +211,12 @@ function MainInfo({ productDetail, onSubmitImages }: IProps) {
       });
     }
   };
+
   const checkSize = (item: any) => {
     let flag = false;
     if (infoProduct && infoProduct.details) {
       infoProduct.details.quantities.forEach((el: any) => {
-        if (el.size === item._id) {
+        if (el.size._id === item._id) {
           // co size trong kho
           flag = true;
         }
@@ -228,7 +237,7 @@ function MainInfo({ productDetail, onSubmitImages }: IProps) {
     let flag = false;
     if (infoProduct && infoProduct.details) {
       infoProduct.details.quantities.forEach((el: any) => {
-        if (el.size === item._id) {
+        if (el.size._id === item._id) {
           // co size trong kho
           flag = true;
         }
@@ -242,11 +251,11 @@ function MainInfo({ productDetail, onSubmitImages }: IProps) {
     }
   };
 
-  const listSize = size.map((item, index) => (
+  const listSize = size.map((item) => (
     <Grid item xs={4} key={item._id}>
       <Button
         onClick={() => {
-          handleChooseSize(item.nameSize);
+          handleChooseSize(item);
         }}
         className={checkSize(item)}
         disabled={checkIsDisableSize(item)}
@@ -256,12 +265,20 @@ function MainInfo({ productDetail, onSubmitImages }: IProps) {
     </Grid>
   ));
 
+  const renderPrice = (price: number | null) => {
+    if (price) {
+      return <div className={classes.Price}>${price}</div>;
+    } else {
+      return <span></span>;
+    }
+  };
+
   return (
     <Grid container className={classes.ProductContainer} spacing={2}>
       {/* show info */}
       <Grid item xs={8}>
         <div className={classes.ShoesType}>
-          Gender:{' '}
+          Gender:{" "}
           {infoProduct &&
             infoProduct.details &&
             infoProduct.details.info &&
@@ -274,10 +291,15 @@ function MainInfo({ productDetail, onSubmitImages }: IProps) {
             infoProduct.details.info.product.name}
         </div>
       </Grid>
+
+      {/* price */}
       <Grid item xs={4}>
-        {/* <div className={classes.Price}>$254</div> */}
+        {renderPrice(price)}
       </Grid>
+
+      {/* small images */}
       {bindingArr()}
+
       {/* show sizes */}
       <Grid item xs={12}>
         <Grid container className={classes.Size} spacing={2}>
