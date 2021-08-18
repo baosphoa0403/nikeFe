@@ -20,7 +20,7 @@ import { USER_ROLE } from '../Config';
 import { StyledButton } from './Button';
 import statusService from '../Service/StatusService';
 import codeService from '../Service/CodeService';
-import { notifiSuccess } from '../utils/MyToys';
+import { notifiError, notifiSuccess } from '../utils/MyToys';
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -121,12 +121,20 @@ export default function ModalCodeDetal({
       listIdUsers,
       idStatus: statusActive._id,
     };
-    const callAPI = async () => {
-      const token = userService.getAccessToken();
-      const res = await codeService.postCodeDetail(token, data);
-      notifiSuccess(res.data);
-    };
-    callAPI();
+    const token = userService.getAccessToken();
+    codeService
+      .postCodeDetail(token, data)
+      .then((res: any) => {
+        notifiSuccess(res.data);
+      })
+      .catch((err) => {
+        console.log({ ...err });
+        let str = '';
+        for (const item of err.response.data.message) {
+          str += item + ' ';
+        }
+        notifiError(`${str} has code`);
+      });
   };
   return (
     <div>
