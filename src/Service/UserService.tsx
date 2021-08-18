@@ -18,7 +18,11 @@ class UserService {
     return person;
   };
   login = (user: Login) => {
-    return API("auth/login", "POST", user, "");
+    return API('auth/login', 'POST', user, '');
+  };
+
+  signUp = (user: SignUp) => {
+    return API('user/createUserProfile', 'POST', user, '');
   };
 
   loginGoogle = (token: any) => {

@@ -1,15 +1,15 @@
-import React from "react";
-import { Dialog, IconButton, makeStyles } from "@material-ui/core";
-import { useForm } from "react-hook-form";
-import CloseIcon from "@material-ui/icons/Close";
-import Slide from "@material-ui/core/Slide";
-import { TransitionProps } from "@material-ui/core/transitions";
-import userService from "../../Service/UserService";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { notifiError, notifiSuccess } from "../../utils/MyToys";
-import { LoginSocial } from "../../Model/IUser";
-import { STATUS } from "../../Config/statusCode";
+import React from 'react';
+import { Dialog, IconButton, makeStyles } from '@material-ui/core';
+import { useForm } from 'react-hook-form';
+import CloseIcon from '@material-ui/icons/Close';
+import Slide from '@material-ui/core/Slide';
+import { TransitionProps } from '@material-ui/core/transitions';
+import userService from '../../Service/UserService';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { notifiError, notifiSuccess } from '../../utils/MyToys';
+import { LoginSocial } from '../../Model/IUser';
+import { STATUS } from '../../Config/statusCode';
 
 const useStyles = makeStyles((theme) => ({
   navListFeature: {

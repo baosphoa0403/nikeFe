@@ -19,6 +19,7 @@ import { fetchApiLogin } from './module/action/Action';
 import { fetchApiUserProfile } from '../NavSub/module/action/action';
 import { RootState } from '../../../Redux/store';
 import { setIsUpdatedUserProfile } from '../NavSub/module/reducer/userProfileReducer';
+import { useRouteMatch } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   navListFeature: {
@@ -220,9 +221,9 @@ export default function SignIn(props: Props) {
   //   handleClickOpen();
   // dispatch(setIsUpdatedUserProfile(false));
   // }
-
+  let match = useRouteMatch('');
   React.useEffect(() => {
-    if (props.isUpdatedUserProfile) {
+    if (props.isUpdatedUserProfile && match?.url === '/') {
       handleClickOpen();
       dispatch(setIsUpdatedUserProfile(false));
     }
