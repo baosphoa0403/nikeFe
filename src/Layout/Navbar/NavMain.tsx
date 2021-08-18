@@ -2,9 +2,9 @@ import { AppBar, makeStyles, Toolbar } from "@material-ui/core";
 import React from "react";
 import EcoIcon from "@material-ui/icons/Eco";
 import { useHistory } from "react-router-dom";
-import NavMenu from "./NavMenu";
 import NavFeature from "./NavFeature";
 import { PATH_NAME } from "../../Config";
+import NavMenu from "./NavMenu/NavMenu";
 
 const useStyles = makeStyles((theme) => ({
   root: {
