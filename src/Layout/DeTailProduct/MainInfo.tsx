@@ -9,7 +9,7 @@ import { notifiError, notifiSuccess } from '../../utils/MyToys';
 import { useAppDispatch } from '../../Hooks/Hook';
 import { addToCart } from '../Cart/module/cartReducer';
 import { useHistory } from 'react-router-dom';
-
+// import categoryReducer from '../Layout/Navbar/NavMenu/categoryReducer';
 const useStyles = makeStyles((theme) => ({
   ProductContainer: {
     padding: '0 44px',
@@ -164,6 +164,7 @@ function MainInfo({ productDetail, onSubmitImages }: IProps) {
   const [selectedSize, setSelectedSize] = React.useState<string>('');
   const [idSize, setIDSize] = React.useState<string>('');
   const [image, setImage] = React.useState<any>();
+  const [price, setPrice] = React.useState<number | null>(null);
   const [productDetailChoosen, setProductDetailChoosen] = React.useState<any>();
   const [infoProduct, setInfoProduct] = React.useState<any>({
     name: '',
@@ -197,12 +198,19 @@ function MainInfo({ productDetail, onSubmitImages }: IProps) {
     console.log(item);
     setProductDetailChoosen(item);
     setInfoProduct({ ...infoProduct, details: item });
+    setPrice(null);
     onSubmitImages(item.images);
   };
 
   const handleChooseSize = (size: string, id: string) => {
     setSelectedSize(size);
     setIDSize(id);
+    infoProduct.details.quantities.forEach((el: any) => {
+      if (el.size._id === id) {
+        // co size
+        setPrice(el.price);
+      }
+    });
   };
   // console.log('productDetail: ', productDetail);
   const handleCheckout = () => {
@@ -258,6 +266,7 @@ function MainInfo({ productDetail, onSubmitImages }: IProps) {
       });
     }
   };
+
   const checkSize = (item: any) => {
     let flag = false;
     if (infoProduct && infoProduct.details) {
@@ -297,7 +306,7 @@ function MainInfo({ productDetail, onSubmitImages }: IProps) {
     }
   };
 
-  const listSize = size.map((item, index) => (
+  const listSize = size.map((item) => (
     <Grid item xs={4} key={item._id}>
       <Button
         onClick={() => {
@@ -311,6 +320,14 @@ function MainInfo({ productDetail, onSubmitImages }: IProps) {
     </Grid>
   ));
   // console.log(productDetail);
+
+  const renderPrice = (price: number | null) => {
+    if (price) {
+      return <div className={classes.Price}>${price}</div>;
+    } else {
+      return <span></span>;
+    }
+  };
 
   return (
     <Grid container className={classes.ProductContainer} spacing={2}>
@@ -330,10 +347,15 @@ function MainInfo({ productDetail, onSubmitImages }: IProps) {
             infoProduct.details.info.product.name}
         </div>
       </Grid>
+
+      {/* price */}
       <Grid item xs={4}>
-        {/* <div className={classes.Price}>$254</div> */}
+        {renderPrice(price)}
       </Grid>
+
+      {/* small images */}
       {bindingArr()}
+
       {/* show sizes */}
       <Grid item xs={12}>
         <Grid container className={classes.Size} spacing={2}>

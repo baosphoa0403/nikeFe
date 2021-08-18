@@ -6,6 +6,7 @@ import userProfileReducer from '../Layout/Navbar/NavSub/module/reducer/userProfi
 import detailProductReducer from '../Layout/DeTailProduct/module/detailProductReducer';
 import manageUserReducer from '../Layout/Admin/Users/module/manageUserReducer';
 import cartReducer from '../Layout/Cart/module/cartReducer';
+import categoryReducer from '../Layout/Navbar/NavMenu/categoryReducer';
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
@@ -15,6 +16,7 @@ export const store = configureStore({
     detailProductReducer,
     manageUserReducer,
     cartReducer,
+    categoryReducer,
   },
 });
 
