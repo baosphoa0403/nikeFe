@@ -3,6 +3,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
+import { useForm } from 'react-hook-form';
+import { DialogActions, DialogContent, DialogTitle } from '@material-ui/core';
+import { StyledButton } from './Button';
+import userService from '../Service/UserService';
+import codeService from '../Service/CodeService';
+import { notifiSuccess } from '../utils/MyToys';
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -16,30 +22,88 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
   },
+  form: {
+    width: 350,
+  },
+  Detail: {
+    width: '100%',
+    marginTop: '10px',
+    padding: '12px',
+    fontSize: 14,
+  },
+  inputValid: {
+    color: '#fe0000',
+  },
+  inputContainer: {
+    marginBottom: 18,
+  },
 }));
 
-export default function ModalCode() {
+interface Props {
+  open: boolean;
+  closeModal: () => void;
+  title: string;
+  contentButton: string;
+  code: any;
+}
+export default function ModalCode({
+  closeModal,
+  open,
+  title,
+  contentButton,
+  code,
+}: Props) {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
-
-  const handleOpen = () => {
-    setOpen(true);
+  type FormStatus = {
+    codeName: string;
+    codeValue: string;
   };
-
-  const handleClose = () => {
-    setOpen(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    setValue,
+  } = useForm<FormStatus>();
+  const onSubmitEdit = (data: { codeName: string; codeValue: any }) => {
+    console.log(data);
+    data = { ...data, codeValue: parseInt(data.codeValue) };
+    if (title === 'create code') {
+      const callAPI = async () => {
+        const token = userService.getAccessToken();
+        const res = await codeService.postCode(token, data);
+        closeModal();
+        notifiSuccess('create code successfull');
+      };
+      callAPI();
+    } else {
+      const callAPI = async () => {
+        const token = userService.getAccessToken();
+        const res = await codeService.updateCode(code._id, token, data);
+        closeModal();
+        notifiSuccess('update code successfull');
+      };
+      callAPI();
+    }
   };
+  React.useEffect(() => {
+    if (code) {
+      setValue('codeName', code.codeName);
+      setValue('codeValue', code.codeValue);
+      return () => {
+        setValue('codeName', '');
+        setValue('codeValue', '');
+      };
+    }
+  }, [code, open, setValue]);
   return (
     <div>
-      <button type='button' onClick={handleOpen}>
-        react-transition-group
-      </button>
       <Modal
         aria-labelledby='transition-modal-title'
         aria-describedby='transition-modal-description'
         className={classes.modal}
         open={open}
-        onClose={handleClose}
+        onClose={closeModal}
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{
@@ -48,10 +112,48 @@ export default function ModalCode() {
       >
         <Fade in={open}>
           <div className={classes.paper}>
-            <h2 id='transition-modal-title'>Transition modal</h2>
-            <p id='transition-modal-description'>
-              react-transition-group animates me.
-            </p>
+            <DialogTitle id='alert-dialog-title'>{title}</DialogTitle>
+            <form
+              className={classes.form}
+              id='AdminFormEditUser'
+              onSubmit={handleSubmit(onSubmitEdit)}
+            >
+              <DialogContent>
+                <div className={classes.inputContainer}>
+                  <div>CodeName: </div>
+                  <input
+                    type='text'
+                    className={classes.Detail}
+                    placeholder='codeName'
+                    {...register('codeName', {
+                      required: 'codeName is required',
+                    })}
+                  />
+                  {errors.codeName && (
+                    <p className={classes.inputValid}>
+                      {errors.codeName.message}
+                    </p>
+                  )}
+                  <div>CodeValue: </div>
+                  <input
+                    type='number'
+                    className={classes.Detail}
+                    placeholder='code Value'
+                    {...register('codeValue', {
+                      required: 'codeValue is required',
+                    })}
+                  />
+                  {errors.codeValue && (
+                    <p className={classes.inputValid}>
+                      {errors.codeValue.message}
+                    </p>
+                  )}
+                </div>
+                <DialogActions>
+                  <StyledButton type='submit'>{contentButton}</StyledButton>
+                </DialogActions>
+              </DialogContent>
+            </form>
           </div>
         </Fade>
       </Modal>
