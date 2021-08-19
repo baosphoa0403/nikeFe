@@ -18,13 +18,21 @@ const useStyles = makeStyles((theme) => ({
 export default function Orders() {
   const classes = useStyles();
   const token = userService.getAccessToken();
-  let dataRes = null;
+  const [data, setData] = React.useState<any>();
+
+  let dataTable = [];
+
+  data.map((item) => {
+    // const oneRow = {
+    //   createdAt:
+    // }
+  });
 
   React.useEffect(() => {
     const callAPI = async () => {
       try {
         const res = await cartService.getAllOrders(token);
-        dataRes = res.data;
+        setData(res.data);
       } catch (error) {
         console.log({ ...error });
       }
