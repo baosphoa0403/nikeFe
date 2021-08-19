@@ -1,11 +1,12 @@
-import { configureStore } from "@reduxjs/toolkit";
-import counterReducer from "../features/counter/counterSlice";
-import listMovieReducer from "./moduleDemo/reducer/ListMovieReducer";
-import credentialsReducer from "../Layout/Navbar/SignIn/module/reducer/credentialsReducer";
-import userProfileReducer from "../Layout/Navbar/NavSub/module/reducer/userProfileReducer";
-import detailProductReducer from "../Layout/DeTailProduct/module/detailProductReducer";
-import manageUserReducer from "../Layout/Admin/Users/module/manageUserReducer";
-
+import { configureStore } from '@reduxjs/toolkit';
+import counterReducer from '../features/counter/counterSlice';
+import listMovieReducer from './moduleDemo/reducer/ListMovieReducer';
+import credentialsReducer from '../Layout/Navbar/SignIn/module/reducer/credentialsReducer';
+import userProfileReducer from '../Layout/Navbar/NavSub/module/reducer/userProfileReducer';
+import detailProductReducer from '../Layout/DeTailProduct/module/detailProductReducer';
+import manageUserReducer from '../Layout/Admin/Users/module/manageUserReducer';
+import cartReducer from '../Layout/Cart/module/cartReducer';
+import categoryReducer from '../Layout/Navbar/NavMenu/categoryReducer';
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
@@ -14,6 +15,8 @@ export const store = configureStore({
     userProfileReducer,
     detailProductReducer,
     manageUserReducer,
+    cartReducer,
+    categoryReducer,
   },
 });
 

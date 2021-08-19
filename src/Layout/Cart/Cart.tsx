@@ -1,27 +1,29 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import Container from "@material-ui/core/Container";
-import CartBag from "./CartBag";
-import CartSummary from "./CartSummary";
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import Container from '@material-ui/core/Container';
+import CartBag from './CartBag';
+import CartSummary from './CartSummary';
+import { useAppSelector } from '../../Hooks/Hook';
+import { RootState } from '../../Redux/store';
 
 const useStyles = makeStyles((theme) => ({
   Container: {
-    margin: "40px 0",
+    margin: '40px 0',
   },
   Cart: {
     width: 1100,
-    [theme.breakpoints.down("md")]: {
-      width: "92%",
+    [theme.breakpoints.down('md')]: {
+      width: '92%',
     },
-    [theme.breakpoints.down("sm")]: {
-      width: "100%",
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
     },
-    margin: "0px auto",
+    margin: '0px auto',
     fontSize: 16,
   },
   PromoCode: {
-    padding: "8px 0 30px 16px",
+    padding: '8px 0 30px 16px',
     fontSize: 12,
   },
   PromoCodeTitle: {
@@ -37,7 +39,7 @@ function Cart() {
 
   return (
     <div className={classes.Container}>
-      <Container maxWidth="xl">
+      <Container maxWidth='xl'>
         <div className={classes.Cart}>
           <Grid container spacing={2}>
             <Grid item md={8} xs={12}>
