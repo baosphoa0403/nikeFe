@@ -5,6 +5,7 @@ import moment from "moment";
 import cartService from "../../../Service/CartService";
 import userService from "../../../Service/UserService";
 import { notifiError } from "../../../utils/MyToys";
+import Card from "./Card";
 
 const useStyles = makeStyles((theme) => ({
   Container: {
@@ -118,184 +119,30 @@ export default function UserOrder() {
       .catch((err) => {
         console.log({ ...err });
       });
-  }, [token]);
-
-  const [dataProcessClick, setdataProcessClick] = React.useState(0);
-  const handleOrderClick = (index) => {
-    if (index == dataProcessClick) {
-      setdataProcessClick(-1);
-    } else {
-      setdataProcessClick(index);
-    }
-  };
-
-  const renderDate = (UTCdate: string) => {
-    const newDateFormat = new Date(UTCdate).toLocaleDateString("en-GB");
-    const newTimeFormat = new Date(UTCdate).toLocaleTimeString("en-GB", {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-
-    return newDateFormat + ", " + newTimeFormat;
-  };
+  }, []);
 
   const renderProcessingOrder = listOrder.map((order, index) => {
     if (order.info.status.nameStatus === "pending") {
-      return (
-        <button className={classes.Order} key={order.info._id}>
-          <div
-            className={classes.OrderHeader}
-            onClick={() => {
-              handleOrderClick(index);
-            }}
-          >
-            <div className={classes.OrderStatus}>
-              <OrderStepper step={0} />
-            </div>
-            <div className={classes.OrderInfo}>ID: {order.info._id}</div>
-            <div className={classes.OrderInfo}>
-              Date: {renderDate(order.info.dateOrder)}
-            </div>
-            <div className={classes.OrderInfo}>
-              Total price: <b>${order.info.totalPrice}</b>
-            </div>
-            <div className={classes.OrderInfo}>
-              <b>Payment: Paypal</b>
-            </div>
-            <div className={classes.OrderCancel}>Cancel Order</div>
-          </div>
-          {order.products.map((product) => {
-            return (
-              <div>
-                {dataProcessClick === index && (
-                  <div className={classes.OrderProduct}>
-                    <div className={classes.ProductDetail}>
-                      <a href="#a" className={classes.ProductName}>
-                        {product.nameProduct}
-                      </a>
-                      <div className={classes.Price}>${product.price}</div>
-                      <div className={classes.SubDetail}>
-                        <div>Quantity: {product.quantity}</div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </button>
-      );
+      return <Card order={order} index={index} step={0} />;
     } else if (order.info.status.nameStatus === "delivery") {
-      return (
-        <button className={classes.Order} key={order.info._id}>
-          <div
-            className={classes.OrderHeader}
-            onClick={() => {
-              handleOrderClick(index);
-            }}
-          >
-            <div className={classes.OrderStatus}>
-              <OrderStepper step={1} />
-            </div>
-            <div className={classes.OrderInfo}>ID: {order.info._id}</div>
-            <div className={classes.OrderInfo}>
-              Date: {renderDate(order.info.dateOrder)}
-            </div>
-            <div className={classes.OrderInfo}>
-              Total price: <b>${order.info.totalPrice}</b>
-            </div>
-            <div className={classes.OrderInfo}>
-              <b>Payment: Paypal</b>
-            </div>
-            <div className={classes.OrderCancel}>Cancel Order</div>
-          </div>
-          {order.products.map((product) => {
-            return (
-              <div>
-                {dataProcessClick === index && (
-                  <div className={classes.OrderProduct}>
-                    <div className={classes.ProductDetail}>
-                      <a href="#a" className={classes.ProductName}>
-                        {product.nameProduct}
-                      </a>
-                      <div className={classes.Price}>${product.price}</div>
-                      <div className={classes.SubDetail}>
-                        <div>Quantity: {product.quantity}</div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </button>
-      );
+      return <Card order={order} index={index} step={1} />;
     }
   });
 
   const renderDeliveryOrder = listOrder.map((order, index) => {
     if (order.info.status.nameStatus === "complete")
-      return (
-        <button className={classes.Order} key={order.info._id}>
-          <div
-            className={classes.OrderHeader}
-            onClick={() => {
-              handleOrderClick(index);
-            }}
-          >
-            <div className={classes.OrderStatus}>
-              <OrderStepper step={2} />
-            </div>
-            <div className={classes.OrderInfo}>ID: {order.info._id}</div>
-            <div className={classes.OrderInfo}>
-              Date: {renderDate(order.info.dateOrder)}
-            </div>
-            <div className={classes.OrderInfo}>
-              Total price: <b>${order.info.totalPrice}</b>
-            </div>
-            <div className={classes.OrderInfo}>
-              <b>Payment: Paypal</b>
-            </div>
-            <div className={classes.OrderCancel}>Cancel Order</div>
-          </div>
-          {order.products.map((product) => {
-            return (
-              <div>
-                {dataProcessClick === index && (
-                  <div className={classes.OrderProduct}>
-                    <div className={classes.ProductDetail}>
-                      <a href="#a" className={classes.ProductName}>
-                        {product.nameProduct}
-                      </a>
-                      <div className={classes.Price}>${product.price}</div>
-                      <div className={classes.SubDetail}>
-                        <div>Quantity: {product.quantity}</div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </button>
-      );
+      return <Card order={order} index={index} step={2} />;
   });
 
   return (
     <div className={classes.Container}>
       <div className={classes.Title}>Your Order</div>
 
-      {/* ========== Processing Order ========= */}
-      <div>
-        <div className={classes.OrderType}>Processing Order</div>
-        {renderProcessingOrder}
-      </div>
+      <div className={classes.OrderType}>Processing Order</div>
+      {renderProcessingOrder}
 
-      {/* ========== Delivered Order ========= */}
-      <div>
-        <div className={classes.OrderType}>Delivered Order</div>
-        {renderDeliveryOrder}
-      </div>
+      <div className={classes.OrderType}>Delivered Order</div>
+      {renderDeliveryOrder}
     </div>
   );
 }
