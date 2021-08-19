@@ -13,6 +13,9 @@ class CartService {
   getAllOrders = (token: string) => {
     return API("order/list-history", "GET", "", token);
   };
+  updateStatus = (idOrder: string, data: any, token: string) => {
+    return API(`order/${idOrder}`, "PATCH", data, token);
+  };
 }
 
 const cartService = new CartService();

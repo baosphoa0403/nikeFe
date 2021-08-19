@@ -10,3 +10,11 @@ export const ID_STATUS = {
   DELIVERY: "6117a868b701cf002036d746",
   COMPLETE: "6117a882b701cf002036d74d",
 };
+
+export const NAME_STATUS = {
+  ACTIVE: "active",
+  INACTIVE: "inactive",
+  PENDING: "pending",
+  DELIVERY: "delivery",
+  COMPLETE: "complete",
+};
