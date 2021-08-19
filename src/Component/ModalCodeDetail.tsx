@@ -59,8 +59,8 @@ export default function ModalCodeDetal({
     if (openCodeDetal) {
       const callAPI = async () => {
         const token = userService.getAccessToken();
-        const res = await userService.getAllUsers(token);
-        const array = [];
+        const res: any = await userService.getAllUsers(token);
+        const array: any = [];
         for (let item of res.data) {
           if (item.role.nameRole === USER_ROLE.USER) {
             item = { ...item, [item.email]: false };
@@ -81,10 +81,10 @@ export default function ModalCodeDetal({
   }, [openCodeDetal]);
 
   const handleChange = (event: any) => {
-    const array = [];
+    const array: any = [];
     if (event.target.name === 'All') {
       setAll(event.target.checked);
-      const array = [];
+      const array: any = [];
       for (let item of listUser) {
         item = { ...item, [item.email]: !all };
         console.log(item?.[item.email]);
@@ -110,7 +110,7 @@ export default function ModalCodeDetal({
     }
   };
   const createCodeDetail = () => {
-    const listIdUsers = [];
+    const listIdUsers: any = [];
     for (const item of listUser) {
       if (item?.[item.email] === true) {
         listIdUsers.push(item._id);
