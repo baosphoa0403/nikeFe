@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import { List } from '@material-ui/core';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import PeopleIcon from '@material-ui/icons/People';
-
+import CodeIcon from '@material-ui/icons/Code';
 function AdminMenuItem() {
   return (
     <Fragment>
@@ -63,6 +63,28 @@ function AdminMenuItem() {
               <PeopleIcon />
             </ListItemIcon>
             <ListItemText primary='Status' />
+          </ListItem>
+        </Link>
+        <Link
+          to='/admin/codes'
+          style={{ textDecoration: 'none', color: 'black' }}
+        >
+          <ListItem button>
+            <ListItemIcon>
+              <CodeIcon />
+            </ListItemIcon>
+            <ListItemText primary='Code' />
+          </ListItem>
+        </Link>
+        <Link
+          to='/admin/codeDetail'
+          style={{ textDecoration: 'none', color: 'black' }}
+        >
+          <ListItem button>
+            <ListItemIcon>
+              <CodeIcon />
+            </ListItemIcon>
+            <ListItemText primary='Code Detail' />
           </ListItem>
         </Link>
       </List>

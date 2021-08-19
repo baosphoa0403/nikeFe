@@ -82,7 +82,8 @@ export default function Status() {
   const [status, setStatus] = React.useState<IStatus[]>([]);
   const [open, setOpen] = React.useState<boolean>(false);
   const [flag, setFlag] = React.useState<boolean>(false);
-  const [nameStatus, setNameStatus] = React.useState<string>("");
+  const [nameStatus, setNameStatus] = React.useState<string>('');
+  const [idStatus, setIDStatus] = React.useState<string>('');
   React.useEffect(() => {
     const callAPI = async () => {
       const res = await statusService.getAllStatus();
@@ -170,6 +171,7 @@ export default function Status() {
                       setFlag(true);
                       openModal();
                       setNameStatus(item.nameStatus);
+                      setIDStatus(item._id);
                     }}
                   >
                     Update
@@ -186,6 +188,7 @@ export default function Status() {
         title={!flag ? "Form: Create Status" : "Form: Update Status"}
         contentButton={!flag ? "Create" : "Save"}
         nameStatus={nameStatus}
+        idStatus={idStatus}
       />
 
       {/* Confirm Dialog */}
