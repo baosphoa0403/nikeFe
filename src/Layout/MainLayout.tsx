@@ -1,10 +1,10 @@
-import React, { Fragment } from 'react';
-import Counter from '../Component/Counter';
-import Carousel from './Carousel/Carousel';
-import { setCart } from './Cart/module/cartReducer';
-import Footer from './Footer/Footer';
-import ShowProductsAndFilter from './ListProducts/ShowProductsAndFilter';
-import NavBar from './Navbar/Navbar';
+import React, { Fragment } from "react";
+import Counter from "../Component/Counter";
+import Carousel from "./Carousel/Carousel";
+import { setCart } from "./Cart/module/cartReducer";
+import Footer from "./Footer/Footer";
+import ShowProductsAndFilter from "./ListProducts/ShowProductsAndFilter";
+import NavBar from "./Navbar/Navbar";
 
 // import NavBar from "./Navbar/NavBar";
 

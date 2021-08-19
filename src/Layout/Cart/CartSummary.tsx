@@ -6,7 +6,7 @@ import userService from "../../Service/UserService";
 import { notifiError, notifiSuccess } from "../../utils/MyToys";
 import Paypal from "../../Component/paypal/paypal";
 import cartService from "../../Service/CartService";
-import { setCart } from "./module/cartReducer";
+import { setCart, setIsOrderHistoryChange } from "./module/cartReducer";
 import { useHistory } from "react-router-dom";
 import { PATH_NAME } from "../../Config";
 
@@ -142,7 +142,10 @@ function CartSummary() {
         notifiSuccess("Order successful");
       };
       callAPI();
-      history.push(PATH_NAME.USER_ORDER);
+      dispatch(setIsOrderHistoryChange(true));
+      setTimeout(() => {
+        history.push(PATH_NAME.USER_ORDER);
+      }, 3000);
     } catch (error) {
       console.log(error);
     }

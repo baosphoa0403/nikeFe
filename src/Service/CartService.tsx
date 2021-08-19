@@ -10,6 +10,9 @@ class CartService {
   orderHistoryMe = (token: string) => {
     return API("order/history/me", "GET", "", token);
   };
+  getAllOrders = (token: string) => {
+    return API("order/list-history", "GET", "", token);
+  };
 }
 
 const cartService = new CartService();

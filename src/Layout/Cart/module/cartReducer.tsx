@@ -1,16 +1,19 @@
-import { createSlice, current, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
+import action from "../../DeTailProduct/module/action";
 
 export interface Cart {
   cart: [];
   flag: false;
+  isOrderPageChange: boolean;
 }
 
 const initialState = {
   cart: [] as any,
   flag: false,
+  isOrderHistoryChange: false,
 };
 export const cartSlice = createSlice({
-  name: 'cart',
+  name: "cart",
   initialState,
   reducers: {
     addToCart: (state, { payload }: PayloadAction<any>) => {
@@ -27,7 +30,7 @@ export const cartSlice = createSlice({
         state.cart[index].quantity += 1;
       }
       // console.log(current(state));
-      localStorage.setItem('cart', JSON.stringify(state.cart));
+      localStorage.setItem("cart", JSON.stringify(state.cart));
     },
     setCart: (state, { payload }: PayloadAction<any>) => {
       state.cart = payload;
@@ -53,7 +56,7 @@ export const cartSlice = createSlice({
           cart.splice(index, 1);
         }
       }
-      localStorage.setItem('cart', JSON.stringify(cart));
+      localStorage.setItem("cart", JSON.stringify(cart));
     },
     removeProduct: (state, { payload }: PayloadAction<any>) => {
       const { idProduct, idSize } = payload;
@@ -64,10 +67,13 @@ export const cartSlice = createSlice({
         );
       });
       cart.splice(index, 1);
-      localStorage.setItem('cart', JSON.stringify(cart));
+      localStorage.setItem("cart", JSON.stringify(cart));
     },
     updateFlag: (state, { payload }: PayloadAction<boolean>) => {
       state.flag = payload;
+    },
+    setIsOrderHistoryChange: (state, payload: PayloadAction<boolean>) => {
+      state.isOrderHistoryChange = !state.isOrderHistoryChange;
     },
   },
 });
@@ -78,5 +84,6 @@ export const {
   incrementAndDecrease,
   removeProduct,
   updateFlag,
+  setIsOrderHistoryChange,
 } = cartSlice.actions;
 export default cartSlice.reducer;

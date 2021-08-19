@@ -6,6 +6,8 @@ import cartService from "../../../Service/CartService";
 import userService from "../../../Service/UserService";
 import { notifiError } from "../../../utils/MyToys";
 import Card from "./Card";
+import { useAppSelector } from "../../../Hooks/Hook";
+import { RootState } from "../../../Redux/store";
 
 const useStyles = makeStyles((theme) => ({
   Container: {
@@ -107,8 +109,10 @@ const useStyles = makeStyles((theme) => ({
 export default function UserOrder() {
   const classes = useStyles();
   const token = userService.getAccessToken();
+  const isChange = useAppSelector(
+    (state: RootState) => state.cartReducer.isOrderHistoryChange
+  );
   const [listOrder, setListOrder] = React.useState<any>([]);
-  const step = [0, 1, 2];
 
   React.useEffect(() => {
     cartService
@@ -119,7 +123,7 @@ export default function UserOrder() {
       .catch((err) => {
         console.log({ ...err });
       });
-  }, []);
+  }, [isChange]);
 
   const renderProcessingOrder = listOrder.map((order, index) => {
     if (order.info.status.nameStatus === "pending") {
