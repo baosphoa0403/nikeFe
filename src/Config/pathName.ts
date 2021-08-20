@@ -12,5 +12,8 @@ export const PATH_NAME = {
   ADMIN: "/admin",
   ADMIN_USER: "/admin/users",
   ADMIN_PRODUCT: "/admin/products",
-  ADMIN_STATUS: "/admin/status"
+  ADMIN_STATUS: "/admin/status",
+  ADMIN_ORDER: "/admin/orders",
+  ADMIN_CODE: "/admin/codes",
+  ADMIN_CODE_DETAIL: "/admin/codeDetail",
 };

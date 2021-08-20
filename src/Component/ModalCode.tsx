@@ -6,9 +6,9 @@ import Fade from '@material-ui/core/Fade';
 import { useForm } from 'react-hook-form';
 import { DialogActions, DialogContent, DialogTitle } from '@material-ui/core';
 import { StyledButton } from './Button';
-import statusService from '../Service/StatusService';
-import { notifiError, notifiSuccess } from '../utils/MyToys';
 import userService from '../Service/UserService';
+import codeService from '../Service/CodeService';
+import { notifiSuccess } from '../utils/MyToys';
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -44,21 +44,19 @@ interface Props {
   closeModal: () => void;
   title: string;
   contentButton: string;
-  nameStatus: string;
-  idStatus: string;
+  code: any;
 }
-
-export default function ModalPopUp({
+export default function ModalCode({
   closeModal,
   open,
   title,
   contentButton,
-  nameStatus,
-  idStatus,
+  code,
 }: Props) {
   const classes = useStyles();
   type FormStatus = {
-    nameStatus: string;
+    codeName: string;
+    codeValue: string;
   };
   const {
     register,
@@ -67,35 +65,37 @@ export default function ModalPopUp({
     reset,
     setValue,
   } = useForm<FormStatus>();
-  const onSubmitEdit = (data: { nameStatus: string }) => {
-    try {
-      const token = userService.getAccessToken();
-      if (contentButton === 'Create') {
-        const callAPI = async () => {
-          const res = await statusService.createStatus(data, token);
-          closeModal();
-          notifiSuccess('create status successfull');
-        };
-        callAPI();
-      } else {
-        const callAPI = async () => {
-          const res = await statusService.updateStatus(idStatus, data, token);
-          closeModal();
-          notifiSuccess('update status successfull');
-        };
-        callAPI();
-      }
-    } catch (error) {
-      console.log({ ...error });
-      notifiError('create status fail');
+  const onSubmitEdit = (data: { codeName: string; codeValue: any }) => {
+    console.log(data);
+    data = { ...data, codeValue: parseInt(data.codeValue) };
+    if (title === 'create code') {
+      const callAPI = async () => {
+        const token = userService.getAccessToken();
+        const res = await codeService.postCode(token, data);
+        closeModal();
+        notifiSuccess('create code successfull');
+      };
+      callAPI();
+    } else {
+      const callAPI = async () => {
+        const token = userService.getAccessToken();
+        const res = await codeService.updateCode(code._id, token, data);
+        closeModal();
+        notifiSuccess('update code successfull');
+      };
+      callAPI();
     }
   };
   React.useEffect(() => {
-    setValue('nameStatus', nameStatus);
-    return () => {
-      setValue('nameStatus', '');
-    };
-  }, [nameStatus, open, idStatus, setValue]);
+    if (code) {
+      setValue('codeName', code.codeName);
+      setValue('codeValue', code.codeValue);
+      return () => {
+        setValue('codeName', '');
+        setValue('codeValue', '');
+      };
+    }
+  }, [code, open, setValue]);
   return (
     <div>
       <Modal
@@ -120,18 +120,32 @@ export default function ModalPopUp({
             >
               <DialogContent>
                 <div className={classes.inputContainer}>
-                  <div>Name Status: </div>
+                  <div>CodeName: </div>
                   <input
                     type='text'
                     className={classes.Detail}
-                    placeholder='Name Status'
-                    {...register('nameStatus', {
-                      required: 'Name Status is required',
+                    placeholder='codeName'
+                    {...register('codeName', {
+                      required: 'codeName is required',
                     })}
                   />
-                  {errors.nameStatus && (
+                  {errors.codeName && (
                     <p className={classes.inputValid}>
-                      {errors.nameStatus.message}
+                      {errors.codeName.message}
+                    </p>
+                  )}
+                  <div>CodeValue: </div>
+                  <input
+                    type='number'
+                    className={classes.Detail}
+                    placeholder='code Value'
+                    {...register('codeValue', {
+                      required: 'codeValue is required',
+                    })}
+                  />
+                  {errors.codeValue && (
+                    <p className={classes.inputValid}>
+                      {errors.codeValue.message}
                     </p>
                   )}
                 </div>
