@@ -12,67 +12,67 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-} from '@material-ui/core';
-import React from 'react';
-import { StyledButton } from '../../../Component/Button';
-import ModalPopUp from '../../../Component/Modal';
-import { IStatus } from '../../../Model/IStatus';
-import statusService from '../../../Service/StatusService';
-import userService from '../../../Service/UserService';
-import { notifiSuccess } from '../../../utils/MyToys';
-import Row from '../Users/Row';
+} from "@material-ui/core";
+import React from "react";
+import { StyledButton } from "../../../Component/Button";
+import ModalPopUp from "../../../Component/Modal";
+import { IStatus } from "../../../Model/IStatus";
+import statusService from "../../../Service/StatusService";
+import userService from "../../../Service/UserService";
+import { notifiSuccess } from "../../../utils/MyToys";
+import Row from "../Users/Row";
 const useStyles = makeStyles((theme) => ({
   Title: {
     fontSize: 25,
   },
   search: {
-    position: 'relative',
+    position: "relative",
     borderRadius: theme.shape.borderRadius,
     // backgroundColor: alpha(theme.palette.common.white, 0.15),
-    '&:hover': {
+    "&:hover": {
       // backgroundColor: alpha(theme.palette.common.white, 0.25),
     },
     marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
       marginLeft: theme.spacing(1),
-      width: 'auto',
+      width: "auto",
     },
   },
   searchIcon: {
     padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    height: "100%",
+    position: "absolute",
+    pointerEvents: "none",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
   inputRoot: {
-    color: 'inherit',
+    color: "inherit",
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      width: '12ch',
-      '&:focus': {
-        width: '20ch',
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
+      width: "12ch",
+      "&:focus": {
+        width: "20ch",
       },
     },
   },
   Content: {
-    display: 'flex',
-    justifyContent: 'space-between',
+    display: "flex",
+    justifyContent: "space-between",
     backgroundImage:
-      'linear-gradient(to left, #227df9 0%, #7462f9 25%, #df3ef8 50%, #7462f9 75%, #227df9 100%)',
-    backgroundSize: '250% auto',
-    transition: 'all 0.5s ease !important',
-    '&:hover': {
-      backgroundPosition: 'right center',
+      "linear-gradient(to left, #227df9 0%, #7462f9 25%, #df3ef8 50%, #7462f9 75%, #227df9 100%)",
+    backgroundSize: "250% auto",
+    transition: "all 0.5s ease !important",
+    "&:hover": {
+      backgroundPosition: "right center",
     },
   },
 }));
@@ -82,7 +82,8 @@ export default function Status() {
   const [status, setStatus] = React.useState<IStatus[]>([]);
   const [open, setOpen] = React.useState<boolean>(false);
   const [flag, setFlag] = React.useState<boolean>(false);
-  const [nameStatus, setNameStatus] = React.useState<string>('');
+  const [nameStatus, setNameStatus] = React.useState<string>("");
+  const [idStatus, setIDStatus] = React.useState<string>("");
   React.useEffect(() => {
     const callAPI = async () => {
       const res = await statusService.getAllStatus();
@@ -91,16 +92,16 @@ export default function Status() {
     callAPI();
   }, [open]);
   const openModal = () => {
-    setNameStatus('');
+    setNameStatus("");
     setOpen(true);
   };
   const closeModal = () => {
-    setNameStatus('');
+    setNameStatus("");
     setOpen(false);
   };
 
   // ======== Delete Status ========
-  const [id, setId] = React.useState('');
+  const [id, setId] = React.useState("");
   const [openConfirm, setOpenConfirm] = React.useState(false);
 
   const handleOpenConfirm = (id: string) => {
@@ -119,7 +120,7 @@ export default function Status() {
       const res1 = await statusService.getAllStatus();
       setStatus(res1.data);
     };
-    notifiSuccess('remove status successfully');
+    notifiSuccess("remove status successfully");
     callAPI(id);
   };
 
@@ -140,24 +141,24 @@ export default function Status() {
         Create Status
       </StyledButton>
       <TableContainer component={Paper}>
-        <Table aria-label='collapsible table'>
+        <Table aria-label="collapsible table">
           <TableHead>
             <TableRow>
-              <TableCell align='left'>ID status</TableCell>
-              <TableCell align='left'>NAME status</TableCell>
-              <TableCell align='center'>Action</TableCell>
+              <TableCell align="left">ID status</TableCell>
+              <TableCell align="left">NAME status</TableCell>
+              <TableCell align="center">Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {status.map((item: IStatus, index: number) => (
               <TableRow key={item._id}>
-                <TableCell component='th' scope='row'>
+                <TableCell component="th" scope="row">
                   {item._id}
                 </TableCell>
-                <TableCell align='left'>{item.nameStatus}</TableCell>
-                <TableCell align='left' style={{ display: 'flex' }}>
+                <TableCell align="left">{item.nameStatus}</TableCell>
+                <TableCell align="left" style={{ display: "flex" }}>
                   <StyledButton
-                    style={{ padding: '0px', margin: '0px 10px' }}
+                    style={{ padding: "0px", margin: "0px 10px" }}
                     onClick={() => {
                       handleOpenConfirm(item._id);
                     }}
@@ -165,11 +166,12 @@ export default function Status() {
                     Remove
                   </StyledButton>
                   <StyledButton
-                    style={{ padding: '0px', margin: '0px 10px' }}
+                    style={{ padding: "0px", margin: "0px 10px" }}
                     onClick={() => {
                       setFlag(true);
                       openModal();
                       setNameStatus(item.nameStatus);
+                      setIDStatus(item._id);
                     }}
                   >
                     Update
@@ -183,27 +185,28 @@ export default function Status() {
       <ModalPopUp
         open={open}
         closeModal={closeModal}
-        title={!flag ? 'Form: Create Status' : 'Form: Update Status'}
-        contentButton={!flag ? 'Create' : 'Save'}
+        title={!flag ? "Form: Create Status" : "Form: Update Status"}
+        contentButton={!flag ? "Create" : "Save"}
         nameStatus={nameStatus}
+        idStatus={idStatus}
       />
 
       {/* Confirm Dialog */}
       <Dialog
         open={openConfirm}
         onClose={handleCloseConfirm}
-        aria-labelledby='alert-dialog-title'
-        aria-describedby='alert-dialog-description'
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id='alert-dialog-title'>
-          {'Are you sure you want to DELETE ?'}
+        <DialogTitle id="alert-dialog-title">
+          {"Are you sure you want to DELETE ?"}
         </DialogTitle>
         <DialogActions>
-          <Button onClick={handleCloseConfirm} color='primary'>
+          <Button onClick={handleCloseConfirm} color="primary">
             No
           </Button>
           <Button
-            color='primary'
+            color="primary"
             autoFocus
             onClick={() => {
               handleRemoveStatus(id);
