@@ -53,7 +53,6 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "flex-start",
     margin: "15px 15px",
   },
-
   container: {
     display: "flex",
   },
@@ -74,16 +73,32 @@ interface Quantity {
   sizeId: string;
   price: number;
 }
-export default function AddDetail(props: any) {
+export default function EditDetail(props: any) {
   const classes = useStyles();
 
-  const [selectedStatus, setSelectedStatus] = React.useState("");
-  const [selectedColor, setSelectedColor] = React.useState("");
-  const [selectedGender, setSelectedGender] = React.useState("");
-  const [images, setImages] = React.useState<string[]>([]);
+  const [selectedStatus, setSelectedStatus] = React.useState(
+    props.itemData.info.status._id
+  );
+  const [selectedColor, setSelectedColor] = React.useState(
+    props.itemData.info.color._id
+  );
+  const [selectedGender, setSelectedGender] = React.useState(
+    props.itemData.info.gender._id
+  );
+  const [images, setImages] = React.useState<string[]>(
+    [...props.itemData.images].map((item) => item.urlImage)
+  );
   const [selectedQuantities, setSelectedQuantities] = React.useState<
     Quantity[]
-  >([]);
+  >(
+    [...props.itemData.quantities].map((item) => {
+      return {
+        quantity: item.quantity,
+        sizeId: item.size._id,
+        price: item.price,
+      };
+    })
+  );
 
   //the first loading
   const [colors, setcolors] = React.useState<any[]>([]);
@@ -227,8 +242,9 @@ export default function AddDetail(props: any) {
   const saveBtn = async () => {
     if (checkValid()) {
       try {
-        const res = await productDetailService.createProductDetail(
-          props.idProduct,
+        console.log(props);
+        const res = await productDetailService.editProductDetail(
+          props.itemData.info._id,
           {
             statusId: selectedStatus,
             colorId: selectedColor,
@@ -342,11 +358,11 @@ export default function AddDetail(props: any) {
       <AppBar className={classes.appBar}>
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
-            Add new Detail
+            Edit Detail
           </Typography>
           <Button onClick={props.closeDialog}>Cancel</Button>
           <Button autoFocus color="inherit" onClick={saveBtn}>
-            Add
+            Save
           </Button>
         </Toolbar>
       </AppBar>
@@ -444,7 +460,18 @@ export default function AddDetail(props: any) {
                       <Grid item xs={3}>
                         <FormControlLabel
                           value={size._id}
-                          control={<Checkbox color="primary" />}
+                          control={
+                            <Checkbox
+                              checked={
+                                selectedQuantities.find(
+                                  (i) => i.sizeId === size._id
+                                )
+                                  ? true
+                                  : false
+                              }
+                              color="primary"
+                            />
+                          }
                           label={`Size: ${size.nameSize}`}
                           labelPlacement={size.nameSize}
                           onChange={(e: any) => {

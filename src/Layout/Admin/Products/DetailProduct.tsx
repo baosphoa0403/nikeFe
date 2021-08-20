@@ -1,4 +1,4 @@
-import { Button, Dialog, Slide } from "@material-ui/core";
+import { Button, CircularProgress, Dialog, Slide } from "@material-ui/core";
 import MaterialTable, { MTableToolbar } from "material-table";
 import React from "react";
 import AddIcon from "@material-ui/icons/Add";
@@ -7,6 +7,7 @@ import SizeProduct from "./SizeProduct";
 import { TransitionProps } from "@material-ui/core/transitions";
 import AddDetail from "./AddDetail";
 import EditProduct from "./EditProduct";
+import EditDetail from "./EditDetail";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & { children?: React.ReactElement },
@@ -41,74 +42,97 @@ export default function DetailProduct(props: any) {
     setOpen(false);
   };
 
+  //is loading state
+  const [isLoading, setIsLoading] = React.useState(true);
+  //first
   const [details, setDetails] = React.useState([]);
   React.useEffect(() => {
     productDetailService.getProductDetail(props.itemData._id).then((res) => {
       setDetails(res.data);
+      setIsLoading(false);
     });
   }, []);
 
+  const deleteProductDetail = async (id: string) => {
+    try {
+      const res = await productDetailService.deleteProductDetail(id);
+      console.log(res);
+    } catch (err) {
+      console.log({ ...err });
+    }
+  };
   return (
     <div>
-      <MaterialTable
-        title={`Detail: ${props.itemData.name}`}
-        columns={[
-          {
-            title: "Image",
-            render: (rowData: any) => (
-              <img src={rowData.images[0].urlImage} style={{ width: 80 }} />
-            ),
-          },
-          { title: "Color", field: "info.color.nameColor" },
-          { title: "Gender", field: "info.gender.nameGender" },
-        ]}
-        data={details}
-        actions={[
-          {
-            tooltip: "Edit Detail",
-            icon: "edit",
-            onClick: (event, rowData) => {},
-          },
-          {
-            tooltip: "Delete Detail",
-            icon: "delete",
-            onClick: (event, rowData) => {},
-          },
-        ]}
-        options={{
-          actionsColumnIndex: -1,
-          pageSize: 10,
-        }}
-        detailPanel={[
-          {
-            tooltip: "Show Sizes",
-            render: (rowData: any) => (
-              <SizeProduct itemData={rowData.quantities} />
-            ),
-          },
-        ]}
-        components={{
-          Toolbar: (props) => (
-            <div className="tableToolbar">
-              <div className="title">
-                <MTableToolbar {...props} />
+      {isLoading && (
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <CircularProgress />
+        </div>
+      )}
+      {!isLoading && (
+        <MaterialTable
+          title={`Detail: ${props.itemData.name}`}
+          columns={[
+            {
+              title: "Image",
+              render: (rowData: any) => (
+                <img src={rowData.images[0].urlImage} style={{ width: 80 }} />
+              ),
+            },
+            { title: "Color", field: "info.color.nameColor" },
+            { title: "Gender", field: "info.gender.nameGender" },
+          ]}
+          data={details}
+          actions={[
+            {
+              tooltip: "Edit Detail",
+              icon: "edit",
+              onClick: (event, rowData) => {
+                handleOpen(rowData);
+              },
+            },
+            {
+              tooltip: "Delete Detail",
+              icon: "delete",
+              onClick: (event, rowData) => {
+                deleteProductDetail(rowData.info._id);
+              },
+            },
+          ]}
+          options={{
+            actionsColumnIndex: -1,
+            pageSize: 10,
+          }}
+          detailPanel={[
+            {
+              tooltip: "Show Sizes",
+              render: (rowData: any) => (
+                <SizeProduct itemData={rowData.quantities} />
+              ),
+            },
+          ]}
+          components={{
+            Toolbar: (props) => (
+              <div className="tableToolbar">
+                <div className="title">
+                  <MTableToolbar {...props} />
+                </div>
+                <div>
+                  <Button
+                    onClick={handleOpenAddNew}
+                    className="addnew"
+                    variant="contained"
+                    size="small"
+                    color="primary"
+                    startIcon={<AddIcon />}
+                  >
+                    Add New Detail
+                  </Button>
+                </div>
               </div>
-              <div>
-                <Button
-                  onClick={handleOpenAddNew}
-                  className="addnew"
-                  variant="contained"
-                  size="small"
-                  color="primary"
-                  startIcon={<AddIcon />}
-                >
-                  Add New Detail
-                </Button>
-              </div>
-            </div>
-          ),
-        }}
-      />
+            ),
+          }}
+        />
+      )}
 
       <Dialog
         fullScreen
@@ -118,11 +142,12 @@ export default function DetailProduct(props: any) {
       >
         {addNewType ? (
           <AddDetail
+            idProduct={props.itemData._id}
             handleCloseAddNew={handleCloseAddNew}
             closeDialog={handleClose}
           />
         ) : (
-          <EditProduct itemData={itemData} closeDialog={handleClose} />
+          <EditDetail itemData={itemData} closeDialog={handleClose} />
         )}
       </Dialog>
     </div>
