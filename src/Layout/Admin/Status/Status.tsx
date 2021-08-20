@@ -1,5 +1,5 @@
 import {
-  alpha,
+  // alpha,
   Button,
   Dialog,
   DialogActions,
@@ -28,9 +28,9 @@ const useStyles = makeStyles((theme) => ({
   search: {
     position: "relative",
     borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
+    // backgroundColor: alpha(theme.palette.common.white, 0.15),
     "&:hover": {
-      backgroundColor: alpha(theme.palette.common.white, 0.25),
+      // backgroundColor: alpha(theme.palette.common.white, 0.25),
     },
     marginLeft: 0,
     width: "100%",
@@ -82,8 +82,8 @@ export default function Status() {
   const [status, setStatus] = React.useState<IStatus[]>([]);
   const [open, setOpen] = React.useState<boolean>(false);
   const [flag, setFlag] = React.useState<boolean>(false);
-  const [nameStatus, setNameStatus] = React.useState<string>('');
-  const [idStatus, setIDStatus] = React.useState<string>('');
+  const [nameStatus, setNameStatus] = React.useState<string>("");
+  const [idStatus, setIDStatus] = React.useState<string>("");
   React.useEffect(() => {
     const callAPI = async () => {
       const res = await statusService.getAllStatus();

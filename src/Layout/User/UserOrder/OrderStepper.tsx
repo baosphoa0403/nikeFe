@@ -98,13 +98,18 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function getSteps() {
-  return ["Confirm", "Delivering", "Delivered"];
+  return ["pending", "delivery", "complete"];
 }
 
-export default function OrderStepper(props: any) {
+interface IProps {
+  step: number;
+}
+
+export default function OrderStepper(props: IProps) {
   const classes = useStyles();
-  const [activeStep, setActiveStep] = React.useState(1);
+  const [activeStep, setActiveStep] = React.useState(props.step);
   const steps = getSteps();
+  console.log(props.step);
 
   return (
     <div className={classes.root}>
