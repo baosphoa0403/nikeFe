@@ -1,11 +1,7 @@
-import { Button } from "@material-ui/core";
 import MaterialTable, { MTableToolbar } from "material-table";
 import React from "react";
-import AddIcon from "@material-ui/icons/Add";
 
 export default function SizeProduct(props: any) {
-  console.log(props.itemData);
-
   return (
     <div>
       <MaterialTable

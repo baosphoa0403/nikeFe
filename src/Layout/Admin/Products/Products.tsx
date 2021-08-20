@@ -43,17 +43,20 @@ export default function Products() {
     setAddNewType(false);
     setOpen(false);
   };
-
+  //icon loading
   const [isLoading, setIsLoading] = React.useState(true);
   // delete a product
   const removeItem = async (rowData: any) => {};
+  //load again
+  const [loadAgain, setLoadAgain] = React.useState(false);
   const [products, setProducts] = React.useState([]);
   React.useEffect(() => {
     productService.getAllProduct().then((res) => {
+      setIsLoading(true);
       setProducts(res.data);
       setIsLoading(false);
     });
-  }, []);
+  }, [loadAgain]);
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
@@ -124,11 +127,18 @@ export default function Products() {
         >
           {addNewType ? (
             <AddProduct
+              loadAgain={loadAgain}
+              setLoadAgain={setLoadAgain}
               handleCloseAddNew={handleCloseAddNew}
               closeDialog={handleClose}
             />
           ) : (
-            <EditProduct itemData={itemData} closeDialog={handleClose} />
+            <EditProduct
+              loadAgain={loadAgain}
+              setLoadAgain={setLoadAgain}
+              itemData={itemData}
+              closeDialog={handleClose}
+            />
           )}
         </Dialog>
       </Grid>

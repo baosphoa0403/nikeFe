@@ -46,12 +46,16 @@ export default function DetailProduct(props: any) {
   const [isLoading, setIsLoading] = React.useState(true);
   //first
   const [details, setDetails] = React.useState([]);
+  //load again
+  const [loadAgain, setLoadAgain] = React.useState(false);
+
   React.useEffect(() => {
+    setIsLoading(true);
     productDetailService.getProductDetail(props.itemData._id).then((res) => {
       setDetails(res.data);
       setIsLoading(false);
     });
-  }, []);
+  }, [loadAgain]);
 
   const deleteProductDetail = async (id: string) => {
     try {
@@ -142,12 +146,19 @@ export default function DetailProduct(props: any) {
       >
         {addNewType ? (
           <AddDetail
+            loadAgain={loadAgain}
+            setLoadAgain={setLoadAgain}
             idProduct={props.itemData._id}
             handleCloseAddNew={handleCloseAddNew}
             closeDialog={handleClose}
           />
         ) : (
-          <EditDetail itemData={itemData} closeDialog={handleClose} />
+          <EditDetail
+            loadAgain={loadAgain}
+            setLoadAgain={setLoadAgain}
+            itemData={itemData}
+            closeDialog={handleClose}
+          />
         )}
       </Dialog>
     </div>

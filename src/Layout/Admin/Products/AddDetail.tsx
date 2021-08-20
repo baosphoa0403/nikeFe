@@ -238,6 +238,7 @@ export default function AddDetail(props: any) {
           }
         );
         console.log(res);
+        props.setLoadAgain(!props.loadAgain);
         props.closeDialog();
       } catch (err) {
         console.log({ ...err });
