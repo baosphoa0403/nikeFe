@@ -31,7 +31,7 @@ export default function NavMenu() {
 
   React.useEffect(() => {
     categoryService
-      .getAllCategory()
+      .getAllCategories()
       .then((res) => {
         setCate(res.data);
       })
