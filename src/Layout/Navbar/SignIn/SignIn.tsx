@@ -197,19 +197,22 @@ export default function SignIn(props: Props) {
   const responseGoogle = async (response: any) => {
     console.log(response);
     //response: thông tin gg trả về: email, fullname, profile, token, ggid...
-    const user = await userService.loginGoogle(response.tokenId);
-    if (user.data.statusCode === STATUS.REDIRECT) {
-      props.getDataLoginGoogle(user.data);
-      handleClose();
-    } else {
-      // status code = 200 -> user đã có trong database
-      dispatch(setToken(user.data.access_token));
-      dispatch(setIsLogin(true));
-      dispatch(setUserInfo(user.data.info));
-      // dispatch(fetchApiUserProfile(token));
-      localStorage.setItem("accessToken", user.data.access_token);
-      localStorage.setItem("person", JSON.stringify(user.data.info));
-      notifiSuccess("Sign in successfully");
+    if (response?.tokenId) {
+      const user = await userService.loginGoogle(response.tokenId);
+      console.log(user);
+      if (user.data.statusCode === STATUS.REDIRECT) {
+        props.getDataLoginGoogle(user.data);
+        handleClose();
+      } else {
+        // status code = 200 -> user đã có trong database
+        dispatch(setToken(user.data.access_token));
+        dispatch(setIsLogin(true));
+        dispatch(setUserInfo(user.data.info));
+        // dispatch(fetchApiUserProfile(token));
+        localStorage.setItem("accessToken", user.data.access_token);
+        localStorage.setItem("person", JSON.stringify(user.data.info));
+        notifiSuccess("Sign in successfully");
+      }
     }
   };
 
