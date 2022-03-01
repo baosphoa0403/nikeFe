@@ -1,24 +1,24 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Modal from '@material-ui/core/Modal';
-import Backdrop from '@material-ui/core/Backdrop';
-import Fade from '@material-ui/core/Fade';
-import { useForm } from 'react-hook-form';
-import { DialogActions, DialogContent, DialogTitle } from '@material-ui/core';
-import { StyledButton } from './Button';
-import statusService from '../Service/StatusService';
-import { notifiError, notifiSuccess } from '../utils/MyToys';
-import userService from '../Service/UserService';
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Modal from "@material-ui/core/Modal";
+import Backdrop from "@material-ui/core/Backdrop";
+import Fade from "@material-ui/core/Fade";
+import { useForm } from "react-hook-form";
+import { DialogActions, DialogContent, DialogTitle } from "@material-ui/core";
+import { StyledButton } from "./Button";
+import statusService from "../Service/StatusService";
+import { notifiError, notifiSuccess } from "../utils/MyToys";
+import userService from "../Service/UserService";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
-    border: '2px solid #000',
+    border: "2px solid #000",
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
   },
@@ -26,13 +26,13 @@ const useStyles = makeStyles((theme) => ({
     width: 350,
   },
   Detail: {
-    width: '100%',
-    marginTop: '10px',
-    padding: '12px',
+    width: "100%",
+    marginTop: "10px",
+    padding: "12px",
     fontSize: 14,
   },
   inputValid: {
-    color: '#fe0000',
+    color: "#fe0000",
   },
   inputContainer: {
     marginBottom: 18,
@@ -70,37 +70,36 @@ export default function ModalPopUp({
   const onSubmitEdit = (data: { nameStatus: string }) => {
     try {
       const token = userService.getAccessToken();
-      if (contentButton === 'Create') {
+      if (contentButton === "Create") {
         const callAPI = async () => {
           const res = await statusService.createStatus(data, token);
           closeModal();
-          notifiSuccess('create status successfull');
+          notifiSuccess("create status successfull");
         };
         callAPI();
       } else {
         const callAPI = async () => {
           const res = await statusService.updateStatus(idStatus, data, token);
           closeModal();
-          notifiSuccess('update status successfull');
+          notifiSuccess("update status successfull");
         };
         callAPI();
       }
     } catch (error) {
-      console.log({ ...error });
-      notifiError('create status fail');
+      notifiError("create status fail");
     }
   };
   React.useEffect(() => {
-    setValue('nameStatus', nameStatus);
+    setValue("nameStatus", nameStatus);
     return () => {
-      setValue('nameStatus', '');
+      setValue("nameStatus", "");
     };
   }, [nameStatus, open, idStatus, setValue]);
   return (
     <div>
       <Modal
-        aria-labelledby='transition-modal-title'
-        aria-describedby='transition-modal-description'
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
         className={classes.modal}
         open={open}
         onClose={closeModal}
@@ -112,21 +111,21 @@ export default function ModalPopUp({
       >
         <Fade in={open}>
           <div className={classes.paper}>
-            <DialogTitle id='alert-dialog-title'>{title}</DialogTitle>
+            <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
             <form
               className={classes.form}
-              id='AdminFormEditUser'
+              id="AdminFormEditUser"
               onSubmit={handleSubmit(onSubmitEdit)}
             >
               <DialogContent>
                 <div className={classes.inputContainer}>
                   <div>Name Status: </div>
                   <input
-                    type='text'
+                    type="text"
                     className={classes.Detail}
-                    placeholder='Name Status'
-                    {...register('nameStatus', {
-                      required: 'Name Status is required',
+                    placeholder="Name Status"
+                    {...register("nameStatus", {
+                      required: "Name Status is required",
                     })}
                   />
                   {errors.nameStatus && (
@@ -136,7 +135,7 @@ export default function ModalPopUp({
                   )}
                 </div>
                 <DialogActions>
-                  <StyledButton type='submit'>{contentButton}</StyledButton>
+                  <StyledButton type="submit">{contentButton}</StyledButton>
                 </DialogActions>
               </DialogContent>
             </form>

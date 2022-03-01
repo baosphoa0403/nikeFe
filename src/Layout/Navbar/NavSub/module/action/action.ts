@@ -7,8 +7,8 @@ export const fetchApiUserProfile = (token: string) => {
       const userProfile = await userService.getUserProfile(token);
       dispatch(setUserProfile(userProfile.data));
     } catch (err) {
-      const error = { ...err };
-      console.log({ ...err.response.data });
+      const error = Object.assign({ response: { data: { message: "" } } }, err);
+      // console.log({ ...err.response.data });
     }
   };
 };

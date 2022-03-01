@@ -90,7 +90,7 @@ export default function EditProduct(props: any) {
         props.setLoadAgain(!props.loadAgain);
         props.closeDialog();
       } catch (err) {
-        console.log({ ...err });
+        // console.log({ ...err });
       }
     }
   };

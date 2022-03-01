@@ -143,7 +143,7 @@ export default function Row({ user, findUser }: IProps) {
       notifiSuccess("Update user profile successfully");
       handleCloseDialog();
     } catch (err) {
-      const error = { ...err };
+      const error = Object.assign({ response: { data: { message: "" } } }, err);
       notifiError(error.response.data.message);
     }
   };
@@ -165,7 +165,7 @@ export default function Row({ user, findUser }: IProps) {
       dispatch(setIsCRUD(true));
       notifiSuccess("Delete user successfully");
     } catch (err) {
-      console.log({ ...err });
+      // console.log({ ...err });
     }
   };
 

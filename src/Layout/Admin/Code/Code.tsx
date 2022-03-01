@@ -1,5 +1,4 @@
 import {
-  alpha,
   makeStyles,
   Paper,
   Table,
@@ -8,67 +7,67 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-} from '@material-ui/core';
-import React from 'react';
-import { StyledButton } from '../../../Component/Button';
-import ModalCode from '../../../Component/ModalCode';
-import ModalCodeDetal from '../../../Component/ModalCodeDetail';
-import { ICode } from '../../../Model/ICode';
-import codeService from '../../../Service/CodeService';
-import userService from '../../../Service/UserService';
-import { notifiSuccess } from '../../../utils/MyToys';
+} from "@material-ui/core";
+import React from "react";
+import { StyledButton } from "../../../Component/Button";
+import ModalCode from "../../../Component/ModalCode";
+import ModalCodeDetal from "../../../Component/ModalCodeDetail";
+import { ICode } from "../../../Model/ICode";
+import codeService from "../../../Service/CodeService";
+import userService from "../../../Service/UserService";
+import { notifiSuccess } from "../../../utils/MyToys";
 const useStyles = makeStyles((theme) => ({
   Title: {
     fontSize: 25,
   },
   search: {
-    position: 'relative',
+    position: "relative",
     borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    '&:hover': {
-      backgroundColor: alpha(theme.palette.common.white, 0.25),
+    backgroundColor: "white",
+    "&:hover": {
+      backgroundColor: "white",
     },
     marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
       marginLeft: theme.spacing(1),
-      width: 'auto',
+      width: "auto",
     },
   },
   searchIcon: {
     padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    height: "100%",
+    position: "absolute",
+    pointerEvents: "none",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
   inputRoot: {
-    color: 'inherit',
+    color: "inherit",
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      width: '12ch',
-      '&:focus': {
-        width: '20ch',
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
+      width: "12ch",
+      "&:focus": {
+        width: "20ch",
       },
     },
   },
   Content: {
-    display: 'flex',
-    justifyContent: 'space-between',
+    display: "flex",
+    justifyContent: "space-between",
     backgroundImage:
-      'linear-gradient(to left, #227df9 0%, #7462f9 25%, #df3ef8 50%, #7462f9 75%, #227df9 100%)',
-    backgroundSize: '250% auto',
-    transition: 'all 0.5s ease !important',
-    '&:hover': {
-      backgroundPosition: 'right center',
+      "linear-gradient(to left, #227df9 0%, #7462f9 25%, #df3ef8 50%, #7462f9 75%, #227df9 100%)",
+    backgroundSize: "250% auto",
+    transition: "all 0.5s ease !important",
+    "&:hover": {
+      backgroundPosition: "right center",
     },
   },
 }));
@@ -106,7 +105,7 @@ export default function CodePage() {
       const res1 = await codeService.getListCode(token);
       setListCode(res1.data);
     };
-    notifiSuccess('remove code successfully');
+    notifiSuccess("remove code successfully");
     callAPI(id);
   };
   return (
@@ -120,26 +119,26 @@ export default function CodePage() {
         Create Status
       </StyledButton>
       <TableContainer component={Paper}>
-        <Table aria-label='collapsible table'>
+        <Table aria-label="collapsible table">
           <TableHead>
             <TableRow>
-              <TableCell align='left'>ID status</TableCell>
-              <TableCell align='left'>Code NAME status</TableCell>
-              <TableCell align='left'>Code Value status</TableCell>
-              <TableCell align='center'>Action</TableCell>
+              <TableCell align="left">ID status</TableCell>
+              <TableCell align="left">Code NAME status</TableCell>
+              <TableCell align="left">Code Value status</TableCell>
+              <TableCell align="center">Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {listCode.map((item: ICode, index: number) => (
               <TableRow key={item._id}>
-                <TableCell component='th' scope='row'>
+                <TableCell component="th" scope="row">
                   {item._id}
                 </TableCell>
-                <TableCell align='left'>{item.codeName}</TableCell>
-                <TableCell align='left'>{item.codeValue}</TableCell>
-                <TableCell align='left' style={{ display: 'flex' }}>
+                <TableCell align="left">{item.codeName}</TableCell>
+                <TableCell align="left">{item.codeValue}</TableCell>
+                <TableCell align="left" style={{ display: "flex" }}>
                   <StyledButton
-                    style={{ padding: '0px', margin: '0px 10px' }}
+                    style={{ padding: "0px", margin: "0px 10px" }}
                     onClick={() => {
                       removeStatus(item._id);
                     }}
@@ -147,7 +146,7 @@ export default function CodePage() {
                     Remove
                   </StyledButton>
                   <StyledButton
-                    style={{ padding: '0px', margin: '0px 10px' }}
+                    style={{ padding: "0px", margin: "0px 10px" }}
                     onClick={() => {
                       setFlag(true);
                       openModal();
@@ -157,7 +156,7 @@ export default function CodePage() {
                     Update
                   </StyledButton>
                   <StyledButton
-                    style={{ padding: '0px', margin: '0px 10px' }}
+                    style={{ padding: "0px", margin: "0px 10px" }}
                     onClick={() => {
                       // setFlag(true);
                       // openModal();
@@ -177,8 +176,8 @@ export default function CodePage() {
       <ModalCode
         open={open}
         closeModal={closeModal}
-        title={!flag ? 'create code' : 'update code'}
-        contentButton={!flag ? 'create code button' : 'save code'}
+        title={!flag ? "create code" : "update code"}
+        contentButton={!flag ? "create code button" : "save code"}
         code={code}
       />
       <ModalCodeDetal

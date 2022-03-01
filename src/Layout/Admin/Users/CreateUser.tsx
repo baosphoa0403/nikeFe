@@ -76,7 +76,7 @@ function CreateUser() {
       dispatch(setIsCRUD(true));
       notifiSuccess("Saved user's data into database");
     } catch (err) {
-      const error = { ...err };
+      const error = Object.assign({ response: { data: { message: "" } } }, err);
       notifiError(error.response.data.message);
     }
   };

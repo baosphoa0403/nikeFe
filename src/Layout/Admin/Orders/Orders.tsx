@@ -116,12 +116,10 @@ export default function Orders() {
       try {
         const res = await cartService.getAllOrders(token);
         setData(res.data);
-      } catch (error) {
-        console.log({ ...error });
-      }
+      } catch (error) {}
     };
     callAPI();
-  }, [change]);
+  }, [token]);
 
   // =========== update ===========
   const [openDialog, setOpenDialog] = React.useState<boolean>(false);
@@ -164,7 +162,7 @@ export default function Orders() {
       setChange(!change);
       notifiSuccess("Update status successfully");
     } catch (err) {
-      const error = { ...err };
+      const error = Object.assign({ response: { data: { message: "" } } }, err);
       notifiError(error.response.data.message);
     }
   };

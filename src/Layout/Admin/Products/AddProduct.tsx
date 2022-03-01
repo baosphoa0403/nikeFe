@@ -88,7 +88,7 @@ export default function AddProduct(props: any) {
         props.setLoadAgain(!props.loadAgain);
         props.closeDialog();
       } catch (err) {
-        console.log({ ...err });
+        // console.log({ ...err });
       }
     }
   };

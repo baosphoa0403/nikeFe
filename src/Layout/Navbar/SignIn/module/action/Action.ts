@@ -17,7 +17,7 @@ export const fetchApiLogin = (data: any) => {
       localStorage.setItem("person", JSON.stringify(user.data.info));
       notifiSuccess("Sign in successfully");
     } catch (err) {
-      const error = { ...err };
+      const error = Object.assign({ response: { data: { message: "" } } }, err);
       notifiError(error.response.data.message);
     }
   };

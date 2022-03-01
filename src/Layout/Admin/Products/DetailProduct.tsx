@@ -62,7 +62,7 @@ export default function DetailProduct(props: any) {
       const res = await productDetailService.deleteProductDetail(id);
       console.log(res);
     } catch (err) {
-      console.log({ ...err });
+      // console.log({ ...err });
     }
   };
   return (

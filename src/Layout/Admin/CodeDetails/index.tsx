@@ -1,6 +1,5 @@
-import React from 'react';
+import React from "react";
 import {
-  alpha,
   makeStyles,
   Paper,
   Table,
@@ -9,12 +8,12 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-} from '@material-ui/core';
-import codeService from '../../../Service/CodeService';
-import userService from '../../../Service/UserService';
-import { StyledButton, StyledButtonActive } from '../../../Component/Button';
-import statusService from '../../../Service/StatusService';
-import { notifiSuccess } from '../../../utils/MyToys';
+} from "@material-ui/core";
+import codeService from "../../../Service/CodeService";
+import userService from "../../../Service/UserService";
+import { StyledButton, StyledButtonActive } from "../../../Component/Button";
+import statusService from "../../../Service/StatusService";
+import { notifiSuccess } from "../../../utils/MyToys";
 export default function CodeDetails() {
   const [listCodeDetail, setListCodeDetail] = React.useState([]);
   const [statusActive, setStatusActive] = React.useState<any>();
@@ -25,10 +24,10 @@ export default function CodeDetails() {
       const res = await codeService.getListCodeDetail(token);
       const resListStatus = await statusService.getAllStatus();
       for (const item of resListStatus.data) {
-        if (item.nameStatus === 'active') {
+        if (item.nameStatus === "active") {
           setStatusActive(item);
         }
-        if (item.nameStatus === 'inactive') {
+        if (item.nameStatus === "inactive") {
           setStatusInActive(item);
         }
       }
@@ -55,16 +54,16 @@ export default function CodeDetails() {
     <div>
       <h1>Management CodeDetail</h1>
       <TableContainer component={Paper}>
-        <Table aria-label='collapsible table'>
+        <Table aria-label="collapsible table">
           <TableHead>
             <TableRow>
-              <TableCell align='left'>Code NAME </TableCell>
-              <TableCell align='left'>Code Value </TableCell>
-              <TableCell align='center'>Create Date</TableCell>
-              <TableCell align='center'>Username</TableCell>
-              <TableCell align='center'>Email</TableCell>
-              <TableCell align='center'>Status Name</TableCell>
-              <TableCell align='center'>Action</TableCell>
+              <TableCell align="left">Code NAME </TableCell>
+              <TableCell align="left">Code Value </TableCell>
+              <TableCell align="center">Create Date</TableCell>
+              <TableCell align="center">Username</TableCell>
+              <TableCell align="center">Email</TableCell>
+              <TableCell align="center">Status Name</TableCell>
+              <TableCell align="center">Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -73,14 +72,14 @@ export default function CodeDetails() {
                 <TableCell>{item.code.codeName}</TableCell>
                 <TableCell>{item.code.codeValue}</TableCell>
                 <TableCell>
-                  {new Date(item.code.createDate).toDateString()} -{' '}
+                  {new Date(item.code.createDate).toDateString()} -{" "}
                   {new Date(item.code.createDate).toLocaleTimeString()}
                 </TableCell>
                 <TableCell>{item.user.username}</TableCell>
                 <TableCell>{item.user.email}</TableCell>
                 <TableCell>{item.status.nameStatus.toUpperCase()}</TableCell>
                 <TableCell>
-                  {item.status.nameStatus === 'inactive' && (
+                  {item.status.nameStatus === "inactive" && (
                     <StyledButtonActive
                       onClick={() => {
                         updateStatus(statusActive._id, item._id);
@@ -89,7 +88,7 @@ export default function CodeDetails() {
                       Active
                     </StyledButtonActive>
                   )}
-                  {item.status.nameStatus === 'active' && (
+                  {item.status.nameStatus === "active" && (
                     <StyledButton
                       onClick={() => {
                         updateStatus(statusInActive._id, item._id);

@@ -133,7 +133,7 @@ export default function UserProfile() {
       // console.log(err);
 
       // notifiError("Something went wrong");
-      const error = { ...err };
+      const error = Object.assign({ response: { data: { message: "" } } }, err);
       notifiError(error.response.data.message);
     }
   };

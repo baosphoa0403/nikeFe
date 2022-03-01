@@ -140,7 +140,7 @@ export default function EditDetail(props: any) {
         setImages([...images]);
         setShowImageLoading(false);
       } catch (err) {
-        console.log({ ...err });
+        // console.log({ ...err });
       }
       ++i;
     } while (i < length);
@@ -257,7 +257,7 @@ export default function EditDetail(props: any) {
         props.setLoadAgain(!props.loadAgain);
         props.closeDialog();
       } catch (err) {
-        console.log({ ...err });
+        // console.log({ ...err });
       }
     } else {
       setOpen(true);
