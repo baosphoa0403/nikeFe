@@ -64,7 +64,6 @@ export default function ModalPopUp({
     register,
     handleSubmit,
     formState: { errors },
-    reset,
     setValue,
   } = useForm<FormStatus>();
   const onSubmitEdit = (data: { nameStatus: string }) => {
@@ -72,14 +71,14 @@ export default function ModalPopUp({
       const token = userService.getAccessToken();
       if (contentButton === "Create") {
         const callAPI = async () => {
-          const res = await statusService.createStatus(data, token);
+          await statusService.createStatus(data, token);
           closeModal();
           notifiSuccess("create status successfull");
         };
         callAPI();
       } else {
         const callAPI = async () => {
-          const res = await statusService.updateStatus(idStatus, data, token);
+          await statusService.updateStatus(idStatus, data, token);
           closeModal();
           notifiSuccess("update status successfull");
         };
