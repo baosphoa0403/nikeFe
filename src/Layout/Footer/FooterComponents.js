@@ -141,7 +141,7 @@ export default function FooterComponents() {
                 <a href="#a" className={classes.footerSubItem}>
                   Payment Options
                 </a>
-                <a href="#a" className={classes.footerSubItem}>
+                <a href="https://www.facebook.com/profile.php?id=100009235474057" target="_blank" className={classes.footerSubItem}>
                   Contact Us
                 </a>
               </Grid>
@@ -254,7 +254,7 @@ export default function FooterComponents() {
               alt=""
             />
           </a>
-          <a href="#a">
+          <a href="https://www.facebook.com/Nike-Real-107987001850694" target="_blank">
             <img
               src="https://w7.pngwing.com/pngs/624/811/png-transparent-computer-icons-facebook-social-media-f-logo-cross-brand.png"
               className={classes.socialLinkIcon}

@@ -11,6 +11,8 @@ import {
   setUserInfo,
 } from "./Layout/Navbar/SignIn/module/reducer/credentialsReducer";
 import { setCart } from "./Layout/Cart/module/cartReducer";
+import MessengerCustomerChat from 'react-messenger-customer-chat';
+
 
 function App() {
   const dispatch = useAppDispatch();
@@ -67,6 +69,11 @@ function App() {
         {showHomeLayout(routesHome)}
         {showAdminLayout(routesAdmin)}
       </Switch>
+      <MessengerCustomerChat 
+        pageId="107987001850694"
+        appId="537650157650784"
+        // htmlRef="<REF_STRING>"
+      />
     </BrowserRouter>
   );
 }
